@@ -10,9 +10,11 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^4.17.3",
+    "@types/apicalypse": "^0.1.1",
     "@types/node": "20.1.4",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
+    "apicalypse": "^0.2.0",
     "autoprefixer": "10.4.14",
     "daisyui": "^2.51.6",
     "eslint": "8.40.0",

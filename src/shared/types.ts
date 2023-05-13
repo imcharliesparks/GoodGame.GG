@@ -1,5 +1,46 @@
 import type { EmailAddress, ExternalAccount, PhoneNumber, Web3WalletJSON } from '@clerk/nextjs/server'
+import { NextApiRequest, NextApiResponse } from 'next'
 
+// General Types
+export type Maybe<T> = T | null
+
+// API Types
+export interface TypedRequest<T> extends NextApiRequest {
+	body: T
+}
+
+export interface TypedResponse<T> extends NextApiResponse {
+	json: (data: T) => void
+}
+
+export enum APIStatuses {
+	SUCCESS = 'SUCCESS',
+	ERROR = 'ERROR'
+}
+
+export enum GeneralAPIResponses {
+	FAILURE = 'FAILURE',
+	INVALID_REQUEST_TYPE = 'INVALID_REQUEST_TYPE'
+}
+
+export enum APIMethods {
+	POST = 'POST',
+	GET = 'GET',
+	PUT = 'PUT',
+	DELETE = 'DELETE',
+	PATCH = 'PATCH'
+}
+
+export enum DocumentResponses {
+	DATA_FOUND = 'DATA_FOUND',
+	DATA_NOT_FOUND = 'DATA_NOT_FOUND',
+	DATA_DELETED = 'DATA_DELETED',
+	DATA_UPDATED = 'DATA_UPDATED',
+	DATA_CREATED = 'DATA_CREATED',
+	DATA_NOT_CREATED = 'DATA_NOT_CREATED'
+}
+
+// User Types
 export type ClerkUser = {
 	id: string
 	firstName: string | null
@@ -35,3 +76,14 @@ export type ClerkPublicUserData = {
 export type ClerkPrivateUserData = {
 	[key: string]: any
 } | null
+
+export enum SignupMethods {
+	GOOGLE = 'Google',
+	TWITCH = 'Twitch',
+	EMAIL = 'Email'
+}
+
+export enum UserStatus {
+	ADMIN = 'Admin',
+	USER = 'User'
+}
