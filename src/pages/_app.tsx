@@ -1,4 +1,5 @@
 import ErrorBoundary from '@/components/ErrorBoundary'
+import { NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY } from '@/shared/constants'
 import '@/styles/globals.css'
 import { ClerkProvider } from '@clerk/nextjs'
 import { NextPage } from 'next'
@@ -18,7 +19,9 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
 	const renderWithLayout = Component.getLayout || ((page: ReactNode) => <>{page}</>)
 	return (
 		<ErrorBoundary>
-			<ClerkProvider {...pageProps}>{renderWithLayout(<Component {...pageProps} />)}</ClerkProvider>
+			<ClerkProvider publishableKey={NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY} {...pageProps}>
+				{renderWithLayout(<Component {...pageProps} />)}
+			</ClerkProvider>
 		</ErrorBoundary>
 	)
 }
