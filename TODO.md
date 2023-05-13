@@ -1,0 +1,1 @@
+- [ ] Change firebase to production data mode at some point
