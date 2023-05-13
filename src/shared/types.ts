@@ -19,9 +19,9 @@ export type ClerkUser = {
 	passwordEnabled: boolean
 	totpEnabled: boolean
 	backupCodeEnabled: boolean
-	publicMetadata: ClerkPublicUserData
-	privateMetadata: ClerkPrivateUserData
-	unsafeMetadata: { [key: string]: any } | null // this is only for mutatble properties strictly on the FE
+	publicMetadata: ClerkPublicUserData // readable from the FE and BE, should be used for safe data points
+	privateMetadata: ClerkPrivateUserData // readable only from the BE, should be used for DP that need encryption or protection
+	unsafeMetadata: { [key: string]: any } | null // readable only from the FE; this is only for properties mutated by the client directly
 	lastSignInAt: Date
 	createdAt: Date
 	updatedAt: Date
