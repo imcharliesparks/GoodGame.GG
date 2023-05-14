@@ -10,6 +10,9 @@ const defaultExports = {
 	eslint: {
 		ignoreDuringBuilds: true
 	},
+	images: {
+		domains: ['images.igdb.com'],
+	},
 }
 
 const pwaExports = withPWA({

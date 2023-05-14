@@ -1,1 +1,4 @@
 - [ ] Change firebase to production data mode at some point
+- [ ] Set up analytics and logging (if we do console errors are those caught by vercel?
+- [ ] Wire up skelleton UI for game cards
+- [ ] Wire up loading spinner (also do this in template)

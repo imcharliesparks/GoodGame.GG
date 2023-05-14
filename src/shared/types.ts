@@ -13,6 +13,34 @@ export interface TypedResponse<T> extends NextApiResponse {
 	json: (data: T) => void
 }
 
+// IGDB Types
+export type FullGame = {
+	category: number
+	checksum: string
+	cover: number
+	created_at: number
+	external_games: number[]
+	first_release_date: number
+	genres: number[]
+	id: number
+	name: string
+	platforms: number[]
+	release_dates: number[]
+	similar_games: number[]
+	slug: string
+	summary: string
+	tags: number[]
+	themes: number[]
+	updated_at: number
+	url: string
+	websites: number[]
+	coverArt?: {
+		url: string
+		height: number
+		width: number
+	}
+}
+
 export enum APIStatuses {
 	SUCCESS = 'SUCCESS',
 	ERROR = 'ERROR'
@@ -37,7 +65,8 @@ export enum DocumentResponses {
 	DATA_DELETED = 'DATA_DELETED',
 	DATA_UPDATED = 'DATA_UPDATED',
 	DATA_CREATED = 'DATA_CREATED',
-	DATA_NOT_CREATED = 'DATA_NOT_CREATED'
+	DATA_NOT_CREATED = 'DATA_NOT_CREATED',
+	DATA_NOT_UPDATED = 'DATA_NOT_UPDATED'
 }
 
 // User Types
@@ -68,6 +97,12 @@ export type ClerkUser = {
 	updatedAt: Date
 }
 
+export type GameInCollection = {
+	gameId: number
+	imageUrl?: string
+	playStatus: GamePlayStatus
+}
+
 // TODO: Type these properly and remove nullish-ness when we have shape of data
 export type ClerkPublicUserData = {
 	[key: string]: any
@@ -86,4 +121,15 @@ export enum SignupMethods {
 export enum UserStatus {
 	ADMIN = 'Admin',
 	USER = 'User'
+}
+
+export enum GamePlayStatus {
+	PLAYED = 'Played',
+	COMPLETED = 'Completed',
+	NOT_STARTED = 'Not Started'
+}
+
+export enum GameCollectionStatus {
+	OWNED = 'Owned',
+	WISHLISTED = 'Wishlisted'
 }
