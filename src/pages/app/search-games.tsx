@@ -1,5 +1,5 @@
 import React from 'react'
-import { APIMethods, APIStatuses, FullGame } from '@/shared/types'
+import { APIMethods, APIStatuses, GGGame } from '@/shared/types'
 import GameCard from '@/components/GameCard'
 
 // TODO: Slim down requests by refactoring so we only send the three properties we need of game in these api patch requests
@@ -7,7 +7,7 @@ const SearchGamesPage = () => {
 	const inputRef = React.useRef<HTMLInputElement | null>(null)
 	const [searchError, setSearchError] = React.useState<string | null>(null)
 	const [addSuccessText, setAddSuccessText] = React.useState<string | null>(null)
-	const [games, setGames] = React.useState<FullGame[]>()
+	const [games, setGames] = React.useState<GGGame[]>()
 
 	const handleShowError = (errorText: string) => {
 		setSearchError(errorText)
@@ -48,7 +48,7 @@ const SearchGamesPage = () => {
 	}
 
 	// TODO: Need to find a way to update the button so it shows as in collection now
-	const handleAddToCollection = async (game: FullGame) => {
+	const handleAddToCollection = async (game: GGGame) => {
 		try {
 			const request = await fetch(`/api/games/add-to-collection`, {
 				method: APIMethods.PATCH,
@@ -69,7 +69,7 @@ const SearchGamesPage = () => {
 		}
 	}
 
-	const handleAddToWishlist = async (game: FullGame) => {
+	const handleAddToWishlist = async (game: GGGame) => {
 		console.log('cheese')
 	}
 
@@ -96,7 +96,7 @@ const SearchGamesPage = () => {
 				<div className="container w-full flex flex-col">
 					{games?.map((game) => (
 						<GameCard
-							key={game.id}
+							key={game.gameId}
 							game={game}
 							addToCollection={() => handleAddToCollection(game)}
 							addToWishlist={() => handleAddToWishlist(game)}

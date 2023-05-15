@@ -1,24 +1,26 @@
-import { FullGame } from '@/shared/types'
+import { GGGame } from '@/shared/types'
 import { truncateDescription } from '@/shared/utils'
 import Image from 'next/image'
 import React from 'react'
 
 type GameCardProps = {
-	game: FullGame
+	game: GGGame
 	addToCollection: () => void
 	addToWishlist: () => void
 }
 
+// TODO: Add placecard//skelleton UI for when there is no cover art
 const GameCard = ({ game, addToCollection }: GameCardProps) => {
+	const coverArt = game.coverArt && game.coverArt.imageUrl ? game.coverArt : null
 	return (
 		<div className="card bg-base-100 shadow-xl text-black mt-4 mx-auto w-fit max-w-[400px]">
 			<figure className="pt-8">
-				{game.coverArt ? (
+				{coverArt ? (
 					<Image
-						className="rounded-xl"
-						width={200}
-						height={game.coverArt.height}
-						src={game.coverArt.url}
+						className="rounded-xl max-w-[200px]"
+						width={coverArt.width}
+						height={coverArt.height}
+						src={coverArt.imageUrl}
 						alt={`Cover art for ${game.name}`}
 					/>
 				) : (

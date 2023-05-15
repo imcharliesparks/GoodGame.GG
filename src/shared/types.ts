@@ -14,7 +14,7 @@ export interface TypedResponse<T> extends NextApiResponse {
 }
 
 // IGDB Types
-export type FullGame = {
+export type IGDBGame = {
 	category: number
 	checksum: string
 	cover: number
@@ -34,11 +34,6 @@ export type FullGame = {
 	updated_at: number
 	url: string
 	websites: number[]
-	coverArt?: {
-		url: string
-		height: number
-		width: number
-	}
 }
 
 export enum APIStatuses {
@@ -97,10 +92,37 @@ export type ClerkUser = {
 	updatedAt: Date
 }
 
-export type GameInCollection = {
+// TODO: Expand out to include more personal data at intake (owned consoles, location, etc.)
+export type GGUser = {
+	clerkId: string
+	friendIds: string[]
+	collectionRef: string
+	wishlistRef: string
+}
+
+export type GGGame = {
 	gameId: number
-	imageUrl?: string
+	coverArt?: {
+		height: number
+		width: number
+		imageUrl: string
+	}
 	playStatus: GamePlayStatus
+	releaseDate: string | number // TODO: Prob want to format this
+	genre: GameGenre // TODO convert to enum with scraping
+	name: string
+	platforms: GamePlatform[] // TODO: Also convert to enum with scraping
+	summary: string
+}
+
+export type GameGenre = {
+	id: number
+	name: string
+}
+
+export type GamePlatform = {
+	id: number
+	name: string
 }
 
 // TODO: Type these properly and remove nullish-ness when we have shape of data
