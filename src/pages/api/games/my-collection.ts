@@ -3,6 +3,7 @@ import { APIMethods, APIStatuses, CollectionNames, DocumentResponses, GeneralAPI
 import { withAuth } from '@clerk/nextjs/dist/api'
 import { collection, doc, getDocs, getFirestore, query, where } from 'firebase/firestore'
 
+// TODO: We may not even need this anymore tbh but leaving it in now
 const handler = withAuth(async (req, res) => {
 	const { auth, method } = req
 	const { userId } = auth

@@ -11,6 +11,7 @@ import {
 import { withAuth } from '@clerk/nextjs/dist/api'
 import { igDBFetch } from '@/shared/utils'
 
+// TODO: Speed this shit up
 const handler = withAuth(async (req, res) => {
 	const { method, query } = req
 	const { name } = query

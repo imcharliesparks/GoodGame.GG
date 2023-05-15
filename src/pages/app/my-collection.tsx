@@ -1,47 +1,20 @@
 import CollectionGameCard from '@/components/general/CollectionGameCard'
 import Loading from '@/components/general/Loading'
-import { APIMethods, APIStatuses, GGGame } from '@/shared/types'
+import { firebaseDB } from '@/lib/firebase'
+import { APIMethods, APIStatuses, CollectionNames, GGGame } from '@/shared/types'
 import { useAuth } from '@clerk/nextjs'
+import { getAuth } from '@clerk/nextjs/server'
+import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore'
+import { GetServerSidePropsContext } from 'next'
 import React from 'react'
 
-const MyCollectionPage = () => {
-	const { userId } = useAuth()
-	const [gamesCollection, setGamesCollection] = React.useState<GGGame[]>()
-	const [error, setError] = React.useState<string>()
-	const [isLoading, setIsLoading] = React.useState<boolean>(true)
+type Props = {
+	gamesCollection: GGGame[]
+	error: string
+}
 
-	const fetchCollection = async (userId: string) => {
-		try {
-			const request = await fetch(`/api/games/my-collection`, {
-				method: APIMethods.GET,
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			})
-			const response = await request.json()
-			if (response.status === APIStatuses.ERROR) {
-				throw new Error(response.data.error)
-			} else {
-				setGamesCollection(response.data.collection)
-			}
-		} catch (error) {
-			// TODO: Show a "no games added to collection screen here instead"
-			console.error(`Could not find a collection for user ${userId}`, error)
-			setError(`There was an error fetching your collection!`)
-		} finally {
-			setIsLoading(false)
-		}
-	}
-
-	React.useEffect(() => {
-		if (userId) {
-			fetchCollection(userId)
-		}
-	}, [userId])
-
-	// TODO: Implement better loading strategies and a better loading animation
-	if (isLoading) return <Loading />
-
+// TODO: Add loading
+const MyCollectionPage = ({ gamesCollection, error }: Props) => {
 	return (
 		<div className="max-w-screen flex flex-col items-center py-6">
 			<div className="container text-center">
@@ -65,6 +38,40 @@ const MyCollectionPage = () => {
 			)}
 		</div>
 	)
+}
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+	const { userId } = getAuth(ctx.req)
+	const props: Props = {
+		error: '',
+		gamesCollection: []
+	}
+	try {
+		const db = getFirestore(firebaseDB)
+		const collectionsCollectionRef = collection(db, CollectionNames.COLLECTIONS)
+		const q = query(collectionsCollectionRef, where('ownerId', '==', userId))
+		const querySnapshot = await getDocs(q)
+
+		if (querySnapshot.empty) {
+			console.error(`No games found for collection. UserID: ${userId}`)
+		}
+
+		const foundUserCollection = Object.assign(querySnapshot.docs[0].data(), {})
+		const formattedOwnedGames = []
+
+		for (let slug in foundUserCollection.ownedGames) {
+			formattedOwnedGames.push(foundUserCollection.ownedGames[slug])
+		}
+
+		props.gamesCollection = formattedOwnedGames
+	} catch (error) {
+		console.error('e', error)
+		props.error = 'There was an error fetching your collection! Please try again.'
+	} finally {
+		return {
+			props
+		}
+	}
 }
 
 export default MyCollectionPage

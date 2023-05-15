@@ -23,7 +23,9 @@ const NavHeader = () => {
 				</div>
 			</div>
 			<div className="navbar-center">
-				<a className="btn btn-ghost normal-case text-xl">GoodGame.GG</a>
+				<Link href="/" className="btn btn-ghost normal-case text-xl">
+					GoodGame.GG
+				</Link>
 			</div>
 			<div className="navbar-end pr-3">
 				<SignedIn>
