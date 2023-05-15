@@ -6,10 +6,11 @@ type Props = {
 	children: React.ReactNode
 }
 
+// TODO: Do we need any extra metadata here? Does Main need a page id or anything for SEO?
 const Layout = ({ children }: Props) => (
 	<>
 		<NavHeader />
-		{children}
+		<main>{children}</main>
 		<Footer />
 	</>
 )

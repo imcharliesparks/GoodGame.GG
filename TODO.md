@@ -4,3 +4,5 @@
 - [ ] Wire up loading spinner (also do this in template)
 - [ ] Figure out how to set dynamic ENV variables in Vercel based on a cron job (need for access token)
 - [ ] Make mobile layout w/ nav footer and consume on set widths
+- [ ] Implement page-transition loading like
+      [this](https://medium.com/@remoteupskill/how-to-manage-loading-elegantly-in-your-next-js-application-5debbfb4cace)

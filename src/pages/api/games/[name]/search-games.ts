@@ -84,7 +84,6 @@ const handler = withAuth(async (req, res) => {
 
 						foundGames.push(newGame)
 					} catch (error) {
-						console.log('error', error)
 						console.error(`Unable to get artwork for ${game.name}`)
 					}
 				}

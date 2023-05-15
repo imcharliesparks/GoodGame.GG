@@ -1,13 +1,14 @@
-import CollectionGameCard from '@/components/CollectionGameCard'
+import CollectionGameCard from '@/components/general/CollectionGameCard'
+import Loading from '@/components/general/Loading'
 import { APIMethods, APIStatuses, GGGame } from '@/shared/types'
-import { useAuth, useUser } from '@clerk/nextjs'
+import { useAuth } from '@clerk/nextjs'
 import React from 'react'
 
 const MyCollectionPage = () => {
 	const { userId } = useAuth()
 	const [gamesCollection, setGamesCollection] = React.useState<GGGame[]>()
 	const [error, setError] = React.useState<string>()
-	console.log('gamesCollection', gamesCollection)
+	const [isLoading, setIsLoading] = React.useState<boolean>(true)
 
 	const fetchCollection = async (userId: string) => {
 		try {
@@ -27,6 +28,8 @@ const MyCollectionPage = () => {
 			// TODO: Show a "no games added to collection screen here instead"
 			console.error(`Could not find a collection for user ${userId}`, error)
 			setError(`There was an error fetching your collection!`)
+		} finally {
+			setIsLoading(false)
 		}
 	}
 
@@ -36,10 +39,13 @@ const MyCollectionPage = () => {
 		}
 	}, [userId])
 
+	// TODO: Implement better loading strategies and a better loading animation
+	if (isLoading) return <Loading />
+
 	return (
-		<div className="max-w-screen flex flex-col items-center py-12">
-			<div className="container">
-				<h1 className="font-bold text-3xl">My Collection</h1>
+		<div className="max-w-screen flex flex-col items-center py-6">
+			<div className="container text-center">
+				<h1 className="font-bold text-3xl mb-2">My Collection</h1>
 				<div className="container w-full flex flex-col">
 					{gamesCollection?.length ? (
 						gamesCollection?.map((game) => <CollectionGameCard key={game.gameId} game={game} />)
