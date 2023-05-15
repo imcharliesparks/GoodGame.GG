@@ -26,8 +26,8 @@ const handler = withAuth(async (req, res) => {
 
 			if (querySnapshot.empty) {
 				console.error(`No games found for collection. UserID: ${userId}`)
-				return res.status(404).json({
-					status: APIStatuses.ERROR,
+				return res.status(200).json({
+					status: APIStatuses.AMBIGUOUS,
 					type: GeneralAPIResponses.FAILURE,
 					data: { error: `No games in collection found for user ${userId}` }
 				})

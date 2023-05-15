@@ -97,16 +97,16 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
 		if (querySnapshot.empty) {
 			console.error(`No games found for collection. UserID: ${userId}`)
+		} else {
+			const foundUserCollection = Object.assign(querySnapshot.docs[0].data(), {})
+			const formattedOwnedGames = []
+
+			for (let slug in foundUserCollection.ownedGames) {
+				formattedOwnedGames.push(foundUserCollection.ownedGames[slug])
+			}
+
+			props.gamesCollection = formattedOwnedGames
 		}
-
-		const foundUserCollection = Object.assign(querySnapshot.docs[0].data(), {})
-		const formattedOwnedGames = []
-
-		for (let slug in foundUserCollection.ownedGames) {
-			formattedOwnedGames.push(foundUserCollection.ownedGames[slug])
-		}
-
-		props.gamesCollection = formattedOwnedGames
 	} catch (error) {
 		console.error('e', error)
 		props.dataFetchingError = 'There was an error fetching your collection! Please try again.'

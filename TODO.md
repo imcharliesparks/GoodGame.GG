@@ -6,3 +6,4 @@
 - [ ] Make mobile layout w/ nav footer and consume on set widths
 - [ ] Implement page-transition loading like
       [this](https://medium.com/@remoteupskill/how-to-manage-loading-elegantly-in-your-next-js-application-5debbfb4cace)
+- [ ] Make the sign out button actually redirect to home instead of our Clerk instance

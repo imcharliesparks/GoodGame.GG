@@ -38,6 +38,7 @@ export type IGDBGame = {
 
 export enum APIStatuses {
 	SUCCESS = 'SUCCESS',
+	AMBIGUOUS = 'AMBIGUOUS',
 	ERROR = 'ERROR'
 }
 

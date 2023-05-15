@@ -4,7 +4,6 @@ import {
 	APIStatuses,
 	CollectionNames,
 	DocumentResponses,
-	GGGame,
 	GameCollection,
 	GeneralAPIResponses
 } from '@/shared/types'
