@@ -91,8 +91,6 @@ export type ClerkUser = {
 	createdAt: Date
 	updatedAt: Date
 }
-
-// TODO: Expand out to include more personal data at intake (owned consoles, location, etc.)
 export type GGUser = {
 	clerkId: string
 	friendIds: string[]
@@ -113,6 +111,14 @@ export type GGGame = {
 	name: string
 	platforms: GamePlatform[] // TODO: Also convert to enum with scraping
 	summary: string
+	slug: string
+}
+
+export type GameCollection = {
+	ownerId: string
+	ownedGames: {
+		[slug: string]: GGGame
+	}
 }
 
 export type GameGenre = {
@@ -154,4 +160,10 @@ export enum GamePlayStatus {
 export enum GameCollectionStatus {
 	OWNED = 'Owned',
 	WISHLISTED = 'Wishlisted'
+}
+
+export enum CollectionNames {
+	COLLECTIONS = 'collections',
+	FRIENDS_LISTS = 'friendslists',
+	WISH_LISTS = 'wishlists'
 }

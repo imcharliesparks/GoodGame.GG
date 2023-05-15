@@ -59,7 +59,6 @@ const handler = withAuth(async (req, res) => {
 						let gameCoverArt
 						if (coverArtAPIResponse.length) {
 							const [coverArt] = coverArtAPIResponse
-							console.log('coverArt', coverArt)
 							gameCoverArt = {
 								imageUrl: `https:${coverArt.url.replace('t_thumb', 't_cover_big')}`,
 								height: coverArt.height,
@@ -79,7 +78,8 @@ const handler = withAuth(async (req, res) => {
 							},
 							name: game.name,
 							platforms: platforms,
-							summary: game.summary
+							summary: game.summary,
+							slug: game.slug
 						}
 
 						foundGames.push(newGame)

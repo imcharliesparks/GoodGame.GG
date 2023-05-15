@@ -15,4 +15,5 @@ const firebaseConfig = {
 
 // Initialize Firebase
 export const firebaseDB = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0]
-export const analytics = getAnalytics(firebaseDB)
+// TODO: Fix the issue here if we want FB analytics
+// export const analytics = getAnalytics(firebaseDB)
