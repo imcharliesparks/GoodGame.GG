@@ -1,8 +1,11 @@
 import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React from 'react'
 
 const NavHeader = () => {
+	const router = useRouter()
+
 	return (
 		<div className="navbar bg-base-100">
 			<div className="navbar-start">
@@ -13,12 +16,20 @@ const NavHeader = () => {
 						</svg>
 					</label>
 					<ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-						<li>
-							<Link href="/app/my-collection">My Collection</Link>
-						</li>
-						<li>
-							<Link href="/app/search-games">Search Games</Link>
-						</li>
+						{router.pathname.includes('app') ? (
+							<>
+								<li>
+									<Link href="/app/my-collection">My Collection</Link>
+								</li>
+								<li>
+									<Link href="/app/search-games">Search Games</Link>
+								</li>
+							</>
+						) : (
+							<li>
+								<Link href="/">Home</Link>
+							</li>
+						)}
 					</ul>
 				</div>
 			</div>
