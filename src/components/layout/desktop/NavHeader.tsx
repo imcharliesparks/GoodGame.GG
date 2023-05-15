@@ -16,7 +16,10 @@ const NavHeader = () => {
 						</svg>
 					</label>
 					<ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-						{router.pathname.includes('app') ? (
+						<li>
+							<Link href="/">Home</Link>
+						</li>
+						{router.pathname.includes('app') && (
 							<>
 								<li>
 									<Link href="/app/my-collection">My Collection</Link>
@@ -25,10 +28,6 @@ const NavHeader = () => {
 									<Link href="/app/search-games">Search Games</Link>
 								</li>
 							</>
-						) : (
-							<li>
-								<Link href="/">Home</Link>
-							</li>
 						)}
 					</ul>
 				</div>
