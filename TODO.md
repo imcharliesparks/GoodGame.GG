@@ -2,3 +2,4 @@
 - [ ] Set up analytics and logging (if we do console errors are those caught by vercel?
 - [ ] Wire up skelleton UI for game cards
 - [ ] Wire up loading spinner (also do this in template)
+- [ ] Figure out how to set dynamic ENV variables in Vercel based on a cron job (need for access token)
