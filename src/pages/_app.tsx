@@ -1,4 +1,5 @@
 import ErrorBoundary from '@/components/ErrorBoundary'
+import Layout from '@/components/layout/desktop'
 import { NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY } from '@/shared/constants'
 import '@/styles/globals.css'
 import { ClerkProvider } from '@clerk/nextjs'
@@ -15,8 +16,8 @@ type AppPropsWithLayout = AppProps & {
 }
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
-	// SETUP TODO: Update with layout
-	const renderWithLayout = Component.getLayout || ((page: ReactNode) => <>{page}</>)
+	// TODO: Add support for mobile vs desktop layouts here
+	const renderWithLayout = Component.getLayout || ((page: ReactNode) => <Layout>{page}</Layout>)
 	return (
 		<ErrorBoundary>
 			<ClerkProvider publishableKey={NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY} {...pageProps}>

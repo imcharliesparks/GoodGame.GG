@@ -3,3 +3,4 @@
 - [ ] Wire up skelleton UI for game cards
 - [ ] Wire up loading spinner (also do this in template)
 - [ ] Figure out how to set dynamic ENV variables in Vercel based on a cron job (need for access token)
+- [ ] Make mobile layout w/ nav footer and consume on set widths
