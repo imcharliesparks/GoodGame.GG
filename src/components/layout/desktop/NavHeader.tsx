@@ -39,7 +39,7 @@ const NavHeader = () => {
 			</div>
 			<div className="navbar-end pr-3">
 				<SignedIn>
-					<UserButton />
+					<UserButton signInUrl="/auth/sign-in" afterSignOutUrl="/" />
 				</SignedIn>
 				<SignedOut>
 					<SignInButton />

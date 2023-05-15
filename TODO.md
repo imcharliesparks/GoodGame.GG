@@ -8,3 +8,4 @@
       [this](https://medium.com/@remoteupskill/how-to-manage-loading-elegantly-in-your-next-js-application-5debbfb4cace)
 - [ ] Make the sign out button actually redirect to home instead of our Clerk instance
 - [ ] Implement mobile-first layout and figure out what to use instead of vw and vh
+- [ ] Fix speed on API calls because it's really bad
