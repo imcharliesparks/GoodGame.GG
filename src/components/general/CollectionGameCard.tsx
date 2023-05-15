@@ -2,13 +2,16 @@ import { IGDBGame, GGGame } from '@/shared/types'
 import { truncateDescription } from '@/shared/utils'
 import Image from 'next/image'
 import React from 'react'
+import LoadingSpinner from './LoadingSpinner'
 
 type GameCardProps = {
 	game: GGGame
+	removeFromCollection: (slug: string) => void
+	isButtonLoading: boolean
 }
 
 // TODO: Update these with filler images & skelleton loading
-const GameCard = ({ game }: GameCardProps) => {
+const GameCard = ({ game, removeFromCollection, isButtonLoading }: GameCardProps) => {
 	const coverArt = game.coverArt && game.coverArt.imageUrl ? game.coverArt : null
 	return (
 		<div className="card bg-base-100 shadow-xl text-black mt-4 mx-auto w-fit max-w-[400px]">
@@ -31,10 +34,9 @@ const GameCard = ({ game }: GameCardProps) => {
 				{/* TODO: reintroduce truncating here but with the ability to view all */}
 				<p>{game.summary ? game.summary : 'No summary available'}</p>
 				<div className="card-actions pt-3">
-					{/* <button onClick={addToCollection} className="btn btn-primary w-[133px]">
-						+Collection
+					<button onClick={() => removeFromCollection(game.slug)} className="btn btn-primary w-[133px]">
+						{isButtonLoading ? <LoadingSpinner /> : '-Collection'}
 					</button>
-					<button className="btn btn-primary w-[133px]">+Wishlist</button> */}
 				</div>
 			</div>
 		</div>

@@ -56,7 +56,7 @@ const SearchGamesPage = () => {
 	const handleAddToCollection = async (game: GGGame) => {
 		setIsLoading(true)
 		try {
-			const request = await fetch(`/api/games/add-to-collection`, {
+			const request = await fetch(`/api/collection/add`, {
 				method: APIMethods.PATCH,
 				headers: {
 					'Content-Type': 'application/json'

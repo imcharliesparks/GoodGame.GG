@@ -6,22 +6,65 @@ import { useAuth } from '@clerk/nextjs'
 import { getAuth } from '@clerk/nextjs/server'
 import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore'
 import { GetServerSidePropsContext } from 'next'
+import { useRouter } from 'next/router'
 import React from 'react'
 
 type Props = {
 	gamesCollection: GGGame[]
-	error: string
+	dataFetchingError: string
 }
 
-// TODO: Add loading
-const MyCollectionPage = ({ gamesCollection, error }: Props) => {
+// TODO: Intercept fetching with loading screen
+const MyCollectionPage = ({ gamesCollection, dataFetchingError }: Props) => {
+	const router = useRouter()
+	const [isLoading, setIsLoading] = React.useState<boolean>(false)
+	const [error, setError] = React.useState<string>(dataFetchingError.length ? dataFetchingError : '')
+
+	const refreshData = () => {
+		router.replace(router.asPath)
+	}
+
+	const removeFromCollection = async (slug: string) => {
+		setIsLoading(true)
+		try {
+			const request = await fetch(`/api/collection/${slug}/remove`, {
+				method: APIMethods.DELETE,
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+			const response = await request.json()
+			if (response.status === APIStatuses.ERROR) {
+				throw new Error(response.data.error)
+			} else {
+				// CS NOTE: This is the pattern for refreshing GSSP data 😬
+				refreshData()
+			}
+		} catch (error) {
+			console.error(`Could not delete game with slug ${slug}`, error)
+			setError(`We couldn't remove that game! Please try again.`)
+			setTimeout(() => {
+				setError('')
+			}, 6000)
+		} finally {
+			setIsLoading(false)
+		}
+	}
+
 	return (
 		<div className="max-w-screen flex flex-col items-center py-6">
 			<div className="container text-center">
 				<h1 className="font-bold text-3xl mb-2">My Collection</h1>
 				<div className="container w-full flex flex-col">
 					{gamesCollection?.length ? (
-						gamesCollection?.map((game) => <CollectionGameCard key={game.gameId} game={game} />)
+						gamesCollection?.map((game) => (
+							<CollectionGameCard
+								key={game.gameId}
+								game={game}
+								removeFromCollection={removeFromCollection}
+								isButtonLoading={isLoading}
+							/>
+						))
 					) : (
 						<h1>You haven't added any games yet!</h1>
 					)}
@@ -43,7 +86,7 @@ const MyCollectionPage = ({ gamesCollection, error }: Props) => {
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 	const { userId } = getAuth(ctx.req)
 	const props: Props = {
-		error: '',
+		dataFetchingError: '',
 		gamesCollection: []
 	}
 	try {
@@ -66,7 +109,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 		props.gamesCollection = formattedOwnedGames
 	} catch (error) {
 		console.error('e', error)
-		props.error = 'There was an error fetching your collection! Please try again.'
+		props.dataFetchingError = 'There was an error fetching your collection! Please try again.'
 	} finally {
 		return {
 			props
