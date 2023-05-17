@@ -107,12 +107,13 @@ export type GGGame = {
 		imageUrl: string
 	}
 	playStatus: GamePlayStatus
-	releaseDate: string | number // TODO: Prob want to format this
+	releaseDate: number
 	genre: GameGenre // TODO convert to enum with scraping
 	name: string
 	platforms: GamePlatform[] // TODO: Also convert to enum with scraping
 	summary: string
 	slug: string
+	dateAdded?: number
 }
 
 export type GameCollection = {

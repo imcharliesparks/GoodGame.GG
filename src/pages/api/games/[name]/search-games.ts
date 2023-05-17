@@ -9,7 +9,7 @@ import {
 	GamePlatform
 } from '@/shared/types'
 import { withAuth } from '@clerk/nextjs/dist/api'
-import { igDBFetch } from '@/shared/utils'
+import { getSafeCurrentDate, igDBFetch } from '@/shared/utils'
 
 // TODO: Speed this shit up
 const handler = withAuth(async (req, res) => {
@@ -80,7 +80,8 @@ const handler = withAuth(async (req, res) => {
 							name: game.name,
 							platforms: platforms,
 							summary: game.summary,
-							slug: game.slug
+							slug: game.slug,
+							dateAdded: getSafeCurrentDate()
 						}
 
 						foundGames.push(newGame)

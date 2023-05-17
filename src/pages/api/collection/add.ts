@@ -8,14 +8,15 @@ import {
 	GameCollection,
 	GeneralAPIResponses
 } from '@/shared/types'
+import { getSafeCurrentDate } from '@/shared/utils'
 import { withAuth } from '@clerk/nextjs/dist/api'
-import { collection, addDoc, getDocs, getFirestore, query, where, updateDoc, doc } from 'firebase/firestore'
+import { collection, addDoc, getDocs, getFirestore, query, where, updateDoc, doc, Timestamp } from 'firebase/firestore'
 
 const handler = withAuth(async (req, res) => {
 	const { auth, body, method } = req
 	const { userId } = auth
 	const game: GGGame = body
-	const { slug } = game
+	const { gameId } = game
 
 	if (!userId) {
 		console.error('User not authorized.')
@@ -36,6 +37,9 @@ const handler = withAuth(async (req, res) => {
 	}
 
 	if (method === APIMethods.PATCH) {
+		const updatedGame: GGGame = Object.assign(game, {
+			dateAdded: getSafeCurrentDate()
+		})
 		try {
 			const db = getFirestore(firebaseDB)
 			const collectionsCollectionRef = collection(db, CollectionNames.COLLECTIONS)
@@ -46,7 +50,7 @@ const handler = withAuth(async (req, res) => {
 				const newCollection: GameCollection = {
 					ownerId: userId,
 					ownedGames: {
-						[slug]: game
+						[gameId]: updatedGame
 					}
 				}
 				await addDoc(collectionsCollectionRef, newCollection)
@@ -58,7 +62,7 @@ const handler = withAuth(async (req, res) => {
 			} else {
 				// TODO: Is there a better way to to do essentially an upsert here?
 				const updatedCollection = Object.assign(querySnapshot.docs[0].data(), {}) as GameCollection
-				updatedCollection.ownedGames[slug] = game
+				updatedCollection.ownedGames[gameId] = updatedGame
 				const collectionDocumentPath = querySnapshot.docs[0].ref.path
 				const collectionDocumentRef = doc(db, collectionDocumentPath)
 				await updateDoc(collectionDocumentRef, updatedCollection)

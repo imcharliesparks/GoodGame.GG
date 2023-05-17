@@ -1,12 +1,14 @@
 - [ ] Change firebase to production data mode at some point
 - [ ] Set up analytics and logging (if we do console errors are those caught by vercel?
 - [ ] Wire up skelleton UI for game cards
-- [ ] Wire up loading spinner (also do this in template)
+- [ ] Wire up loading spinner for page transitions (also do this in template)
 - [ ] Figure out how to set dynamic ENV variables in Vercel based on a cron job (need for access token)
 - [ ] Make mobile layout w/ nav footer and consume on set widths
 - [ ] Implement page-transition loading like
       [this](https://medium.com/@remoteupskill/how-to-manage-loading-elegantly-in-your-next-js-application-5debbfb4cace)
-- [ ] Make the sign out button actually redirect to home instead of our Clerk instance
+- [x] Make the sign out button actually redirect to home instead of our Clerk instance
 - [ ] Implement mobile-first layout and figure out what to use instead of vw and vh
 - [ ] Fix speed on API calls because it's really bad
-- [ ] Update slug pattern on data structures to be game id instead
+- [x] Update slug pattern on data structures to be game id instead
+- [x] Fix ordering of games in collection as it's currently variable
+- [ ] Add filtering/sorting

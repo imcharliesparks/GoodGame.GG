@@ -1,3 +1,4 @@
+import { Timestamp } from 'firebase/firestore'
 import { IGDB_ACCESS_TOKEN, IGDB_BASE_URL } from './constants'
 import { APIMethods } from './types'
 
@@ -30,3 +31,8 @@ export const truncateDescription = (description: string, maxLength: number) => {
 	}
 	return description.slice(0, description.lastIndexOf(' ', maxLength)) + '...'
 }
+
+// For use on the client when displaying
+export const getReleaseDateFromUTC = (unixDate: number) => new Date(unixDate * 1000).toUTCString()
+// For storing dates in UTC/UNIX on the server
+export const getSafeCurrentDate = () => Math.floor(new Date().getTime() / 1000)
