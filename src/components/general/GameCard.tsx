@@ -14,7 +14,7 @@ type GameCardProps = {
 // TODO: Add placecard//skelleton UI for when there is no cover art
 // TODO: Wire up add to wishlist
 // TODO: Refactor isLoading so it's per-instance instead of global
-const GameCard = ({ game, addToCollection, isLoading }: GameCardProps) => {
+const GameCard = ({ game, addToCollection, addToWishlist, isLoading }: GameCardProps) => {
 	const coverArt = game.coverArt && game.coverArt.imageUrl ? game.coverArt : null
 	return (
 		<div className="card bg-base-100 shadow-xl text-black mt-4 mx-auto w-fit max-w-[400px]">
@@ -38,7 +38,9 @@ const GameCard = ({ game, addToCollection, isLoading }: GameCardProps) => {
 					<button onClick={addToCollection} className="btn btn-primary w-[133px]">
 						{isLoading ? <LoadingSpinner /> : '+Collection'}
 					</button>
-					<button className="btn btn-primary w-[133px]">+Wishlist</button>
+					<button onClick={addToWishlist} className="btn btn-primary w-[133px]">
+						+Wishlist
+					</button>
 				</div>
 			</div>
 		</div>

@@ -1,6 +1,6 @@
-import CollectionGameCard from '@/components/general/CollectionGameCard'
+import WishlistGameCard from '@/components/general/WishlistGameCard'
 import { firebaseDB } from '@/lib/firebase'
-import { APIMethods, APIStatuses, CollectionNames, GGGame } from '@/shared/types'
+import { APIMethods, APIStatuses, CollectionNames, GGGame, GamesWishlist } from '@/shared/types'
 import { getAuth } from '@clerk/nextjs/server'
 import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore'
 import { GetServerSidePropsContext } from 'next'
@@ -8,12 +8,12 @@ import { useRouter } from 'next/router'
 import React from 'react'
 
 type Props = {
-	gamesCollection: GGGame[]
+	gamesWishlist: GGGame[]
 	dataFetchingError: string
 }
 
 // TODO: Intercept fetching with loading screen
-const MyCollectionPage = ({ gamesCollection, dataFetchingError }: Props) => {
+const MyWishlistPage = ({ gamesWishlist, dataFetchingError }: Props) => {
 	const router = useRouter()
 	const [isLoading, setIsLoading] = React.useState<boolean>(false)
 	const [error, setError] = React.useState<string>(dataFetchingError.length ? dataFetchingError : '')
@@ -25,7 +25,7 @@ const MyCollectionPage = ({ gamesCollection, dataFetchingError }: Props) => {
 	const removeFromCollection = async (gameId: number) => {
 		setIsLoading(true)
 		try {
-			const request = await fetch(`/api/collection/${gameId}/remove`, {
+			const request = await fetch(`/api/wishlist/${gameId}/remove`, {
 				method: APIMethods.DELETE,
 				headers: {
 					'Content-Type': 'application/json'
@@ -52,11 +52,11 @@ const MyCollectionPage = ({ gamesCollection, dataFetchingError }: Props) => {
 	return (
 		<div className="max-w-screen flex flex-col items-center py-6">
 			<div className="container text-center">
-				<h1 className="font-bold text-3xl mb-2">My Collection</h1>
+				<h1 className="font-bold text-3xl mb-2">My Wishlist</h1>
 				<div className="container w-full flex flex-col">
-					{gamesCollection?.length ? (
-						gamesCollection?.map((game) => (
-							<CollectionGameCard
+					{gamesWishlist?.length ? (
+						gamesWishlist?.map((game) => (
+							<WishlistGameCard
 								key={game.gameId}
 								game={game}
 								removeFromCollection={removeFromCollection}
@@ -64,7 +64,7 @@ const MyCollectionPage = ({ gamesCollection, dataFetchingError }: Props) => {
 							/>
 						))
 					) : (
-						<h1>You haven't added any games yet!</h1>
+						<h1>You haven't added any games to your wishlist yet!</h1>
 					)}
 				</div>
 			</div>
@@ -85,25 +85,25 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 	const { userId } = getAuth(ctx.req)
 	const props: Props = {
 		dataFetchingError: '',
-		gamesCollection: []
+		gamesWishlist: []
 	}
 	try {
 		const db = getFirestore(firebaseDB)
-		const collectionsCollectionRef = collection(db, CollectionNames.COLLECTIONS)
-		const q = query(collectionsCollectionRef, where('ownerId', '==', userId))
+		const wishlistsCollectionRef = collection(db, CollectionNames.WISH_LISTS)
+		const q = query(wishlistsCollectionRef, where('ownerId', '==', userId))
 		const querySnapshot = await getDocs(q)
 
 		if (querySnapshot.empty) {
-			console.error(`No games found for collection. UserID: ${userId}`)
+			console.error(`No games found for wishlist. UserID: ${userId}`)
 		} else {
-			const foundUserCollection = Object.assign(querySnapshot.docs[0].data(), {})
-			const formattedOwnedGames = []
+			const foundUserWishlist = Object.assign(querySnapshot.docs[0].data(), {}) as GamesWishlist
+			const formattedWantedGames = []
 
-			for (let gameId in foundUserCollection.ownedGames) {
-				formattedOwnedGames.push(foundUserCollection.ownedGames[gameId])
+			for (let gameId in foundUserWishlist.wantedGames) {
+				formattedWantedGames.push(foundUserWishlist.wantedGames[gameId])
 			}
 
-			props.gamesCollection = formattedOwnedGames
+			props.gamesWishlist = formattedWantedGames
 		}
 	} catch (error) {
 		console.error('e', error)
@@ -115,4 +115,4 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 	}
 }
 
-export default MyCollectionPage
+export default MyWishlistPage

@@ -119,7 +119,15 @@ export type GGGame = {
 export type GameCollection = {
 	ownerId: string
 	ownedGames: {
-		[slug: string]: GGGame
+		[gameId: number]: GGGame
+	}
+}
+
+// TODO: Expand out on the typings for these
+export type GamesWishlist = {
+	ownerId: string
+	wantedGames: {
+		[gameId: number]: GGGame
 	}
 }
 

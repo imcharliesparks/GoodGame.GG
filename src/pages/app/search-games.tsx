@@ -78,7 +78,27 @@ const SearchGamesPage = () => {
 	}
 
 	const handleAddToWishlist = async (game: GGGame) => {
-		console.log('cheese')
+		setIsLoading(true)
+		try {
+			const request = await fetch(`/api/wishlist/add`, {
+				method: APIMethods.PATCH,
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(game)
+			})
+			const response = await request.json()
+			if (response.status === APIStatuses.ERROR) {
+				throw new Error(response.data.error)
+			} else {
+				handleAddSuccessTest('Success! Game added to wishlist.')
+			}
+		} catch (error) {
+			console.error(`Unable to add game to wishlist.`, error)
+			handleShowError(`Couldn't add that game to your wishlist! Please try again in a bit.`)
+		} finally {
+			setIsLoading(false)
+		}
 	}
 
 	return (

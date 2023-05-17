@@ -25,6 +25,9 @@ const NavHeader = () => {
 									<Link href="/app/my-collection">My Collection</Link>
 								</li>
 								<li>
+									<Link href="/app/my-wishlist">My Wishlist</Link>
+								</li>
+								<li>
 									<Link href="/app/search-games">Search Games</Link>
 								</li>
 							</>

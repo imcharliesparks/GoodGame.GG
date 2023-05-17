@@ -1,7 +1,14 @@
 import { firebaseDB } from '@/lib/firebase'
-import { APIMethods, APIStatuses, CollectionNames, DocumentResponses, GeneralAPIResponses } from '@/shared/types'
+import {
+	APIMethods,
+	APIStatuses,
+	CollectionNames,
+	DocumentResponses,
+	GamesWishlist,
+	GeneralAPIResponses
+} from '@/shared/types'
 import { withAuth } from '@clerk/nextjs/dist/api'
-import { collection, doc, getDocs, getFirestore, query, where } from 'firebase/firestore'
+import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore'
 
 // TODO: We may not even need this anymore tbh but leaving it in now
 const handler = withAuth(async (req, res) => {
@@ -9,7 +16,7 @@ const handler = withAuth(async (req, res) => {
 	const { userId } = auth
 
 	if (!userId) {
-		console.error('No user id provided to my-collection endpoint.')
+		console.error('No user id provided to my-wishlist endpoint.')
 		res.status(400).json({
 			status: APIStatuses.ERROR,
 			type: DocumentResponses.DATA_NOT_FOUND,
@@ -20,37 +27,37 @@ const handler = withAuth(async (req, res) => {
 	if (method === APIMethods.GET) {
 		try {
 			const db = getFirestore(firebaseDB)
-			const collectionsCollectionRef = collection(db, CollectionNames.COLLECTIONS)
-			const q = query(collectionsCollectionRef, where('ownerId', '==', userId))
+			const wishlistCollectionRef = collection(db, CollectionNames.COLLECTIONS)
+			const q = query(wishlistCollectionRef, where('ownerId', '==', userId))
 			const querySnapshot = await getDocs(q)
 
 			if (querySnapshot.empty) {
-				console.error(`No games found for collection. UserID: ${userId}`)
+				console.error(`No games found for wishlist. UserID: ${userId}`)
 				return res.status(200).json({
 					status: APIStatuses.AMBIGUOUS,
 					type: GeneralAPIResponses.FAILURE,
-					data: { error: `No games in collection found for user ${userId}` }
+					data: { error: `No games in wishlist found for user ${userId}` }
 				})
 			}
 
-			const foundUserCollection = Object.assign(querySnapshot.docs[0].data(), {})
-			const formattedOwnedGames = []
+			const foundUserWishlist = Object.assign(querySnapshot.docs[0].data(), {}) as GamesWishlist
+			const formattedWantedGames = []
 
-			for (let gameId in foundUserCollection.ownedGames) {
-				formattedOwnedGames.push(foundUserCollection.ownedGames[gameId])
+			for (let id in foundUserWishlist.wantedGames) {
+				formattedWantedGames.push(foundUserWishlist.wantedGames[id])
 			}
 
 			res.status(200).json({
 				status: APIStatuses.SUCCESS,
 				type: DocumentResponses.DATA_FOUND,
-				data: { collection: formattedOwnedGames }
+				data: { wishlist: formattedWantedGames }
 			})
 		} catch (error) {
 			console.error('e', error)
 			return res.status(400).json({ status: APIStatuses.ERROR, type: GeneralAPIResponses.FAILURE, data: { error } })
 		}
 	} else {
-		console.error('Invalid request to my-collection endpoint.')
+		console.error('Invalid request to my-wishlist endpoint.')
 		return res.status(404).json({ status: APIStatuses.ERROR, type: GeneralAPIResponses.INVALID_REQUEST_TYPE })
 	}
 })

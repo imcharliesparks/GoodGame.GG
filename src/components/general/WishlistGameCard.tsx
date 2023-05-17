@@ -35,7 +35,7 @@ const GameCard = ({ game, removeFromCollection, isButtonLoading }: GameCardProps
 				<p>{game.summary ? game.summary : 'No summary available'}</p>
 				<div className="card-actions pt-3">
 					<button onClick={() => removeFromCollection(game.gameId)} className="btn btn-primary w-[133px]">
-						{isButtonLoading ? <LoadingSpinner /> : '-Collection'}
+						{isButtonLoading ? <LoadingSpinner /> : '-Wishlist'}
 					</button>
 				</div>
 			</div>
