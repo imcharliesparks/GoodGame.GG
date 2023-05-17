@@ -17,6 +17,8 @@ type GameCardProps = {
 // TODO: Differentiate the buttons if the user already has an item in collection/wishlist
 const SearchGameCard = ({ game, addToCollection, addToWishlist, isLoading }: GameCardProps) => {
 	const coverArt = game.coverArt && game.coverArt.imageUrl ? game.coverArt : null
+	const [showFullSummary, setShowFullSummary] = React.useState<boolean>(game.summary.length < 200)
+
 	return (
 		<div className="card bg-base-100 shadow-xl text-black mt-4 mx-auto w-fit max-w-[400px]">
 			<figure className="pt-8">
@@ -34,7 +36,14 @@ const SearchGameCard = ({ game, addToCollection, addToWishlist, isLoading }: Gam
 			</figure>
 			<div className="card-body items-center text-center pt-3">
 				<h2 className="card-title">{game.name}</h2>
-				<p>{game.summary ? truncateDescription(game.summary, 120) : 'No summary available'}</p>
+				<p>
+					{game.summary ? (showFullSummary ? game.summary : truncateDescription(game.summary, 200)) : 'No summary available'}
+				</p>
+				{!showFullSummary && (
+					<p onClick={() => setShowFullSummary(true)} className="text-left w-[96%] link text-sm text-slate-400">
+						More...
+					</p>
+				)}
 				<div className="card-actions pt-3">
 					<div className="dropdown dropdown-top">
 						<label tabIndex={0} className="btn m-1 btn-primary  w-[137px]">
