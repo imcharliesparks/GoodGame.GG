@@ -15,11 +15,12 @@
 	background-color: #e2e8f0;
 }
 
-body {
-	height: -moz-available;
+html {
 	height: -webkit-fill-available;
-	height: stretch;
-	/* TODO: Figure out what to do on mobile */
+}
+
+body {
+	min-height: -webkit-fill-available;
 	min-height: 100vh;
 	background-color: #e2e8f0;
 	overflow-y: scroll;
