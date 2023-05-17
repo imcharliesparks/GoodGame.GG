@@ -38,24 +38,29 @@ const handler = withAuth(async (req, res) => {
 							APIMethods.POST,
 							`fields url, height, width; where game = ${game.id};`
 						)
+						// TODO: Reinstate these when we need them to speed shit up!
 						// TODO: Scrape genres in the future
-						const genresAPIResponse = await igDBFetch(
-							'/genres',
-							APIMethods.POST,
-							`fields name; where id = ${game.genres[0]};`
-						)
-						const [foundGenre] = genresAPIResponse
+						// const genresAPIResponse = await igDBFetch(
+						// 	'/genres',
+						// 	APIMethods.POST,
+						// 	`fields name; where id = ${game.genres[0]};`
+						// )
+						// const [foundGenre] = genresAPIResponse
+						const foundGenre = {
+							name: 'FIGHTING',
+							id: 1
+						}
 
 						// TODO: Scrape platforms as well
 						const platforms: GamePlatform[] = []
-						for (let j = 0; j < game.platforms.length; j++) {
-							const platformsAPIResponse = await igDBFetch(
-								'/platforms',
-								APIMethods.POST,
-								`fields name; where id = ${game.platforms[j]};`
-							)
-							platforms.push(platformsAPIResponse[0])
-						}
+						// for (let j = 0; j < game.platforms.length; j++) {
+						// 	const platformsAPIResponse = await igDBFetch(
+						// 		'/platforms',
+						// 		APIMethods.POST,
+						// 		`fields name; where id = ${game.platforms[j]};`
+						// 	)
+						// 	platforms.push(platformsAPIResponse[0])
+						// }
 
 						let gameCoverArt
 						if (coverArtAPIResponse.length) {
