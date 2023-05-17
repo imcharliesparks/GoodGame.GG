@@ -13,3 +13,12 @@ export const FIREBASE_STORAGE_BUCKET: string = process.env.FIREBASE_STORAGE_BUCK
 export const FIREBASE_MESSAGING_SENDER_ID: string = process.env.FIREBASE_MESSAGING_SENDER_ID!
 export const FIREBASE_APP_ID: string = process.env.FIREBASE_APP_ID!
 export const FIREBASE_MEASUREMENT_ID: string = process.env.FIREBASE_MEASUREMENT_ID!
+
+export const screenSizeBreakpoints = {
+	xs: '375px',
+	sm: '640px',
+	md: '768px',
+	lg: '1024px',
+	xl: '1280px',
+	'2xl': '1536px'
+}

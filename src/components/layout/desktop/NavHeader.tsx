@@ -14,7 +14,7 @@ const NavHeader = () => {
 	}
 
 	return (
-		<div className="navbar bg-base-100">
+		<header className="navbar bg-base-100">
 			<div className="navbar-start">
 				<div className="dropdown transition-all ease-in-out">
 					<label tabIndex={0} className="btn btn-ghost btn-circle transition-all ease-in-out">
@@ -58,7 +58,7 @@ const NavHeader = () => {
 					<SignInButton />
 				</SignedOut>
 			</div>
-		</div>
+		</header>
 	)
 }
 

@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+let vh = window.innerHeight * .01
+
 /* TODO: Implement darkmode here
 @media (prefers-color-scheme: dark) {
   :root {
@@ -20,9 +22,21 @@ html {
 }
 
 body {
-	min-height: -webkit-fill-available;
-	min-height: 100vh;
+	/* min-height: -webkit-fill-available;
+	min-height: 100vh; */
+	min-height: calc(var(--vh, 1vh) * 100);
 	background-color: #e2e8f0;
 	overflow-y: scroll;
 	position: relative;
+}
+
+/* Styles for Tablet & Larger  */
+@media (min-width: 768px) {
+	header {
+		height: calc(var(--vh, 1vh) * 4);
+	}
+
+	footer {
+		height: calc(var(--vh, 1vh) * 5.5);
+	}
 }

@@ -15,7 +15,7 @@ type GameCardProps = {
 const GameCard = ({ game, setError }: GameCardProps) => {
 	const router = useRouter()
 	const [isLoading, setIsLoading] = React.useState<boolean>(false)
-	const [showFullSummary, setShowFullSummary] = React.useState<boolean>(game.summary.length < 150)
+	const [showFullSummary, setShowFullSummary] = React.useState<boolean>(game.summary?.length < 150)
 	const coverArt = game.coverArt && game.coverArt.imageUrl ? game.coverArt : null
 
 	const removeFromCollection = async (gameId: number) => {
@@ -65,7 +65,7 @@ const GameCard = ({ game, setError }: GameCardProps) => {
 				<p>
 					{game.summary ? (showFullSummary ? game.summary : truncateDescription(game.summary, 150)) : 'No summary available'}
 				</p>
-				{game.summary.length > 150 && (
+				{game.summary?.length > 150 && (
 					<p onClick={() => setShowFullSummary((prev) => !prev)} className="text-left w-[96%] link text-sm text-slate-400">
 						{!showFullSummary ? 'More...' : 'Less...'}
 					</p>

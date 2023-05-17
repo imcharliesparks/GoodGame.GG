@@ -64,7 +64,7 @@ const GameCard = ({ game, setError }: GameCardProps) => {
 				<p>
 					{game.summary ? (showFullSummary ? game.summary : truncateDescription(game.summary, 150)) : 'No summary available'}
 				</p>
-				{game.summary.length > 150 && (
+				{game.summary?.length > 150 && (
 					<p onClick={() => setShowFullSummary((prev) => !prev)} className="text-left w-[96%] link text-sm text-slate-400">
 						{!showFullSummary ? 'More...' : 'Less...'}
 					</p>
