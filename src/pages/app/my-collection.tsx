@@ -1,10 +1,9 @@
 import CollectionGameCard from '@/components/general/CollectionGameCard'
 import { firebaseDB } from '@/lib/firebase'
-import { APIMethods, APIStatuses, CollectionNames, GGGame } from '@/shared/types'
+import { CollectionNames, GGGame } from '@/shared/types'
 import { getAuth } from '@clerk/nextjs/server'
 import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore'
 import { GetServerSidePropsContext } from 'next'
-import { useRouter } from 'next/router'
 import React from 'react'
 
 type Props = {
@@ -14,40 +13,7 @@ type Props = {
 
 // TODO: Intercept fetching with loading screen
 const MyCollectionPage = ({ gamesCollection, dataFetchingError }: Props) => {
-	const router = useRouter()
-	const [isLoading, setIsLoading] = React.useState<boolean>(false)
 	const [error, setError] = React.useState<string>(dataFetchingError.length ? dataFetchingError : '')
-
-	const refreshData = () => {
-		router.replace(router.asPath)
-	}
-
-	const removeFromCollection = async (gameId: number) => {
-		setIsLoading(true)
-		try {
-			const request = await fetch(`/api/collection/${gameId}/remove`, {
-				method: APIMethods.DELETE,
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			})
-			const response = await request.json()
-			if (response.status === APIStatuses.ERROR) {
-				throw new Error(response.data.error)
-			} else {
-				// CS NOTE: This is the pattern for refreshing GSSP data 😬
-				refreshData()
-			}
-		} catch (error) {
-			console.error(`Could not delete game with gameId ${gameId}`, error)
-			setError(`We couldn't remove that game! Please try again.`)
-			setTimeout(() => {
-				setError('')
-			}, 6000)
-		} finally {
-			setIsLoading(false)
-		}
-	}
 
 	return (
 		<div className="max-w-screen flex flex-col items-center py-6">
@@ -55,14 +21,7 @@ const MyCollectionPage = ({ gamesCollection, dataFetchingError }: Props) => {
 				<h1 className="font-bold text-3xl mb-2">My Collection</h1>
 				<div className="container w-full flex flex-col">
 					{gamesCollection?.length ? (
-						gamesCollection?.map((game) => (
-							<CollectionGameCard
-								key={game.gameId}
-								game={game}
-								removeFromCollection={removeFromCollection}
-								isButtonLoading={isLoading}
-							/>
-						))
+						gamesCollection?.map((game) => <CollectionGameCard key={game.gameId} game={game} setError={setError} />)
 					) : (
 						<h1>You haven't added any games yet!</h1>
 					)}

@@ -3,7 +3,7 @@ import { APIMethods, APIStatuses, GGGame, GamePlayStatus } from '@/shared/types'
 import SearchGameCard from '@/components/general/SearchGameCard'
 import LoadingSpinner from '@/components/general/LoadingSpinner'
 
-// TODO: Slim down requests by refactoring so we only send the three properties we need of game in these api patch requests
+// TODO: Disallow adding of games once the user already has them
 const SearchGamesPage = () => {
 	const inputRef = React.useRef<HTMLInputElement | null>(null)
 	const [searchError, setSearchError] = React.useState<string | null>(null)
