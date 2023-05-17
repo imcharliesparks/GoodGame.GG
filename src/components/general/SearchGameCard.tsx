@@ -17,7 +17,7 @@ type GameCardProps = {
 // TODO: Differentiate the buttons if the user already has an item in collection/wishlist
 const SearchGameCard = ({ game, addToCollection, addToWishlist, isLoading }: GameCardProps) => {
 	const coverArt = game.coverArt && game.coverArt.imageUrl ? game.coverArt : null
-	const [showFullSummary, setShowFullSummary] = React.useState<boolean>(game.summary.length < 200)
+	const [showFullSummary, setShowFullSummary] = React.useState<boolean>(game.summary.length < 150)
 
 	return (
 		<div className="card bg-base-100 shadow-xl text-black mt-4 mx-auto w-fit max-w-[400px]">
@@ -37,7 +37,7 @@ const SearchGameCard = ({ game, addToCollection, addToWishlist, isLoading }: Gam
 			<div className="card-body items-center text-center pt-3">
 				<h2 className="card-title">{game.name}</h2>
 				<p>
-					{game.summary ? (showFullSummary ? game.summary : truncateDescription(game.summary, 200)) : 'No summary available'}
+					{game.summary ? (showFullSummary ? game.summary : truncateDescription(game.summary, 150)) : 'No summary available'}
 				</p>
 				{!showFullSummary && (
 					<p onClick={() => setShowFullSummary(true)} className="text-left w-[96%] link text-sm text-slate-400">

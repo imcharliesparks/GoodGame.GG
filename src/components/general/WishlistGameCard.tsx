@@ -11,6 +11,7 @@ type GameCardProps = {
 }
 
 // TODO: Update these with filler images & skelleton loading
+// TODO: Rethink the text center hhere
 const GameCard = ({ game, removeFromCollection, isButtonLoading }: GameCardProps) => {
 	const coverArt = game.coverArt && game.coverArt.imageUrl ? game.coverArt : null
 	const [showFullSummary, setShowFullSummary] = React.useState<boolean>(game.summary.length < 150)
