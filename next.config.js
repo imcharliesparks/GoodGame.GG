@@ -7,7 +7,6 @@ const withPWA = require('next-pwa')({
 
 const defaultExports = {
 	reactStrictMode: true,
-	swcMinify: true,
 	eslint: {
 		ignoreDuringBuilds: true
 	},
