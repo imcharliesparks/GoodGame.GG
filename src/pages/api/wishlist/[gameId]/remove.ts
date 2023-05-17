@@ -15,7 +15,7 @@ import { collection, getDocs, getFirestore, query, where, updateDoc, doc } from 
 const handler = withAuth(async (req, res) => {
 	const { auth, method } = req
 	const { userId } = auth
-	const gameId = req.query.gameId as string
+	const gameId = Number(req.query.gameId as string)
 
 	if (!userId) {
 		console.error('User not authorized.')
