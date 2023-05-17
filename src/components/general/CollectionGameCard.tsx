@@ -13,7 +13,7 @@ type GameCardProps = {
 // TODO: Update these with filler images & skelleton loading
 const GameCard = ({ game, setError }: GameCardProps) => {
 	const router = useRouter()
-	const [showFullSummary, setShowFullSummary] = React.useState<boolean>(game.summary.length < 150)
+	const [showFullSummary, setShowFullSummary] = React.useState<boolean>(game.summary?.length < 150)
 	const [isLoading, setIsLoading] = React.useState<boolean>(false)
 	const coverArt = game.coverArt && game.coverArt.imageUrl ? game.coverArt : null
 

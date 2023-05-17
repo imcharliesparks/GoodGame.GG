@@ -15,9 +15,10 @@ type GameCardProps = {
 // TODO: As part of the intake refactor, prompt users if they already have the game in either collection or wishlist
 // TODO: Differentiate the buttons if the user already has an item in collection/wishlist
 // TODO: Rethink the dropup pattern because DaisyUI uses active and blur for some reason
+// TODO: Fix the no summary cards not taking up the full width
 const SearchGameCard = ({ game, handleAddSuccessTest, handleShowError }: GameCardProps) => {
 	const coverArt = game.coverArt && game.coverArt.imageUrl ? game.coverArt : null
-	const [showFullSummary, setShowFullSummary] = React.useState<boolean>(game.summary.length < 150)
+	const [showFullSummary, setShowFullSummary] = React.useState<boolean>(game.summary?.length < 150)
 	const [addToCollectionLoading, setAddToCollectionLoading] = React.useState<boolean>(false)
 	const [addToWishlistLoading, setAddToWishlistLoading] = React.useState<boolean>(false)
 	const dropdownRef = React.useRef(null)
