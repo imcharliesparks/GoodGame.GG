@@ -52,55 +52,6 @@ const SearchGamesPage = () => {
 		}
 	}
 
-	// TODO: Need to find a way to update the button so it shows as in collection now
-	const handleAddToCollection = async (game: GGGame) => {
-		setIsLoading(true)
-		try {
-			const request = await fetch(`/api/collection/add`, {
-				method: APIMethods.PATCH,
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(game)
-			})
-			const response = await request.json()
-			if (response.status === APIStatuses.ERROR) {
-				throw new Error(response.data.error)
-			} else {
-				handleAddSuccessTest('Success! Game added to collection.')
-			}
-		} catch (error) {
-			console.error(`Unable to add game to collection.`, error)
-			handleShowError(`Couldn't add that game to your collection! Please try again in a bit.`)
-		} finally {
-			setIsLoading(false)
-		}
-	}
-
-	const handleAddToWishlist = async (game: GGGame) => {
-		setIsLoading(true)
-		try {
-			const request = await fetch(`/api/wishlist/add`, {
-				method: APIMethods.PATCH,
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(game)
-			})
-			const response = await request.json()
-			if (response.status === APIStatuses.ERROR) {
-				throw new Error(response.data.error)
-			} else {
-				handleAddSuccessTest('Success! Game added to wishlist.')
-			}
-		} catch (error) {
-			console.error(`Unable to add game to wishlist.`, error)
-			handleShowError(`Couldn't add that game to your wishlist! Please try again in a bit.`)
-		} finally {
-			setIsLoading(false)
-		}
-	}
-
 	return (
 		<div className="max-w-screen flex flex-col items-center py-6">
 			<div className="container">
@@ -126,9 +77,8 @@ const SearchGamesPage = () => {
 						<SearchGameCard
 							key={game.gameId}
 							game={game}
-							addToCollection={(playStatus: GamePlayStatus) => handleAddToCollection({ ...game, playStatus })}
-							addToWishlist={(playStatus: GamePlayStatus) => handleAddToWishlist({ ...game, playStatus })}
-							isLoading={isLoading}
+							handleAddSuccessTest={handleAddSuccessTest}
+							handleShowError={handleShowError}
 						/>
 					))}
 				</div>
