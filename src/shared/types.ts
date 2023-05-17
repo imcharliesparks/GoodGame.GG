@@ -99,6 +99,11 @@ export type GGUser = {
 	wishlistRef: string
 }
 
+export type UserByEmail = {
+	id: string
+	email: string
+}
+
 export type GGGame = {
 	gameId: number
 	coverArt?: {

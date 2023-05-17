@@ -94,6 +94,7 @@ const handler = withAuth(async (req, res) => {
 					}
 				}
 
+				// TODO Refactor all usages of data responses to be nested objects
 				res.status(200).json({
 					status: APIStatuses.SUCCESS,
 					type: DocumentResponses.DATA_FOUND,

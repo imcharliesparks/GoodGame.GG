@@ -1,6 +1,6 @@
-import { Timestamp } from 'firebase/firestore'
+import Fuse from 'fuse.js'
 import { IGDB_ACCESS_TOKEN, IGDB_BASE_URL } from './constants'
-import { APIMethods } from './types'
+import { APIMethods, UserByEmail } from './types'
 
 export const igDBFetch = async (endpoint: string, method: APIMethods, queryFields?: string) => {
 	const fetchConfig: RequestInit = {
@@ -32,7 +32,26 @@ export const truncateDescription = (description: string, maxLength: number) => {
 	return description.slice(0, description.lastIndexOf(' ', maxLength)) + '...'
 }
 
-// For use on the client when displaying
+/*
+ * For use displaying human-readable dates on the client (non-localed)
+ */
 export const getReleaseDateFromUTC = (unixDate: number) => new Date(unixDate * 1000).toUTCString()
-// For storing dates in UTC/UNIX on the server
+
+/*
+ * For storing dates in UTC/UNIX on the server
+ */
 export const getSafeCurrentDate = () => Math.floor(new Date().getTime() / 1000)
+
+/*
+ * Finds users by a fuzzy search on their email and returns a string of their IDs
+ */
+export const handleEmailFuzzySearch = (searchTerm: string, userList: UserByEmail[]): string[] => {
+	const options = {
+		includeScore: true,
+		keys: ['email']
+	}
+
+	const fuse = new Fuse(userList, options)
+	const result = fuse.search(searchTerm)
+	return result.map((resultItem) => resultItem.item.id)
+}

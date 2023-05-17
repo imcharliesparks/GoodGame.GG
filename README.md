@@ -11,3 +11,4 @@
 ##### Feature Ideas
 
 - A lot to unpack here: https://www.collectorz.com/game/video-game-database
+- Potentially update layout w/ grid: https://www.digitalocean.com/community/tutorials/css-css-grid-holy-grail-layout

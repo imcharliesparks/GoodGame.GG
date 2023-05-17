@@ -12,3 +12,6 @@
 - [x] Update slug pattern on data structures to be game id instead
 - [x] Fix ordering of games in collection as it's currently variable
 - [ ] Add filtering/sorting
+- [ ] Make this app invite only to start and use the Clerk Invitations API
+- [ ] Add the ability to add your gamertag in Clerk and invite/lookup your friends by it. This should be part of the
+      intake phase.
