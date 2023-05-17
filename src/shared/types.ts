@@ -146,6 +146,19 @@ export type GamePlatform = {
 	name: string
 }
 
+export type UserFriendsList = {
+	ownerId: string
+	friends: Friend[]
+}
+
+export type Friend = {
+	id: string
+	firstName: string
+	lastName?: string
+	dateAdded: number
+	mutual: boolean
+}
+
 // TODO: Type these properly and remove nullish-ness when we have shape of data
 export type ClerkPublicUserData = {
 	[key: string]: any

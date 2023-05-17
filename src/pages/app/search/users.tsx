@@ -2,13 +2,15 @@ import React from 'react'
 import { APIMethods, APIStatuses, GGGame, GamePlayStatus } from '@/shared/types'
 import SearchGameCard from '@/components/general/SearchGameCard'
 import LoadingSpinner from '@/components/general/LoadingSpinner'
+import { User } from '@clerk/nextjs/server'
+import SearchUserCard from '@/components/general/SearchUserCard'
 
-// TODO: Disallow adding of games once the user already has them
-const SearchGamesPage = () => {
+// TODO: Disallow adding of friends once the user already has them on their list
+const SearchUsersPage = () => {
 	const inputRef = React.useRef<HTMLInputElement | null>(null)
 	const [searchError, setSearchError] = React.useState<string | null>(null)
 	const [addSuccessText, setAddSuccessText] = React.useState<string | null>(null)
-	const [games, setGames] = React.useState<GGGame[]>()
+	const [users, setUsers] = React.useState<User[]>()
 	const [isLoading, setIsLoading] = React.useState<boolean>(false)
 
 	const handleShowError = (errorText: string) => {
@@ -18,7 +20,7 @@ const SearchGamesPage = () => {
 		}, 5000)
 	}
 
-	const handleAddSuccessTest = (successText: string) => {
+	const handleAddSuccessText = (successText: string) => {
 		setAddSuccessText(successText)
 		setTimeout(() => {
 			setAddSuccessText(null)
@@ -27,12 +29,12 @@ const SearchGamesPage = () => {
 
 	const handleSearch = async () => {
 		if (!inputRef.current?.value) {
-			handleShowError('Enter a search term!')
+			handleShowError('Enter an email address!')
 		} else {
 			setIsLoading(true)
 			try {
-				const request = await fetch(`/api/games/${inputRef.current.value}/search-games`, {
-					method: APIMethods.POST,
+				const request = await fetch(`/api/users/email/${inputRef.current.value}`, {
+					method: APIMethods.GET,
 					headers: {
 						'Content-Type': 'application/json'
 					}
@@ -41,7 +43,7 @@ const SearchGamesPage = () => {
 				if (response.status === APIStatuses.ERROR) {
 					throw new Error(response.data.error)
 				} else {
-					setGames(response.data)
+					setUsers(response.data.users)
 				}
 			} catch (error) {
 				console.error(`Could not find a game with the name ${inputRef.current.value}`, error)
@@ -65,7 +67,7 @@ const SearchGamesPage = () => {
 					<input
 						ref={inputRef}
 						type="text"
-						placeholder="Search for a game..."
+						placeholder="Search for a user by email..."
 						className="input input-primary w-full max-w-xs text-black"
 					/>
 					<button type="submit" className="btn  btn-primary ml-0 mt-3 md:ml-2 md:mt-0">
@@ -73,11 +75,11 @@ const SearchGamesPage = () => {
 					</button>
 				</form>
 				<div className="container w-full flex flex-col">
-					{games?.map((game) => (
-						<SearchGameCard
-							key={game.gameId}
-							game={game}
-							handleAddSuccessTest={handleAddSuccessTest}
+					{users?.map((user) => (
+						<SearchUserCard
+							key={user.id}
+							user={user}
+							handleAddSuccessTest={handleAddSuccessText}
 							handleShowError={handleShowError}
 						/>
 					))}
@@ -105,4 +107,4 @@ const SearchGamesPage = () => {
 	)
 }
 
-export default SearchGamesPage
+export default SearchUsersPage

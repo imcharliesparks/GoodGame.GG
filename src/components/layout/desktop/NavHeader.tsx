@@ -35,6 +35,9 @@ const NavHeader = () => {
 									<Link href="/app/search/games">Search Games</Link>
 								</li>
 								<li className="transition-all ease-in-out" onClick={handleDropdownClick}>
+									<Link href="/app/search/users">Search for Friends</Link>
+								</li>
+								<li className="transition-all ease-in-out" onClick={handleDropdownClick}>
 									<Link href="/app/user/collection">My Collection</Link>
 								</li>
 								<li className="transition-all ease-in-out" onClick={handleDropdownClick}>
