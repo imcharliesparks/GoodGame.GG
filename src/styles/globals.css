@@ -38,6 +38,6 @@ body {
 	}
 
 	footer {
-		height: calc(var(--vh, 1vh) * 5.5);
+		height: calc(var(--vh, 1vh) * 5);
 	}
 }
