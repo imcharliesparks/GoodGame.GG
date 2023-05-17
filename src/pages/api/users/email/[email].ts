@@ -13,7 +13,7 @@ const handler = withAuth(async (req, res) => {
 			const userEmails: UserByEmail[] = allUsers.map((user: User) => ({
 				id: user.id,
 				// TODO: Add support for multiple emails prob?
-				email: user.emailAddresses[0].emailAddress
+				email: user.emailAddresses[0].emailAddress.split('@')[0]
 			}))
 			const matchedEmails = handleEmailFuzzySearch(email, userEmails)
 			const foundUsersByEmail: User[] = allUsers.filter((user: User) => matchedEmails.includes(user.id))

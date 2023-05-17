@@ -2,6 +2,9 @@ import Fuse from 'fuse.js'
 import { IGDB_ACCESS_TOKEN, IGDB_BASE_URL } from './constants'
 import { APIMethods, UserByEmail } from './types'
 
+/*
+ * Data fetching wrapper for the IGDB API
+ */
 export const igDBFetch = async (endpoint: string, method: APIMethods, queryFields?: string) => {
 	const fetchConfig: RequestInit = {
 		method,
@@ -25,6 +28,9 @@ export const igDBFetch = async (endpoint: string, method: APIMethods, queryField
 	return response.json()
 }
 
+/*
+ * For use shortening description on load for game summaries on the client.
+ */
 export const truncateDescription = (description: string, maxLength: number) => {
 	if (description.length <= maxLength) {
 		return description
@@ -46,6 +52,7 @@ export const getSafeCurrentDate = () => Math.floor(new Date().getTime() / 1000)
  * Finds users by a fuzzy search on their email and returns a string of their IDs
  */
 export const handleEmailFuzzySearch = (searchTerm: string, userList: UserByEmail[]): string[] => {
+	// TODO: Fine tweak the `threshold` property here to fine tune the algorithm
 	const options = {
 		includeScore: true,
 		keys: ['email']

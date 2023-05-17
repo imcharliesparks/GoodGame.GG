@@ -42,12 +42,16 @@ const SearchUsersPage = () => {
 				const response = await request.json()
 				if (response.status === APIStatuses.ERROR) {
 					throw new Error(response.data.error)
+				} else if (!response.data?.users?.length) {
+					handleShowError("We couldn't find a user with that email!")
+					setUsers([])
 				} else {
 					setUsers(response.data.users)
 				}
 			} catch (error) {
+				setUsers([])
 				console.error(`Could not find a game with the name ${inputRef.current.value}`, error)
-				handleShowError(`We couldn't find a game by that name!`)
+				handleShowError(`There was an error finding that user! Please try again.`)
 			} finally {
 				setIsLoading(false)
 			}

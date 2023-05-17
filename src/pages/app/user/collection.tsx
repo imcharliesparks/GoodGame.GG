@@ -29,7 +29,7 @@ const MyCollectionPage = ({ gamesCollection, dataFetchingError }: Props) => {
 				</div>
 			</div>
 			{error && (
-				<div className="toast toast-center min-w-max">
+				<div className="toast toast-center min-w-max z-50">
 					<div className="alert alert-error">
 						<div>
 							<span>{error}</span>
