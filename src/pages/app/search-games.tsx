@@ -1,6 +1,6 @@
 import React from 'react'
-import { APIMethods, APIStatuses, GGGame } from '@/shared/types'
-import GameCard from '@/components/general/GameCard'
+import { APIMethods, APIStatuses, GGGame, GamePlayStatus } from '@/shared/types'
+import SearchGameCard from '@/components/general/SearchGameCard'
 import LoadingSpinner from '@/components/general/LoadingSpinner'
 
 // TODO: Slim down requests by refactoring so we only send the three properties we need of game in these api patch requests
@@ -123,11 +123,11 @@ const SearchGamesPage = () => {
 				</form>
 				<div className="container w-full flex flex-col">
 					{games?.map((game) => (
-						<GameCard
+						<SearchGameCard
 							key={game.gameId}
 							game={game}
-							addToCollection={() => handleAddToCollection(game)}
-							addToWishlist={() => handleAddToWishlist(game)}
+							addToCollection={(playStatus: GamePlayStatus) => handleAddToCollection({ ...game, playStatus })}
+							addToWishlist={(playStatus: GamePlayStatus) => handleAddToWishlist({ ...game, playStatus })}
 							isLoading={isLoading}
 						/>
 					))}

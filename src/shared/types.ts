@@ -164,7 +164,7 @@ export enum UserStatus {
 export enum GamePlayStatus {
 	PLAYED = 'Played',
 	COMPLETED = 'Completed',
-	NOT_STARTED = 'Not Started'
+	NOT_PLAYED = 'Not Played'
 }
 
 export enum GameCollectionStatus {

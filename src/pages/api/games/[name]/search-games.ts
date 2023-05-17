@@ -70,8 +70,7 @@ const handler = withAuth(async (req, res) => {
 						const newGame: GGGame = {
 							gameId: game.id,
 							coverArt: gameCoverArt,
-							// TODO: Make this dynamic
-							playStatus: GamePlayStatus.NOT_STARTED,
+							playStatus: GamePlayStatus.NOT_PLAYED,
 							releaseDate: game.first_release_date,
 							genre: {
 								id: foundGenre.id,

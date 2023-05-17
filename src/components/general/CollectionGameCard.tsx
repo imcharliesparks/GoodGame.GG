@@ -34,8 +34,8 @@ const GameCard = ({ game, removeFromCollection, isButtonLoading }: GameCardProps
 				{/* TODO: reintroduce truncating here but with the ability to view all */}
 				<p>{game.summary ? game.summary : 'No summary available'}</p>
 				<div className="card-actions pt-3">
-					<button onClick={() => removeFromCollection(game.gameId)} className="btn btn-primary w-[133px]">
-						{isButtonLoading ? <LoadingSpinner /> : '-Collection'}
+					<button onClick={() => removeFromCollection(game.gameId)} className="btn btn-primary w-[137px]">
+						{isButtonLoading ? <LoadingSpinner /> : '- Collection'}
 					</button>
 				</div>
 			</div>

@@ -16,9 +16,12 @@
 }
 
 body {
-	min-height: -moz-available;
-	min-height: -webkit-fill-available;
-	min-height: stretch;
+	height: -moz-available;
+	height: -webkit-fill-available;
+	height: stretch;
+	/* TODO: Figure out what to do on mobile */
+	min-height: 100vh;
 	background-color: #e2e8f0;
 	overflow-y: scroll;
+	position: relative;
 }
