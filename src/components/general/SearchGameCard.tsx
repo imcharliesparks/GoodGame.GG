@@ -101,9 +101,11 @@ const SearchGameCard = ({ game, handleAddSuccessTest, handleShowError }: GameCar
 				<p>
 					{game.summary ? (showFullSummary ? game.summary : truncateDescription(game.summary, 150)) : 'No summary available'}
 				</p>
-				<p onClick={() => setShowFullSummary((prev) => !prev)} className="text-left w-[96%] link text-sm text-slate-400">
-					{!showFullSummary ? 'More...' : 'Less...'}
-				</p>
+				{game.summary.length > 150 && (
+					<p onClick={() => setShowFullSummary((prev) => !prev)} className="text-left w-[96%] link text-sm text-slate-400">
+						{!showFullSummary ? 'More...' : 'Less...'}
+					</p>
+				)}
 				<div className="card-actions pt-3">
 					<div className="dropdown dropdown-top">
 						<label tabIndex={0} className="btn m-1 btn-primary  w-[137px]">

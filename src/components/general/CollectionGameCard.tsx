@@ -64,9 +64,11 @@ const GameCard = ({ game, setError }: GameCardProps) => {
 				<p>
 					{game.summary ? (showFullSummary ? game.summary : truncateDescription(game.summary, 150)) : 'No summary available'}
 				</p>
-				<p onClick={() => setShowFullSummary((prev) => !prev)} className="text-left w-[96%] link text-sm text-slate-400">
-					{!showFullSummary ? 'More...' : 'Less...'}
-				</p>
+				{game.summary.length > 150 && (
+					<p onClick={() => setShowFullSummary((prev) => !prev)} className="text-left w-[96%] link text-sm text-slate-400">
+						{!showFullSummary ? 'More...' : 'Less...'}
+					</p>
+				)}
 				<div className="card-actions pt-3">
 					<button onClick={() => removeFromCollection(game.gameId)} className="btn btn-primary w-[137px]">
 						{isLoading ? <LoadingSpinner /> : '- Collection'}
