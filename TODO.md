@@ -1,5 +1,5 @@
 - [ ] Change firebase to production data mode at some point
-- [ ] Set up analytics and logging (if we do console errors are those caught by vercel?
+- [ ] Set up analytics and logging (if we do console errors are those caught by vercel?)
 - [ ] Wire up skelleton UI for game cards
 - [ ] Wire up loading spinner for page transitions (also do this in template)
 - [ ] Figure out how to set dynamic ENV variables in Vercel based on a cron job (need for access token)
@@ -15,3 +15,5 @@
 - [ ] Make this app invite only to start and use the Clerk Invitations API
 - [ ] Add the ability to add your gamertag in Clerk and invite/lookup your friends by it. This should be part of the
       intake phase.
+- [ ] Fix "This document requires 'TrustedScript' assignment." error on google auth page from clerk (at the page where
+      it shows all your google accounts)

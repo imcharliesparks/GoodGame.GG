@@ -1,12 +1,33 @@
+import * as React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Inter } from 'next/font/google'
-import { useClerk } from '@clerk/nextjs'
+import { useAuth, useClerk } from '@clerk/nextjs'
+import LoadingSpinner from '@/components/general/LoadingSpinner'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+	const { isSignedIn } = useAuth()
 	const { signOut } = useClerk()
+	const [showLoadingSpinner, setShowLoadingSpinner] = React.useState<boolean>(false)
+
+	const handleSignOut = async () => {
+		if (isSignedIn) {
+			setShowLoadingSpinner(true)
+			try {
+				await signOut()
+				alert("You've been signed out!")
+			} catch (error) {
+				console.error('Error signing user out on index page.')
+				alert('There was an error signing you out')
+			} finally {
+				setShowLoadingSpinner(false)
+			}
+		} else {
+			alert("You're not signed in!")
+		}
+	}
 
 	return (
 		<div
@@ -64,26 +85,33 @@ export default function Home() {
 					className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
 				>
 					<h2 className={`mb-3 text-2xl font-semibold`}>
-						Get Auth'd{' '}
+						Sign In/Up{' '}
 						<span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
 							-&gt;
 						</span>
 					</h2>
-					<p className={`m-0 max-w-[30ch] text-sm opacity-50`}>Sign In/Up with Clerk</p>
+					<p className={`m-0 max-w-[30ch] text-sm opacity-50`}>Get Auth'd with Clerk</p>
 				</Link>
-				<Link
-					href="/"
-					onClick={() => signOut()}
+				<div
+					onClick={handleSignOut}
 					className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
 				>
-					<h2 className={`mb-3 text-2xl font-semibold`}>
-						Sign out{' '}
-						<span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-							-&gt;
-						</span>
-					</h2>
-					<p className={`m-0 max-w-[30ch] text-sm opacity-50`}>Sign Out with Clerk</p>
-				</Link>
+					{showLoadingSpinner ? (
+						<div className="flex justify-center items-center mt-3">
+							<LoadingSpinner />
+						</div>
+					) : (
+						<>
+							<h2 className={`mb-3 text-2xl font-semibold`}>
+								Sign out
+								<span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
+									-&gt;
+								</span>
+							</h2>
+							<p className={`m-0 max-w-[30ch] text-sm opacity-50`}>Sign Out with Clerk</p>
+						</>
+					)}
+				</div>
 			</div>
 		</div>
 	)

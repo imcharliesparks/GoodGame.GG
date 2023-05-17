@@ -32,13 +32,13 @@ const NavHeader = () => {
 						{router.pathname.includes('app') && (
 							<>
 								<li className="transition-all ease-in-out" onClick={handleDropdownClick}>
-									<Link href="/app/search-games">Search Games</Link>
+									<Link href="/app/search/games">Search Games</Link>
 								</li>
 								<li className="transition-all ease-in-out" onClick={handleDropdownClick}>
-									<Link href="/app/my-collection">My Collection</Link>
+									<Link href="/app/user/collection">My Collection</Link>
 								</li>
 								<li className="transition-all ease-in-out" onClick={handleDropdownClick}>
-									<Link href="/app/my-wishlist">My Wishlist</Link>
+									<Link href="/app/user/wishlist">My Wishlist</Link>
 								</li>
 							</>
 						)}

@@ -12,6 +12,7 @@ type Props = {
 }
 
 // TODO: Intercept fetching with loading screen
+// TODO: Copy game collection on load into local state and make removal work instantly without a refetch
 const MyCollectionPage = ({ gamesCollection, dataFetchingError }: Props) => {
 	const [error, setError] = React.useState<string>(dataFetchingError.length ? dataFetchingError : '')
 
