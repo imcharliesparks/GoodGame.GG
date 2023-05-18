@@ -43,6 +43,9 @@ const NavHeader = () => {
 								<li className="transition-all ease-in-out" onClick={handleDropdownClick}>
 									<Link href="/app/user/wishlist">My Wishlist</Link>
 								</li>
+								<li className="transition-all ease-in-out" onClick={handleDropdownClick}>
+									<Link href="/app/user/friendslist">View Friends</Link>
+								</li>
 							</>
 						)}
 					</ul>

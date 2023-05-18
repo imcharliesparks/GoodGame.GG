@@ -125,6 +125,9 @@ const SearchGameCard = ({ game, handleAddSuccessTest, handleShowError }: GameCar
 									Already Played
 								</span>
 							</li>
+							<li className="transition-all ease-in-out">
+								<span onClick={() => handleAddToCollection({ ...game, playStatus: GamePlayStatus.COMPLETED })}>Completed</span>
+							</li>
 						</ul>
 					</div>
 					<div ref={dropdownRef} className="dropdown dropdown-top dropdown-end transition-all ease-in-out">
@@ -142,6 +145,9 @@ const SearchGameCard = ({ game, handleAddSuccessTest, handleShowError }: GameCar
 							</li>
 							<li className="transition-all ease-in-out">
 								<span onClick={() => handleAddToWishlist({ ...game, playStatus: GamePlayStatus.PLAYED })}>Already Played</span>
+							</li>
+							<li className="transition-all ease-in-out">
+								<span onClick={() => handleAddToWishlist({ ...game, playStatus: GamePlayStatus.COMPLETED })}>Completed</span>
 							</li>
 						</ul>
 					</div>
