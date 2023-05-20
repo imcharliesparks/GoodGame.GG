@@ -1,4 +1,4 @@
-import { IGDBGame, GGGame, APIMethods, APIStatuses } from '@/shared/types'
+import { GGGame, APIMethods, APIStatuses } from '@/shared/types'
 import { calculateStarRating, truncateDescription } from '@/shared/utils'
 import Image from 'next/image'
 import React from 'react'
