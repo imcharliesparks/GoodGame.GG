@@ -1,7 +1,10 @@
-export default async function handler(req, res) {
+import type { WebhookEvent } from '@clerk/nextjs/server'
+import { NextApiRequest, NextApiResponse } from 'next'
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	if (req.method === 'POST') {
 		// The payload of the webhook is stored in req.body
-		const payload = req.body
+		const payload = req.body.evt as WebhookEvent
 
 		// You can now do something with the payload
 		console.log(payload)

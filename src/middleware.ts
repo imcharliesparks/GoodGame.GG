@@ -2,7 +2,7 @@ import { authMiddleware } from '@clerk/nextjs'
 import { NextResponse } from 'next/server'
 
 export default authMiddleware({
-	publicRoutes: ['/', '/auth/sign-in', '/auth/sign-up'],
+	publicRoutes: ['/', '/auth/sign-in', '/auth/sign-up', '/api/webhook'],
 	afterAuth: (auth, req) => {
 		if (process.env.NODE_ENV === 'development') {
 			return NextResponse.next()
