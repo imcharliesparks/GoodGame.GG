@@ -24,7 +24,6 @@ const handler = withAuth(async (req, res) => {
 				`
 					search "${name}"; 
 					fields id,name,cover.url,cover.height,cover.width,first_release_date,genres.name,platforms.name,summary,slug,total_rating,total_rating_count,involved_companies.company.name,age_ratings.category,age_ratings.rating;
-					limit 1;
 				`
 			)
 			if (gamesAPIResponse.length) {
