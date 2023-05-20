@@ -17,7 +17,7 @@ export interface TypedResponse<T> extends NextApiResponse {
 export type IGDBGame = {
 	category: number
 	checksum: string
-	cover: number
+	cover: Record<string, any>
 	created_at: number
 	external_games: number[]
 	first_release_date: number
@@ -106,18 +106,35 @@ export type UserByEmail = {
 
 export type GGGame = {
 	gameId: number
-	coverArt?: {
+	name: string
+	ageRating: {
+		ratingName: string
+		ratingNumber: number
+	}
+	coverArt: {
 		height: number
 		width: number
 		imageUrl: string
+		id: number
 	}
-	playStatus: GamePlayStatus
 	releaseDate: number
-	genre: GameGenre // TODO convert to enum with scraping
-	name: string
+	genres: GameGenre[] // TODO convert to enum with scraping
 	platforms: GamePlatform[] // TODO: Also convert to enum with scraping
 	summary: string
 	slug: string
+	userAndCriticAggregateRating: number
+	numberOfReviews: number
+	companies: {
+		id: number
+		company: {
+			id: number
+			name: string
+		}
+	}
+	// TODO: Fine tune ratings and reviews, but for now this work
+	// aggregatedReviewScore: number
+	// userRating: number
+	playStatus?: GamePlayStatus
 	dateAdded?: number
 }
 
@@ -194,4 +211,14 @@ export enum CollectionNames {
 	COLLECTIONS = 'collections',
 	FRIENDS_LISTS = 'friendslists',
 	WISH_LISTS = 'wishlists'
+}
+
+export const ESRBRatings = {
+	'6': 'RP',
+	'7': 'EC',
+	'8': 'E',
+	'9': 'E10',
+	'10': 'T',
+	'11': 'M',
+	'12': 'AO'
 }

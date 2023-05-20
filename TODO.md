@@ -18,3 +18,4 @@
 - [ ] Fix "This document requires 'TrustedScript' assignment." error on google auth page from clerk (at the page where
       it shows all your google accounts)
 - [ ] BIG TODO: Update the Clerk sign-up process. We need name, gamertag, etc.
+- [ ] BIG TODO: Add pagination to search for speed

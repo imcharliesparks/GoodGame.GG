@@ -4,6 +4,7 @@ import SearchGameCard from '@/components/general/SearchGameCard'
 import LoadingSpinner from '@/components/general/LoadingSpinner'
 
 // TODO: Disallow adding of games once the user already has them
+// TODO: Add pagination to search for speed
 const SearchGamesPage = () => {
 	const inputRef = React.useRef<HTMLInputElement | null>(null)
 	const [searchError, setSearchError] = React.useState<string | null>(null)
@@ -31,7 +32,7 @@ const SearchGamesPage = () => {
 		} else {
 			setIsLoading(true)
 			try {
-				const request = await fetch(`/api/games/${inputRef.current.value}/search-games`, {
+				const request = await fetch(`/api/games/${inputRef.current.value}/search`, {
 					method: APIMethods.POST,
 					headers: {
 						'Content-Type': 'application/json'
@@ -41,7 +42,7 @@ const SearchGamesPage = () => {
 				if (response.status === APIStatuses.ERROR) {
 					throw new Error(response.data.error)
 				} else {
-					setGames(response.data)
+					setGames(response.data.foundGames)
 				}
 			} catch (error) {
 				console.error(`Could not find a game with the name ${inputRef.current.value}`, error)

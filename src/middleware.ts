@@ -1,8 +1,6 @@
 import { authMiddleware } from '@clerk/nextjs'
 import { NextResponse } from 'next/server'
 
-const publicPaths = ['/', '/auth/sign-in', '/auth/sign-up']
-
 export default authMiddleware({
 	publicRoutes: ['/', '/auth/sign-in', '/auth/sign-up'],
 	afterAuth: (auth, req) => {
