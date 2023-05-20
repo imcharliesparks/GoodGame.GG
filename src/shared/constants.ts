@@ -3,6 +3,7 @@ export const IGDB_CLIENT_ID: string = process.env.IGDB_CLIENT_ID!
 export const IGBD_CLIENT_SECRET_KEY: string = process.env.IGBD_CLIENT_SECRET_KEY!
 export const IGDB_ACCESS_TOKEN: string = process.env.IGDB_ACCESS_TOKEN!
 export const IGDB_BASE_URL = 'https://api.igdb.com/v4'
+export const BASE_URL = process.env.BASE_URL!
 export const MONGODB_URI: string = process.env.MONGODB_URI!
 export const NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: string = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY!
 export const CLERK_SECRET_KEY: string = process.env.CLERK_SECRET_KEY!
