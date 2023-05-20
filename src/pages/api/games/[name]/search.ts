@@ -30,7 +30,7 @@ const handler = withAuth(async (req, res) => {
 				const foundGames: GGGame[] = gamesAPIResponse.map((game: any) => {
 					let ageRating
 
-					game.age_ratings.find((rating: any) => {
+					game.age_ratings?.find((rating: any) => {
 						if (rating.category === 1) {
 							const ratingNumber = rating.rating.toString()
 							// @ts-ignore
@@ -41,14 +41,18 @@ const handler = withAuth(async (req, res) => {
 							}
 							return
 						}
-					})!
+					})! ?? null
+
+					const coverArt = {
+						...game.cover,
+						imageUrl: `https:${game.cover.url.replace('t_thumb', 't_cover_big')}`
+					}
+
+					delete coverArt.url
 
 					const formattedGame: GGGame = {
 						gameId: game.id,
-						coverArt: {
-							...game.cover,
-							imageUrl: `https:${game.cover.url.replace('t_thumb', 't_cover_big')}`
-						},
+						coverArt,
 						releaseDate: game.first_release_date,
 						genres: game.genres,
 						companies: game.involved_companies,

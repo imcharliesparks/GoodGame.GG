@@ -19,3 +19,4 @@
       it shows all your google accounts)
 - [ ] BIG TODO: Update the Clerk sign-up process. We need name, gamertag, etc.
 - [ ] BIG TODO: Add pagination to search for speed
+- [ ] Update game to collection and wishlist to include extra datapoints or just pull them live tbh

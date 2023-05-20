@@ -62,3 +62,10 @@ export const handleEmailFuzzySearch = (searchTerm: string, userList: UserByEmail
 	const result = fuse.search(searchTerm)
 	return result.map((resultItem) => resultItem.item.id)
 }
+
+/*
+ * Turns a 1-100 percent into a 1-5 score for display as a star rating
+ */
+export const calculateStarRating = (percentRating: number) => {
+	return Math.round(percentRating / 20)
+}

@@ -1,9 +1,10 @@
 import { IGDBGame, GGGame, APIMethods, APIStatuses } from '@/shared/types'
-import { truncateDescription } from '@/shared/utils'
+import { calculateStarRating, truncateDescription } from '@/shared/utils'
 import Image from 'next/image'
 import React from 'react'
 import LoadingSpinner from './LoadingSpinner'
 import { useRouter } from 'next/router'
+import ReactStars from 'react-stars'
 
 type GameCardProps = {
 	game: GGGame
@@ -49,13 +50,16 @@ const GameCard = ({ game, setError }: GameCardProps) => {
 		<div className="card bg-base-100 shadow-xl text-black mt-4 mx-auto w-fit max-w-[400px]">
 			<figure className="pt-8">
 				{coverArt ? (
-					<Image
-						className="rounded-xl max-w-[200px]"
-						width={coverArt.width}
-						height={coverArt.height}
-						src={coverArt.imageUrl}
-						alt={`Cover art for ${game.name}`}
-					/>
+					<div className="indicator">
+						{game.genres?.length && <span className="indicator-item badge badge-primary">{game.genres[0].name}</span>}
+						<Image
+							className="rounded-xl max-w-[200px]"
+							width={coverArt.width}
+							height={coverArt.height}
+							src={coverArt.imageUrl}
+							alt={`Cover art for ${game.name}`}
+						/>
+					</div>
 				) : (
 					<h1>No image available</h1>
 				)}
@@ -70,6 +74,21 @@ const GameCard = ({ game, setError }: GameCardProps) => {
 						{!showFullSummary ? 'More...' : 'Less...'}
 					</p>
 				)}
+				<div className="flex flex-row justify-start w-full">
+					<span className="text-sm inline-flex items-center text-slate-600 mr-2">Average Rating: </span>
+					{game.userAndCriticAggregateRating ? (
+						<ReactStars
+							count={5}
+							edit={false}
+							value={calculateStarRating(game.userAndCriticAggregateRating)}
+							size={12}
+							color2={'#ffd700'}
+						/>
+					) : (
+						// TOOD: Tweak this so you have one of the review scores if possible
+						<span className="text-sm inline-flex items-center text-black">N/A</span>
+					)}
+				</div>
 				<div className="card-actions pt-3">
 					<button onClick={() => removeFromCollection(game.gameId)} className="btn btn-primary w-[137px]">
 						{isLoading ? <LoadingSpinner /> : '- Wishlist'}

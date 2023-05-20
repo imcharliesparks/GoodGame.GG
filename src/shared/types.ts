@@ -110,7 +110,7 @@ export type GGGame = {
 	ageRating: {
 		ratingName: string
 		ratingNumber: number
-	}
+	} | null
 	coverArt: {
 		height: number
 		width: number
@@ -122,8 +122,8 @@ export type GGGame = {
 	platforms: GamePlatform[] // TODO: Also convert to enum with scraping
 	summary: string
 	slug: string
-	userAndCriticAggregateRating: number
-	numberOfReviews: number
+	userAndCriticAggregateRating?: number
+	numberOfReviews?: number
 	companies: {
 		id: number
 		company: {
@@ -131,9 +131,8 @@ export type GGGame = {
 			name: string
 		}
 	}
-	// TODO: Fine tune ratings and reviews, but for now this work
-	// aggregatedReviewScore: number
-	// userRating: number
+	aggregatedReviewScore?: number
+	userRating?: number
 	playStatus?: GamePlayStatus
 	dateAdded?: number
 }

@@ -40,6 +40,7 @@ const handler = withAuth(async (req, res) => {
 		const updatedGame: GGGame = Object.assign(game, {
 			dateAdded: getSafeCurrentDate()
 		})
+
 		try {
 			const db = getFirestore(firebaseDB)
 			const collectionsCollectionRef = collection(db, CollectionNames.COLLECTIONS)
