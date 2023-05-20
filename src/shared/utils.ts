@@ -69,3 +69,17 @@ export const handleEmailFuzzySearch = (searchTerm: string, userList: UserByEmail
 export const calculateStarRating = (percentRating: number) => {
 	return Math.round(percentRating / 20)
 }
+
+/*
+ * Generate a unique username with a 4 digit hash
+ */
+export const generateUsername = (username: string): string => {
+	const randomNumbers: number[] = []
+
+	for (let i = 0; i < 4; i++) {
+		randomNumbers.push(Math.floor(Math.random() * 9) + 1)
+	}
+
+	const hash = randomNumbers.join('')
+	return `${username}#${hash}`
+}

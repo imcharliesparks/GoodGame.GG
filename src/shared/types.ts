@@ -167,6 +167,11 @@ export type UserFriendsList = {
 	friends: Friend[]
 }
 
+export type GGUsername = {
+	ownerId: string
+	username: string
+}
+
 export type Friend = {
 	id: string
 	firstName: string
@@ -209,7 +214,8 @@ export enum GameCollectionStatus {
 export enum CollectionNames {
 	COLLECTIONS = 'collections',
 	FRIENDS_LISTS = 'friendslists',
-	WISH_LISTS = 'wishlists'
+	WISH_LISTS = 'wishlists',
+	USERNAMES = 'usernames'
 }
 
 export const ESRBRatings = {
