@@ -1,6 +1,5 @@
 import { authMiddleware } from '@clerk/nextjs'
 import { NextResponse } from 'next/server'
-import { BASE_URL } from './shared/constants'
 import { APIMethods } from './shared/types'
 
 export default authMiddleware({
@@ -10,7 +9,7 @@ export default authMiddleware({
 
 		if (userId) {
 			// CS NOTE: Important to not await here so we don't stall redirect execution
-			fetch(`${BASE_URL}/api/users/${userId}/create`, {
+			fetch(`${process.env.BASE_URL}/api/users/${userId}/create`, {
 				method: APIMethods.POST,
 				headers: {
 					'Content-Type': 'application/json'
