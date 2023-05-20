@@ -1,10 +1,11 @@
+import { withAuth } from '@clerk/nextjs/dist/api'
 import type { WebhookEvent } from '@clerk/nextjs/server'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+const handler = withAuth(async (req: NextApiRequest, res: NextApiResponse) => {
 	if (req.method === 'POST') {
 		// The payload of the webhook is stored in req.body
-		const payload = req.body
+		const payload = req.body as WebhookEvent
 
 		// You can now do something with the payload
 		console.log(payload)
@@ -14,4 +15,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	} else {
 		res.status(405).send('Method Not Allowed')
 	}
-}
+})
+
+export default handler
