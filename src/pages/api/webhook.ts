@@ -1,8 +1,8 @@
-import { withAuth } from '@clerk/nextjs/dist/api'
+import { requireAuth, withAuth } from '@clerk/nextjs/dist/api'
 import type { WebhookEvent } from '@clerk/nextjs/server'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-const handler = withAuth(async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = requireAuth(async (req: NextApiRequest, res: NextApiResponse) => {
 	if (req.method === 'POST') {
 		// The payload of the webhook is stored in req.body
 		const payload = req.body as WebhookEvent
