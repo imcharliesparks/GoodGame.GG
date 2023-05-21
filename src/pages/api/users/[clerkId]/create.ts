@@ -50,9 +50,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 						data: { username: newUsername.username }
 					})
 				} else {
-					console.error(
-						`Unable to create username. Either clerk username was undefined, or the username already exists. UserID: ${clerkId}.`
-					)
 					return res.status(200).json({
 						status: APIStatuses.AMBIGUOUS,
 						type: GeneralAPIResponses.FAILURE,
@@ -65,7 +62,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 				throw new Error(`User not found with ID ${clerkId}`)
 			}
 		} catch (error) {
-			console.error(error)
 			return res.status(400).json({
 				status: APIStatuses.ERROR,
 				type: GeneralAPIResponses.FAILURE,
@@ -73,7 +69,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 			})
 		}
 	} else {
-		console.error('Invalid request to create user endpoint.')
 		return res.status(404).json({ status: APIStatuses.ERROR, type: GeneralAPIResponses.INVALID_REQUEST_TYPE })
 	}
 }

@@ -45,7 +45,7 @@ const handler = withAuth(async (req, res) => {
 
 					const coverArt = {
 						...game.cover,
-						imageUrl: `https:${game.cover.url.replace('t_thumb', 't_cover_big')}`
+						imageUrl: game.cover?.url ? `https:${game.cover.url.replace('t_thumb', 't_cover_big')}` : null
 					}
 
 					delete coverArt.url
