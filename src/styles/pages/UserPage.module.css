@@ -1,0 +1,7 @@
+.horizontalScroll {
+	scrollbar-width: none;
+}
+
+.horizontalScroll::-webkit-scrollbar {
+	display: none;
+}

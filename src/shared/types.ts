@@ -215,6 +215,7 @@ export enum CollectionNames {
 	COLLECTIONS = 'collections',
 	FRIENDS_LISTS = 'friendslists',
 	WISH_LISTS = 'wishlists',
+	FAVORITES = 'favorites',
 	USERNAMES = 'usernames'
 }
 

@@ -20,3 +20,4 @@
 - [ ] BIG TODO: Update the Clerk sign-up process. We need name, gamertag, etc.
 - [ ] BIG TODO: Add pagination to search for speed
 - [x] Update game to collection and wishlist to include extra datapoints or just pull them live tbh
+- [ ] Refactor all of the data structures to use references instead of just using owner ID
