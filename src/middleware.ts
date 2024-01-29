@@ -1,32 +1,33 @@
-import { authMiddleware } from '@clerk/nextjs'
-import { NextResponse } from 'next/server'
-import { APIMethods } from './shared/types'
+import { authMiddleware, redirectToSignIn } from '@clerk/nextjs'
+import { NextRequest, NextResponse } from 'next/server'
+
+const beforeAuthMiddleware = (req: NextRequest) => {
+	// TODO: Wire up
+}
 
 export default authMiddleware({
-	publicRoutes: ['/', '/auth/sign-in', '/auth/sign-up'],
-	afterAuth: (auth, req) => {
-		const { userId, isPublicRoute } = auth
+	// TODO: Determine all public routes when we go live
+	publicRoutes: ['/'],
+	beforeAuth: (req) => {
+		// Execute next-intl middleware before Clerk's auth middleware
+		return beforeAuthMiddleware(req)
+	},
+	afterAuth(auth, req, evt) {
+		// TODO: Remove before go live
+		if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'test') {
+			if (!auth.userId && !auth.isPublicRoute) {
+				return redirectToSignIn({ returnBackUrl: req.url })
+			}
 
-		if (userId) {
-			// CS NOTE: Important to not await here so we don't stall redirect execution
-			fetch(`${process.env.BASE_URL}/api/users/${userId}/create`, {
-				method: APIMethods.POST,
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			})
-		}
-
-		if (process.env.NODE_ENV === 'development') {
-			return NextResponse.next()
-		}
-
-		if (!userId && !isPublicRoute) {
-			const signInUrl = new URL('/auth/sign-in', req.url)
-			signInUrl.searchParams.set('redirect_url', req.url)
-			return NextResponse.redirect(signInUrl)
+			// TODO: Figure out the too many redirects situation here
+			// if (auth.userId) {
+			// 	const comboBuilder = new URL('/app/combo-builder/SF6/ryu/moves', req.url)
+			// 	return NextResponse.redirect(comboBuilder)
+			// }
 		}
 	}
 })
 
-export const config = { matcher: ['/((?!.*\\..*|_next).*)', '/', '/(api|trpc)(.*)'] }
+export const config = {
+	matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)']
+}

@@ -1,5 +1,5 @@
 import WishlistGameCard from '@/components/general/WishlistGameCard'
-import { firebaseDB } from '@/lib/firebase'
+import firebase_app from '@/lib/firebase'
 import { CollectionNames, GGGame, GamesWishlist } from '@/shared/types'
 import { getAuth } from '@clerk/nextjs/server'
 import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore'
@@ -47,7 +47,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 		gamesWishlist: []
 	}
 	try {
-		const db = getFirestore(firebaseDB)
+		const db = getFirestore(firebase_app)
 		const wishlistsCollectionRef = collection(db, CollectionNames.WISH_LISTS)
 		const q = query(wishlistsCollectionRef, where('ownerId', '==', userId))
 		const querySnapshot = await getDocs(q)

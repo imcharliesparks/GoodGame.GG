@@ -1,5 +1,6 @@
+// SETUP TODO: Remove unused DBs
 import { initializeApp, getApps } from 'firebase/app'
-import { getAnalytics } from 'firebase/analytics'
+import { getAnalytics, isSupported } from 'firebase/analytics'
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -14,6 +15,8 @@ const firebaseConfig = {
 }
 
 // Initialize Firebase
-export const firebaseDB = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0]
-// TODO: Fix the issue here if we want FB analytics
-// export const analytics = getAnalytics(firebaseDB)
+const firebase_app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0]
+// TODO: Use with `isSupported` to check if analytics is supported if the client wants it
+getAnalytics(firebase_app)
+
+export default firebase_app

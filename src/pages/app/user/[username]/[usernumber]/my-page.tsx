@@ -1,5 +1,5 @@
 import React from 'react'
-import { firebaseDB } from '@/lib/firebase'
+import firebase_app from '@/lib/firebase'
 import { CollectionNames, GGGame, IGDBGame } from '@/shared/types'
 import { getAuth } from '@clerk/nextjs/server'
 import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore'
@@ -100,7 +100,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 	}
 
 	try {
-		const db = getFirestore(firebaseDB)
+		const db = getFirestore(firebase_app)
 		const collectionsCollectionRef = collection(db, CollectionNames.COLLECTIONS)
 		const collectionsQ = query(collectionsCollectionRef, where('ownerId', '==', userId))
 		const collectionsQuerySnapshot = await getDocs(collectionsQ)

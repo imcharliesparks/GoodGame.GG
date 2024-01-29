@@ -1,9 +1,11 @@
 import { APIMethods, APIStatuses, DocumentResponses, GeneralAPIResponses, UserByEmail } from '@/shared/types'
 import { handleEmailFuzzySearch } from '@/shared/utils'
-import { User, clerkClient, withAuth } from '@clerk/nextjs/dist/api'
+import { clerkClient } from '@clerk/nextjs'
+import { User } from '@clerk/nextjs/dist/types/server'
+import { NextApiRequest, NextApiResponse } from 'next'
 
 // TODO: Expand to handle all email-based user queries based on method type
-const handler = withAuth(async (req, res) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	const { method } = req
 	const email = req.query.email as string
 
@@ -39,6 +41,6 @@ const handler = withAuth(async (req, res) => {
 		console.error('Invalid request to search-games')
 		return res.status(400).json({ status: APIStatuses.ERROR, type: GeneralAPIResponses.INVALID_REQUEST_TYPE })
 	}
-})
+}
 
 export default handler

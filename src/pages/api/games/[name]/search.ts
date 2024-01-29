@@ -1,11 +1,22 @@
 import { APIMethods, APIStatuses, DocumentResponses, ESRBRatings, GeneralAPIResponses, GGGame } from '@/shared/types'
-import { withAuth } from '@clerk/nextjs/dist/api'
 import { igDBFetch } from '@/shared/utils'
+import { NextApiRequest, NextApiResponse } from 'next'
+import { getAuth } from '@clerk/nextjs/server'
 
 // TODO: Speed this shit up
-const handler = withAuth(async (req, res) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+	const { userId } = getAuth(req)
 	const { method, query } = req
 	const { name } = query
+
+	if (!userId) {
+		console.error('User is not authenticated.')
+		return res.status(404).json({
+			status: APIStatuses.ERROR,
+			type: GeneralAPIResponses.UNAUTHORIZED,
+			data: { error: 'No game provided to search.' }
+		})
+	}
 
 	if (!name) {
 		console.error('No game provided to search-games endpoint.')
@@ -89,6 +100,6 @@ const handler = withAuth(async (req, res) => {
 		console.error('Invalid request to search-games')
 		return res.status(400).json({ status: APIStatuses.ERROR, type: GeneralAPIResponses.INVALID_REQUEST_TYPE })
 	}
-})
+}
 
 export default handler

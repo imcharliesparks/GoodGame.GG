@@ -1,6 +1,7 @@
 import type { EmailAddress, ExternalAccount, PhoneNumber, Web3WalletJSON } from '@clerk/nextjs/server'
 import { NextApiRequest, NextApiResponse } from 'next'
 
+// TODO: Clean up/order by type
 // General Types
 export type Maybe<T> = T | null
 
@@ -40,11 +41,6 @@ export enum APIStatuses {
 	SUCCESS = 'SUCCESS',
 	AMBIGUOUS = 'AMBIGUOUS',
 	ERROR = 'ERROR'
-}
-
-export enum GeneralAPIResponses {
-	FAILURE = 'FAILURE',
-	INVALID_REQUEST_TYPE = 'INVALID_REQUEST_TYPE'
 }
 
 export enum APIMethods {
@@ -189,12 +185,6 @@ export type ClerkPrivateUserData = {
 	[key: string]: any
 } | null
 
-export enum SignupMethods {
-	GOOGLE = 'Google',
-	TWITCH = 'Twitch',
-	EMAIL = 'Email'
-}
-
 export enum UserStatus {
 	ADMIN = 'Admin',
 	USER = 'User'
@@ -227,4 +217,60 @@ export const ESRBRatings = {
 	'10': 'T',
 	'11': 'M',
 	'12': 'AO'
+}
+
+export interface TypedRequest<T> extends NextApiRequest {
+	body: T
+}
+
+export interface TypedResponse<T> extends NextApiResponse {
+	json: (body: T) => void
+	send: (body: T) => void
+}
+
+// Enums
+export enum GeneralAPIResponses {
+	FAILURE = 'FAILURE',
+	INVALID_REQUEST_TYPE = 'INVALID_REQUEST_TYPE',
+	UNAUTHORIZED = 'UNAUTHORIZED',
+	NOT_FOUND = 'NOT_FOUND'
+}
+
+// Firebase Specific Enums
+export enum CollectionNames {
+	USERS = 'users'
+}
+
+// Auth Specific Enums
+export enum ClerkResponses {
+	USER_NOT_FOUND = 'USER_NOT_FOUND',
+	USER_FOUND = 'USER_FOUND'
+}
+
+export enum SignupMethods {
+	GOOGLE = 'Google',
+	TWITCH = 'Twitch',
+	EMAIL = 'Email',
+	DISCORD = 'Discord'
+}
+
+export enum UserRoles {
+	SUPER_ADMIN = 'Super Admin',
+	ADMIN = 'Admin',
+	USER = 'User'
+}
+
+export interface TypedRequest<T> extends NextApiRequest {
+	body: T
+}
+
+export interface TypedResponse<T> extends NextApiResponse {
+	json: (body: T) => void
+	send: (body: T) => void
+}
+
+export enum TypeOfPerson {
+	ADMIN = 'ADMIN',
+	VISITOR = 'VISITOR',
+	REGISTERED_VISITOR = 'REGISTERED_VISITOR'
 }

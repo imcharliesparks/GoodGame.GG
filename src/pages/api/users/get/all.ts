@@ -1,7 +1,8 @@
 import { APIMethods, APIStatuses, DocumentResponses, GeneralAPIResponses } from '@/shared/types'
-import { clerkClient, withAuth } from '@clerk/nextjs/dist/api'
+import { clerkClient } from '@clerk/nextjs'
+import { NextApiRequest, NextApiResponse } from 'next'
 
-const handler = withAuth(async (req, res) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	const { method } = req
 
 	if (method === APIMethods.GET) {
@@ -29,6 +30,6 @@ const handler = withAuth(async (req, res) => {
 		console.error('Invalid request to search-games')
 		return res.status(400).json({ status: APIStatuses.ERROR, type: GeneralAPIResponses.INVALID_REQUEST_TYPE })
 	}
-})
+}
 
 export default handler

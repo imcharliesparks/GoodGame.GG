@@ -1,4 +1,4 @@
-import { firebaseDB } from '@/lib/firebase'
+import firebase_app from '@/lib/firebase'
 import {
 	APIMethods,
 	APIStatuses,
@@ -7,13 +7,14 @@ import {
 	GamesWishlist,
 	GeneralAPIResponses
 } from '@/shared/types'
-import { withAuth } from '@clerk/nextjs/dist/api'
+import { getAuth } from '@clerk/nextjs/dist/types/server-helpers.server'
 import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore'
+import { NextApiRequest, NextApiResponse } from 'next'
 
 // TODO: We may not even need this anymore tbh but leaving it in now
-const handler = withAuth(async (req, res) => {
-	const { auth, method } = req
-	const { userId } = auth
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+	const { method } = req
+	const { userId } = getAuth(req)
 
 	if (!userId) {
 		console.error('No user id provided to my-wishlist endpoint.')
@@ -26,7 +27,7 @@ const handler = withAuth(async (req, res) => {
 
 	if (method === APIMethods.GET) {
 		try {
-			const db = getFirestore(firebaseDB)
+			const db = getFirestore(firebase_app)
 			const wishlistCollectionRef = collection(db, CollectionNames.COLLECTIONS)
 			const q = query(wishlistCollectionRef, where('ownerId', '==', userId))
 			const querySnapshot = await getDocs(q)
@@ -60,6 +61,6 @@ const handler = withAuth(async (req, res) => {
 		console.error('Invalid request to my-wishlist endpoint.')
 		return res.status(404).json({ status: APIStatuses.ERROR, type: GeneralAPIResponses.INVALID_REQUEST_TYPE })
 	}
-})
+}
 
 export default handler

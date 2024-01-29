@@ -1,4 +1,4 @@
-import { firebaseDB } from '@/lib/firebase'
+import firebase_app from '@/lib/firebase'
 import {
 	APIMethods,
 	APIStatuses,
@@ -8,7 +8,7 @@ import {
 	GeneralAPIResponses
 } from '@/shared/types'
 import { generateUsername } from '@/shared/utils'
-import { User, clerkClient } from '@clerk/nextjs/dist/api'
+import { User, clerkClient } from '@clerk/nextjs/dist/types/server'
 import { collection, getFirestore, where, query as dbQuery, getDocs, addDoc } from 'firebase/firestore'
 import { NextApiRequest, NextApiResponse } from 'next'
 
@@ -31,7 +31,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 			const foundUser: User = await clerkClient.users.getUser(clerkId)
 
 			if (foundUser) {
-				const db = getFirestore(firebaseDB)
+				const db = getFirestore(firebase_app)
 				const usernamesCollectionRef = collection(db, CollectionNames.USERNAMES)
 
 				const q = dbQuery(usernamesCollectionRef, where('ownerId', '==', clerkId))

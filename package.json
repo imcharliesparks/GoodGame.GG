@@ -10,17 +10,18 @@
 		"static": "next build && next export"
 	},
 	"dependencies": {
-		"@clerk/nextjs": "^4.17.3",
-		"@types/apicalypse": "^0.1.1",
+		"@clerk/nextjs": "^4.29.5",
+		"@types/apicalypse": "^0.1.5",
 		"@types/node": "20.1.4",
 		"@types/react": "18.2.6",
 		"@types/react-dom": "18.2.4",
 		"apicalypse": "^0.2.0",
 		"autoprefixer": "10.4.14",
-		"daisyui": "^2.51.6",
+		"cookie": "^0.6.0",
+		"daisyui": "^2.52.0",
 		"eslint": "8.40.0",
 		"eslint-config-next": "13.4.2",
-		"firebase": "^9.22.0",
+		"firebase": "^9.23.0",
 		"fuse.js": "^6.6.2",
 		"next": "13.4.2",
 		"next-pwa": "^5.6.0",
@@ -29,13 +30,14 @@
 		"react-dom": "18.2.0",
 		"react-icons-kit": "^2.0.0",
 		"react-stars": "^2.2.5",
-		"sharp": "^0.32.1",
+		"sharp": "^0.32.6",
 		"tailwindcss": "3.3.2",
 		"typescript": "5.0.4"
 	},
 	"devDependencies": {
-		"@types/react-stars": "^2.2.1",
-		"eslint-config-prettier": "^8.8.0",
+		"@types/cookie": "^0.6.0",
+		"@types/react-stars": "^2.2.4",
+		"eslint-config-prettier": "^8.10.0",
 		"eslint-plugin-prettier": "^4.2.1",
 		"prettier": "^2.8.8"
 	}

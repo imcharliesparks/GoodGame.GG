@@ -1,4 +1,4 @@
-import { firebaseDB } from '@/lib/firebase'
+import firebase_app from '@/lib/firebase'
 import {
 	APIMethods,
 	APIStatuses,
@@ -10,12 +10,13 @@ import {
 	GeneralAPIResponses
 } from '@/shared/types'
 import { getSafeCurrentDate } from '@/shared/utils'
-import { withAuth } from '@clerk/nextjs/dist/api'
+import { getAuth } from '@clerk/nextjs/dist/types/server-helpers.server'
 import { collection, addDoc, getDocs, getFirestore, query, where, updateDoc, doc, Timestamp } from 'firebase/firestore'
+import { NextApiRequest, NextApiResponse } from 'next'
 
-const handler = withAuth(async (req, res) => {
-	const { auth, body, method } = req
-	const { userId } = auth
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+	const { body, method } = req
+	const { userId } = getAuth(req)
 	const game: GGGame = body
 	const { gameId } = game
 
@@ -42,7 +43,7 @@ const handler = withAuth(async (req, res) => {
 			dateAdded: getSafeCurrentDate()
 		})
 		try {
-			const db = getFirestore(firebaseDB)
+			const db = getFirestore(firebase_app)
 			const wishlistCollectionRef = collection(db, CollectionNames.WISH_LISTS)
 			const q = query(wishlistCollectionRef, where('ownerId', '==', userId))
 			const querySnapshot = await getDocs(q)
@@ -85,6 +86,6 @@ const handler = withAuth(async (req, res) => {
 		console.error('Invalid request to add-to-wishlist endpoint.')
 		return res.status(404).json({ status: APIStatuses.ERROR, type: GeneralAPIResponses.INVALID_REQUEST_TYPE })
 	}
-})
+}
 
 export default handler
