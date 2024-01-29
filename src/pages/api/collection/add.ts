@@ -9,7 +9,7 @@ import {
 	GeneralAPIResponses
 } from '@/shared/types'
 import { getSafeCurrentDate } from '@/shared/utils'
-import { getAuth } from '@clerk/nextjs/dist/types/server-helpers.server'
+import { getAuth } from '@clerk/nextjs/server'
 import { collection, addDoc, getDocs, getFirestore, query, where, updateDoc, doc, Timestamp } from 'firebase/firestore'
 import { NextApiRequest, NextApiResponse } from 'next'
 

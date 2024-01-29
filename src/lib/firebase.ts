@@ -17,6 +17,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const firebase_app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0]
 // TODO: Use with `isSupported` to check if analytics is supported if the client wants it
-getAnalytics(firebase_app)
+// getAnalytics(firebase_app)
 
 export default firebase_app

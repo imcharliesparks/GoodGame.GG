@@ -17,3 +17,6 @@
 
 - [ ] Make sure all API routes are protected by middleware, and if not, add `getAuth` checks
 - [ ] Maybe add search bar to nav for searching for a game && Make the page an SSR'd one
+- [ ] Make sure DB is working as it's in prod mode
+- [ ] Replace all wrong imports of getAuth
+- [ ] Fix firebase permissions (should do this for all apps)

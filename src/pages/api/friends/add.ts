@@ -9,8 +9,7 @@ import {
 	UserFriendsList
 } from '@/shared/types'
 import { getSafeCurrentDate } from '@/shared/utils'
-import { User } from '@clerk/nextjs/dist/types/server'
-import { getAuth } from '@clerk/nextjs/dist/types/server-helpers.server'
+import { User, getAuth } from '@clerk/nextjs/server'
 import { collection, addDoc, getDocs, getFirestore, query, where, updateDoc, doc, Timestamp } from 'firebase/firestore'
 import { NextApiRequest, NextApiResponse } from 'next'
 
