@@ -53,20 +53,14 @@ const handler = async (req: TypedRequest<MobyAPIGameSearchParameters>, res: Next
 			const filteredGamesList = response.games.filter(
 				(game: MobyGame) => !SubstandardGenres.has(game.genres[0].genre_name)
 			)
-			const finalGamesList = filteredGamesList.map((game: MobyGame) => {
-				game.description = game.description.replace(/ \[.*?\]/g, '')
-				game.description = convert(game.description)
-				return game
-			})
-			// const finalGamesList = updatedGamesList.map((game: MobyGame) => {
-			// 	game.description = game.description.replace(/ \[.*?\]/g, '')
-			// 	console.log('game.description', game.description.replace(/ \[.*?\]/g, ''))
-			// 	return game
-			// })
-			// finalGamesList.forEach((game: MobyGame) => {
-			// 	game.description = game.description.replace(/ \[.*?\]/g, '')
-			// 	console.log('game.description', game.description)
-			// })
+			const finalGamesList = filteredGamesList.map((game: MobyGame) => ({
+				...game,
+				description: convert(
+					game.description,
+					{ selectors: [{ selector: 'a', options: { ignoreHref: true } }] },
+					{ selector: 'img', options: { ignoreHref: true } }
+				)
+			}))
 			return res.json({ data: { games: finalGamesList } })
 		} catch (error) {
 			console.error(error)
