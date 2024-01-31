@@ -1,7 +1,8 @@
 import React from 'react'
-import { APIMethods, APIStatuses, GGGame, GamePlayStatus } from '@/shared/types'
+import { APIMethods, APIStatuses, GGGame, GamePlayStatus, MobyGame } from '@/shared/types'
 import SearchGameCard from '@/components/general/SearchGameCard'
 import LoadingSpinner from '@/components/general/LoadingSpinner'
+import NewSearchGameCard from '@/components/general/NewSearchGameCard'
 
 // TODO: Disallow adding of games once the user already has them
 // TODO: Add pagination to search for speed
@@ -9,7 +10,7 @@ const SearchGamesPage = () => {
 	const inputRef = React.useRef<HTMLInputElement | null>(null)
 	const [searchError, setSearchError] = React.useState<string | null>(null)
 	const [addSuccessText, setAddSuccessText] = React.useState<string | null>(null)
-	const [games, setGames] = React.useState<GGGame[]>()
+	const [games, setGames] = React.useState<MobyGame[]>()
 	const [isLoading, setIsLoading] = React.useState<boolean>(false)
 
 	const handleShowError = (errorText: string) => {
@@ -32,17 +33,23 @@ const SearchGamesPage = () => {
 		} else {
 			setIsLoading(true)
 			try {
-				const request = await fetch(`/api/games/${inputRef.current.value}/search`, {
+				// TODO: Add filtering for genre and platform
+				const payload = {
+					title: inputRef?.current.value
+				}
+				const request = await fetch(`/api/games/search`, {
 					method: APIMethods.POST,
 					headers: {
 						'Content-Type': 'application/json'
-					}
+					},
+					body: JSON.stringify(payload)
 				})
 				const response = await request.json()
+				console.log('response', response)
 				if (response.status === APIStatuses.ERROR) {
 					throw new Error(response.data.error)
 				} else {
-					setGames(response.data.foundGames)
+					setGames(response.data.games)
 				}
 			} catch (error) {
 				console.error(`Could not find a game with the name ${inputRef.current.value}`, error)
@@ -52,6 +59,32 @@ const SearchGamesPage = () => {
 			}
 		}
 	}
+	// const handleSearch = async () => {
+	// 	if (!inputRef.current?.value) {
+	// 		handleShowError('Enter a search term!')
+	// 	} else {
+	// 		setIsLoading(true)
+	// 		try {
+	// 			const request = await fetch(`/api/games/${inputRef.current.value}/search`, {
+	// 				method: APIMethods.POST,
+	// 				headers: {
+	// 					'Content-Type': 'application/json'
+	// 				}
+	// 			})
+	// 			const response = await request.json()
+	// 			if (response.status === APIStatuses.ERROR) {
+	// 				throw new Error(response.data.error)
+	// 			} else {
+	// 				setGames(response.data.foundGames)
+	// 			}
+	// 		} catch (error) {
+	// 			console.error(`Could not find a game with the name ${inputRef.current.value}`, error)
+	// 			handleShowError(`We couldn't find a game by that name!`)
+	// 		} finally {
+	// 			setIsLoading(false)
+	// 		}
+	// 	}
+	// }
 
 	return (
 		<div className="max-w-screen flex flex-col items-center py-6">
@@ -74,13 +107,16 @@ const SearchGamesPage = () => {
 					</button>
 				</form>
 				<div className="container w-full flex flex-col">
-					{games?.map((game) => (
+					{/* {games?.map((game) => (
 						<SearchGameCard
 							key={game.gameId}
 							game={game}
 							handleAddSuccessTest={handleAddSuccessTest}
 							handleShowError={handleShowError}
 						/>
+					))} */}
+					{games?.map((game) => (
+						<NewSearchGameCard key={game.game_id} game={game} />
 					))}
 				</div>
 			</div>

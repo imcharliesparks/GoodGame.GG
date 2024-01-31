@@ -23,3 +23,6 @@ export const screenSizeBreakpoints = {
 	xl: '1280px',
 	'2xl': '1536px'
 }
+
+// These are the keys in `genre_name` that we want to ignore on searches in the Basic Genres category
+export const SubstandardGenres = new Set<string>(['Add-on', 'Special edition'])

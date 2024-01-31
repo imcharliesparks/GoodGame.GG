@@ -79,7 +79,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 			return res.status(400).json({
 				status: APIStatuses.ERROR,
 				type: GeneralAPIResponses.FAILURE,
-				data: { error: error?.errors[0]?.longMessage ?? 'User not found.' }
+				data: { error: error?.errors[0]?.longMessage ?? 'General error adding game.' }
 			})
 		}
 	} else {

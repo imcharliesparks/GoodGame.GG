@@ -274,3 +274,59 @@ export enum TypeOfPerson {
 	VISITOR = 'VISITOR',
 	REGISTERED_VISITOR = 'REGISTERED_VISITOR'
 }
+
+export type MobyAPIGameSearchParameters = {
+	title: string
+	platform?: string
+	genre?: string
+}
+
+// Types for Moby Games API
+export type MobyGame = {
+	alternate_titles: AlternateTitle[]
+	description: string
+	game_id: number
+	genres: Genre[]
+	moby_score: number
+	moby_url: string
+	num_votes: number
+	official_url: string | null
+	platforms: Platform[]
+	sample_cover: SampleCover
+	sample_screenshots: SampleScreenshot[]
+	title: string
+}
+
+type AlternateTitle = {
+	description: string
+	title: string
+}
+
+export type Genre = {
+	genre_category: string
+	genre_category_id: number
+	genre_id: number
+	genre_name: string
+}
+
+type Platform = {
+	first_release_date: string
+	platform_id: number
+	platform_name: string
+}
+
+type SampleCover = {
+	height: number
+	image: string
+	platforms: string[]
+	thumbnail_image: string
+	width: number
+}
+
+type SampleScreenshot = {
+	caption: string
+	height: number
+	image: string
+	thumbnail_image: string
+	width: number
+}

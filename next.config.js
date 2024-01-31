@@ -11,7 +11,7 @@ const defaultExports = {
 		ignoreDuringBuilds: true
 	},
 	images: {
-		domains: ['images.igdb.com'],
+		domains: ['images.igdb.com', 'cdn.mobygames.com'],
 	},
 }
 

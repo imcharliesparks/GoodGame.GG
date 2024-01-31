@@ -20,3 +20,6 @@
 - [ ] Make sure DB is working as it's in prod mode
 - [ ] Replace all wrong imports of getAuth
 - [ ] Fix firebase permissions (should do this for all apps)
+- [ ] BIG TODO: Change out the JSON payloads in Docs to be in our DBs somewhere
+- [ ] TODO: Figure out how the hell we want to handle genres and stuff
+- [ ] Eventually figure out how to handle multiple editions
