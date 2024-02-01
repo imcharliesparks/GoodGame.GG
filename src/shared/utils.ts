@@ -83,3 +83,5 @@ export const generateUsername = (username: string): string => {
 	const hash = randomNumbers.join('')
 	return `${username}#${hash}`
 }
+
+export const convertMobyScore = (mobyScore: number): number => Number(mobyScore.toString().split('.').join(''))

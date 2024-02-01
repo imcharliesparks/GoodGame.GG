@@ -23,3 +23,5 @@
 - [ ] BIG TODO: Change out the JSON payloads in Docs to be in our DBs somewhere
 - [ ] TODO: Figure out how the hell we want to handle genres and stuff
 - [ ] Eventually figure out how to handle multiple editions
+- [ ] Write a service that has an aggregate score rather than just the moby score
+- [ ] Eventually sign up for the metacritic API and use that

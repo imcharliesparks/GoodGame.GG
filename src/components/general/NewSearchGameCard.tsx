@@ -1,17 +1,26 @@
-import { APIMethods, APIStatuses, MobyGame, GamePlayStatus } from '@/shared/types'
+import { APIMethods, APIStatuses, MobyGame, GamePlayStatus, GamePlatform, Platform } from '@/shared/types'
 import React from 'react'
 import Image from 'next/image'
-import { truncateDescription, calculateStarRating } from '@/shared/utils'
+import { truncateDescription, calculateStarRating, convertMobyScore } from '@/shared/utils'
 import ReactStars from 'react-stars'
 import LoadingSpinner from './LoadingSpinner'
+import HeartIcon from './HeartIcon'
 
 type NewSearchGameCardProps = {
 	game: MobyGame
-	handleAddSuccess: (message: string) => void
-	handleShowError: (message: string) => void
+	lastCard: boolean
+	handleOpenModal: () => void
+	handleShowSuccessToast: (message: string) => void
+	handleShowErrorToast: (message: string) => void
 }
 
-const NewSearchGameCard = ({ game, handleAddSuccess, handleShowError }: NewSearchGameCardProps) => {
+const NewSearchGameCard = ({
+	game,
+	lastCard,
+	handleOpenModal,
+	handleShowSuccessToast,
+	handleShowErrorToast
+}: NewSearchGameCardProps) => {
 	const [showFullDescription, setShowFullDescription] = React.useState<boolean>(game.description?.length < 150)
 	const [addToCollectionLoading, setAddToCollectionLoading] = React.useState<boolean>(false)
 	const [addToWishlistLoading, setAddToWishlistLoading] = React.useState<boolean>(false)
@@ -40,11 +49,11 @@ const NewSearchGameCard = ({ game, handleAddSuccess, handleShowError }: NewSearc
 			if (response.status === APIStatuses.ERROR) {
 				throw new Error(response.data.error)
 			} else {
-				handleAddSuccess('Success! Game added to collection.')
+				handleShowSuccessToast('Success! Game added to collection.')
 			}
 		} catch (error) {
 			console.error(`Unable to add game to collection.`, error)
-			handleShowError(`Couldn't add that game to your collection! Please try again in a bit.`)
+			handleShowErrorToast(`Couldn't add that game to your collection! Please try again in a bit.`)
 		} finally {
 			setAddToCollectionLoading(false)
 		}
@@ -65,105 +74,60 @@ const NewSearchGameCard = ({ game, handleAddSuccess, handleShowError }: NewSearc
 			if (response.status === APIStatuses.ERROR) {
 				throw new Error(response.data.error)
 			} else {
-				handleAddSuccess('Success! Game added to wishlist.')
+				handleShowSuccessToast('Success! Game added to wishlist.')
 			}
 		} catch (error) {
 			console.error(`Unable to add game to wishlist.`, error)
-			handleShowError(`Couldn't add that game to your wishlist! Please try again in a bit.`)
+			handleShowErrorToast(`Couldn't add that game to your wishlist! Please try again in a bit.`)
 		} finally {
 			setAddToWishlistLoading(false)
 		}
 	}
 
+	const generatePlatformsString = (): string => {
+		return game.platforms.length
+			? game.platforms.length > 2
+				? 'Multiple Platforms'
+				: game.platforms.map((platform: Platform) => platform.platform_name).join(', ')
+			: 'No platforms found'
+	}
+
+	console.log('game', convertMobyScore(game.moby_score))
+
 	return (
-		<div className="card bg-base-100 shadow-xl text-black mt-4 mx-auto w-fit max-w-[400px]">
-			{' '}
-			<figure className="pt-8">
-				<div className="indicator">
-					{game.genres?.length && <span className="indicator-item badge badge-primary">{game.genres[0].genre_name}</span>}
+		<div className={`border-t-[.25px] border-black w-full min-h-[246px]  ${lastCard && 'border-b-[.25px] border-black'}`}>
+			<div className="grid grid-cols-12 min-h-[245px]">
+				<div className="col-span-5 bg-gray-200 p-4">
+					{/* TODO: Consider placing this here */}
+					{/* {game.genres?.length && <span className="indicator-item badge badge-primary">{game.genres[0].genre_name}</span>} */}
 					{game.sample_cover && (
-						<Image
-							className="rounded-xl max-w-[200px]"
-							width={game.sample_cover.width}
-							height={game.sample_cover.height}
-							src={game.sample_cover.thumbnail_image}
-							alt={`Cover art for ${game.title}`}
-						/>
+						<div className="max-w-[138px]">
+							<Image
+								className="rounded-xl"
+								width={game.sample_cover.width}
+								height={game.sample_cover.height}
+								src={game.sample_cover.thumbnail_image}
+								alt={`Cover art for ${game.title}`}
+							/>
+						</div>
 					)}
 				</div>
-			</figure>
-			<div className="card-body items-center text-center pt-3">
-				<h2 className="card-title">{game.title}</h2>
-				<p>
-					{game.description
-						? showFullDescription
-							? game.description
-							: truncateDescription(game.description, 150)
-						: 'No description available'}
-				</p>
-				{game.description?.length > 150 && (
-					<p
-						onClick={() => setShowFullDescription((prev) => !prev)}
-						className="text-left w-[96%] link text-sm text-slate-400"
-					>
-						{!showFullDescription ? 'More...' : 'Less...'}
-					</p>
-				)}
-				<div className="flex flex-row justify-start w-full">
-					<span className="text-sm inline-flex items-center text-slate-600 mr-2">Average Rating: </span>
-					{game.moby_score ? (
-						<ReactStars count={5} edit={false} value={calculateStarRating(game.moby_score)} size={12} color2={'#ffd700'} />
-					) : (
-						// TOOD: Tweak this so you have one of the review scores if possible
-						<span className="text-sm inline-flex items-center text-black">N/A</span>
-					)}
-				</div>
-				<div className="card-actions pt-3">
-					<div className="dropdown dropdown-top">
-						<label tabIndex={0} className="btn m-1 btn-primary  w-[137px]">
-							{addToCollectionLoading ? <LoadingSpinner /> : '+ Collection'}
-						</label>
-						<ul
-							tabIndex={0}
-							className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 transition-all ease-in-out"
-						>
-							<li className="transition-all ease-in-out">
-								{/* <span onClick={() => handleAddToCollection({ ...game, playStatus: GamePlayStatus.NOT_PLAYED })}> */}
-								<span onClick={() => console.log('cheese')}>Want to Play</span>
-							</li>
-							<li className="transition-all ease-in-out">
-								{/* <span onClick={() => handleAddToCollection({ ...game, playStatus: GamePlayStatus.PLAYED })}> */}
-								<span onClick={() => console.log('cheese')}>Want to Play Already Played</span>
-							</li>
-							<li className="transition-all ease-in-out">
-								{/* <span onClick={() => handleAddToCollection({ ...game, playStatus: GamePlayStatus.COMPLETED })}> */}
-								<span onClick={() => console.log('cheese')}>Want to Play Completed</span>
-							</li>
-						</ul>
-					</div>
-					<div ref={dropdownRef} className="dropdown dropdown-top dropdown-end transition-all ease-in-out">
-						<label tabIndex={0} className="btn m-1 btn-primary w-[137px] transition-all ease-in-out">
-							{addToWishlistLoading ? <LoadingSpinner /> : '+ Wishlist'}
-						</label>
-						<ul
-							tabIndex={0}
-							className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 transition-all ease-in-out"
-						>
-							<li className="transition-all ease-in-out">
-								{/* <span onClick={() => handleAddToWishlist({ ...game, playStatus: GamePlayStatus.NOT_PLAYED })}>
-									Want to Play
-								</span> */}
-								<span onClick={() => console.log('cheese')}>Want to Play</span>
-							</li>
-							<li className="transition-all ease-in-out">
-								{/* <span onClick={() => handleAddToWishlist({ ...game, playStatus: GamePlayStatus.PLAYED })}>Already Played</span> */}
-								<span onClick={() => console.log('cheese')}>Already Played</span>d
-							</li>
-							<li className="transition-all ease-in-out">
-								{/* <span onClick={() => handleAddToWishlist({ ...game, playStatus: GamePlayStatus.COMPLETED })}>Completed</span> */}
-								<span onClick={() => console.log('cheese')}>Completed</span>
-							</li>
-						</ul>
+				<div className="col-span-7 bg-gray-200 p-4">
+					<div className="flex flex-col justify-between h-full">
+						<div>
+							{game.genres?.length && (
+								<span className="indicator-item badge badge-primary py-[.75rem]">{game.genres[0].genre_name}</span>
+							)}
+							<h3 className="text-lg font-bold">{game.title}</h3>
+							<p className="text-slate-600 text-sm">{generatePlatformsString()}</p>
+							<ReactStars count={5} edit={false} value={Math.round(7.2 / 2)} size={12} />
+							<p className="text-left w-[96%] link text-sm text-slate-400">Add modal...</p>
+						</div>
+						<div>
+							<button onClick={handleOpenModal} className="btn btn-block btn-sm text-white">
+								+ Add to List
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>

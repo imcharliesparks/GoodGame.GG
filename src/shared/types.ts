@@ -309,13 +309,13 @@ export type Genre = {
 	genre_name: string
 }
 
-type Platform = {
+export type Platform = {
 	first_release_date: string
 	platform_id: number
 	platform_name: string
 }
 
-type SampleCover = {
+export type SampleCover = {
 	height: number
 	image: string
 	platforms: string[]
@@ -323,7 +323,7 @@ type SampleCover = {
 	width: number
 }
 
-type SampleScreenshot = {
+export type SampleScreenshot = {
 	caption: string
 	height: number
 	image: string

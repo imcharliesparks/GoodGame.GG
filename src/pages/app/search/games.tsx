@@ -3,6 +3,9 @@ import { APIMethods, APIStatuses, GGGame, GamePlayStatus, MobyGame } from '@/sha
 import SearchGameCard from '@/components/general/SearchGameCard'
 import LoadingSpinner from '@/components/general/LoadingSpinner'
 import NewSearchGameCard from '@/components/general/NewSearchGameCard'
+import Modal from '@/components/general/Dialog'
+import { Icon } from 'react-icons-kit'
+import { ic_close } from 'react-icons-kit/md/ic_close'
 
 // TODO: Disallow adding of games once the user already has them
 // TODO: Add pagination to search for speed
@@ -12,15 +15,16 @@ const SearchGamesPage = () => {
 	const [addSuccessText, setAddSuccessText] = React.useState<string | null>(null)
 	const [games, setGames] = React.useState<MobyGame[]>()
 	const [isLoading, setIsLoading] = React.useState<boolean>(false)
+	const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false)
 
-	const handleShowError = (errorText: string) => {
+	const handleShowErrorToast = (errorText: string) => {
 		setSearchError(errorText)
 		setTimeout(() => {
 			setSearchError(null)
 		}, 5000)
 	}
 
-	const handleAddSuccessTest = (successText: string) => {
+	const handleShowSuccessToast = (successText: string) => {
 		setAddSuccessText(successText)
 		setTimeout(() => {
 			setAddSuccessText(null)
@@ -29,7 +33,7 @@ const SearchGamesPage = () => {
 
 	const handleSearch = async () => {
 		if (!inputRef.current?.value) {
-			handleShowError('Enter a search term!')
+			handleShowErrorToast('Enter a search term!')
 		} else {
 			setIsLoading(true)
 			try {
@@ -53,38 +57,39 @@ const SearchGamesPage = () => {
 				}
 			} catch (error) {
 				console.error(`Could not find a game with the name ${inputRef.current.value}`, error)
-				handleShowError(`We couldn't find a game by that name!`)
+				handleShowErrorToast(`We couldn't find a game by that name!`)
 			} finally {
 				setIsLoading(false)
 			}
 		}
 	}
-	// const handleSearch = async () => {
-	// 	if (!inputRef.current?.value) {
-	// 		handleShowError('Enter a search term!')
-	// 	} else {
-	// 		setIsLoading(true)
-	// 		try {
-	// 			const request = await fetch(`/api/games/${inputRef.current.value}/search`, {
-	// 				method: APIMethods.POST,
-	// 				headers: {
-	// 					'Content-Type': 'application/json'
-	// 				}
-	// 			})
-	// 			const response = await request.json()
-	// 			if (response.status === APIStatuses.ERROR) {
-	// 				throw new Error(response.data.error)
-	// 			} else {
-	// 				setGames(response.data.foundGames)
-	// 			}
-	// 		} catch (error) {
-	// 			console.error(`Could not find a game with the name ${inputRef.current.value}`, error)
-	// 			handleShowError(`We couldn't find a game by that name!`)
-	// 		} finally {
-	// 			setIsLoading(false)
-	// 		}
-	// 	}
-	// }
+
+	const igdbHandleSearch = async () => {
+		if (!inputRef.current?.value) {
+			handleShowErrorToast('Enter a search term!')
+		} else {
+			setIsLoading(true)
+			try {
+				const request = await fetch(`/api/games/${inputRef.current.value}/search`, {
+					method: APIMethods.POST,
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				})
+				const response = await request.json()
+				if (response.status === APIStatuses.ERROR) {
+					throw new Error(response.data.error)
+				} else {
+					setGames(response.data.foundGames)
+				}
+			} catch (error) {
+				console.error(`Could not find a game with the name ${inputRef.current.value}`, error)
+				handleShowErrorToast(`We couldn't find a game by that name!`)
+			} finally {
+				setIsLoading(false)
+			}
+		}
+	}
 
 	return (
 		<div className="max-w-screen flex flex-col items-center py-6">
@@ -106,17 +111,16 @@ const SearchGamesPage = () => {
 						{isLoading ? <LoadingSpinner /> : 'Search'}
 					</button>
 				</form>
-				<div className="container w-full flex flex-col">
-					{/* {games?.map((game) => (
-						<SearchGameCard
-							key={game.gameId}
+				<div className="container w-full flex flex-col mt-4">
+					{games?.map((game, i: number) => (
+						<NewSearchGameCard
+							lastCard={i === games.length - 1}
+							key={game.game_id}
 							game={game}
-							handleAddSuccessTest={handleAddSuccessTest}
-							handleShowError={handleShowError}
+							handleOpenModal={() => setIsModalOpen(true)}
+							handleShowSuccessToast={handleShowSuccessToast}
+							handleShowErrorToast={handleShowErrorToast}
 						/>
-					))} */}
-					{games?.map((game) => (
-						<NewSearchGameCard key={game.game_id} game={game} />
 					))}
 				</div>
 			</div>
@@ -138,6 +142,34 @@ const SearchGamesPage = () => {
 					</div>
 				</div>
 			)}
+			<Modal id="modal" open={!isModalOpen} onClose={() => setIsModalOpen(false)}>
+				<div className="h-full w-[250px] mx-auto">
+					<div className="grid grid-cols-2 border-b-2 pb-2">
+						<h4 className="text-left">Save game to...</h4>
+						<div onClick={() => setIsModalOpen(false)} className="cursor-pointer text-right">
+							<Icon icon={ic_close} size={24} />
+						</div>
+					</div>
+
+					<div></div>
+					<div></div>
+				</div>
+				{/* <h2 id="modal-title" className="mb-1 text-lg font-bold">
+					Modal
+				</h2>
+				<p id="modal-desc">
+					Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ab optio totam nihil eos, dolor aut maiores, voluptatum
+					reprehenderit sit incidunt culpa? Voluptatum corrupti blanditiis nihil voluptatem atque, dolor ducimus! Beatae.
+				</p>
+				<button
+					autoFocus={true}
+					className="float-right underline outline-none focus-visible:ring"
+					onClick={() => setIsModalOpen(false)}
+					aria-label="Close modal"
+				>
+					Close
+				</button> */}
+			</Modal>
 		</div>
 	)
 }
