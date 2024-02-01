@@ -4,6 +4,7 @@ import {
 	APIStatuses,
 	CollectionNames,
 	DocumentResponses,
+	GGUser,
 	GGUsername,
 	GeneralAPIResponses
 } from '@/shared/types'
@@ -32,32 +33,52 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 			if (foundUser) {
 				const db = getFirestore(firebase_app)
-				const usernamesCollectionRef = collection(db, CollectionNames.USERNAMES)
-
-				const q = dbQuery(usernamesCollectionRef, where('ownerId', '==', clerkId))
+				const usersCollectionRef = collection(db, CollectionNames.USERS)
+				const q = dbQuery(usersCollectionRef, where('clerkId', '==', clerkId))
 				const querySnapshot = await getDocs(q)
 
+				// TODO: Finish user data collection here
+				// 1. Create a user intake flow
+				// 2. Flesh the GGUser type out with additional info (if the clerk user doesn't have what we need)
+				// 3. Redirect to that flow in afterAuth
+				// 4. Call this endpoint upon completion
 				if (querySnapshot.empty && foundUser.username) {
-					const newUsername: GGUsername = {
-						ownerId: clerkId,
-						username: generateUsername(foundUser.username!)
-					}
-					await addDoc(usernamesCollectionRef, newUsername)
-
-					return res.status(200).json({
-						status: APIStatuses.SUCCESS,
-						type: DocumentResponses.DATA_CREATED,
-						data: { username: newUsername.username }
-					})
-				} else {
-					return res.status(200).json({
-						status: APIStatuses.AMBIGUOUS,
-						type: GeneralAPIResponses.FAILURE,
-						data: {
-							error: `Unable to create username. Either clerk username was undefined, or the username already exists. UserID: ${clerkId}.`
+					const newUserEntry: GGUser = {
+						clerkId,
+						friendIds: [],
+						lists: {
+							['My Collection']: [],
+							['My Backlog']: []
 						}
-					})
+					}
 				}
+				// const db = getFirestore(firebase_app)
+				// const usernamesCollectionRef = collection(db, CollectionNames.USERNAMES)
+
+				// const q = dbQuery(usernamesCollectionRef, where('ownerId', '==', clerkId))
+				// const querySnapshot = await getDocs(q)
+
+				// if (querySnapshot.empty && foundUser.username) {
+				// 	const newUsername: GGUsername = {
+				// 		ownerId: clerkId,
+				// 		username: generateUsername(foundUser.username!)
+				// 	}
+				// 	await addDoc(usernamesCollectionRef, newUsername)
+
+				// 	return res.status(200).json({
+				// 		status: APIStatuses.SUCCESS,
+				// 		type: DocumentResponses.DATA_CREATED,
+				// 		data: { username: newUsername.username }
+				// 	})
+				// } else {
+				// 	return res.status(200).json({
+				// 		status: APIStatuses.AMBIGUOUS,
+				// 		type: GeneralAPIResponses.FAILURE,
+				// 		data: {
+				// 			error: `Unable to create username. Either clerk username was undefined, or the username already exists. UserID: ${clerkId}.`
+				// 		}
+				// 	})
+				// }
 			} else {
 				throw new Error(`User not found with ID ${clerkId}`)
 			}

@@ -25,3 +25,8 @@
 - [ ] Eventually figure out how to handle multiple editions
 - [ ] Write a service that has an aggregate score rather than just the moby score
 - [ ] Eventually sign up for the metacritic API and use that
+- [ ] Remove node environment checks in middleware before golive
+
+Handling Lists
+
+- [ ] When a user gets added, we need to create two lists for them: Collection and Backlog

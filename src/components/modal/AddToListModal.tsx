@@ -9,7 +9,7 @@ type AddToListModalProps = {
 
 const AddToListModal = ({ isModalOpen, setIsModalOpen }: AddToListModalProps) => {
 	return (
-		<BaseModal id="modal" open={!isModalOpen} onClose={() => setIsModalOpen(false)}>
+		<BaseModal id="modal" open={isModalOpen} onClose={() => setIsModalOpen(false)}>
 			<AddToListModalContents setIsModalOpen={setIsModalOpen} />
 		</BaseModal>
 	)

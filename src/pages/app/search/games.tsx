@@ -142,7 +142,7 @@ const SearchGamesPage = () => {
 					</div>
 				</div>
 			)}
-			<AddToListModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+			<AddToListModal isModalOpen={!isModalOpen} setIsModalOpen={setIsModalOpen} />
 		</div>
 	)
 }

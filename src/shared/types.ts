@@ -91,8 +91,23 @@ export type ClerkUser = {
 export type GGUser = {
 	clerkId: string
 	friendIds: string[]
-	collectionRef: string
-	wishlistRef: string
+	lists: GGList
+}
+
+export type GGLists = Record<string, GGList>
+
+export type GGList = {
+	[collectionName: string]: StoredGame[]
+}
+
+// TODO: Update as needed
+export type StoredGame = {
+	game_id: number
+	moby_score: number
+	platform: string
+	sample_cover: SampleCover
+	title: string
+	playStatus: GamePlayStatus
 }
 
 export type UserByEmail = {

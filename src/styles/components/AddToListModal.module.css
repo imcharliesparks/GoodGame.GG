@@ -1,0 +1,33 @@
+.checkbox:checked + .checkboxLabel {
+	/* When the checkbox is checked */
+	background-color: #4f46e5; /* Background color */
+	border-color: #4f46e5; /* Border color */
+}
+
+.checkbox:checked + .checkboxLabel::after {
+	/* Style for the checkmark */
+	content: '';
+	position: absolute;
+	left: 2px;
+	top: 2px;
+	background: white;
+	width: 2px;
+	height: 2px;
+	box-shadow: 2px 0 0 white, 4px 0 0 white, 4px -2px 0 white, 4px -4px 0 white, 4px -6px 0 white, 4px -8px 0 white;
+	transform: rotate(45deg);
+}
+
+.checkbox {
+	opacity: 0;
+	position: absolute;
+	z-index: 2; /* Ensure it's on top */
+}
+
+.checkboxLabel {
+	z-index: 1; /* Lower than .checkbox */
+	/* ... other styles ... */
+}
+.checkboxLabel::after {
+	/* ... other styles ... */
+	pointer-events: none; /* This ensures clicks go "through" the pseudo-element */
+}
