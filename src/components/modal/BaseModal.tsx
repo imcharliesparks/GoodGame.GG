@@ -5,7 +5,7 @@ export type ModalProps = ComponentPropsWithoutRef<'dialog'> & {
 	onClose: () => void
 }
 
-export default function Modal({ children, open, onClose, className, ...rest }: ModalProps) {
+export default function BaseModal({ children, open, onClose, className, ...rest }: ModalProps) {
 	const ref = useRef<HTMLDialogElement>(null)
 
 	useEffect(() => {

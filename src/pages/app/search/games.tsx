@@ -3,9 +3,9 @@ import { APIMethods, APIStatuses, GGGame, GamePlayStatus, MobyGame } from '@/sha
 import SearchGameCard from '@/components/general/SearchGameCard'
 import LoadingSpinner from '@/components/general/LoadingSpinner'
 import NewSearchGameCard from '@/components/general/NewSearchGameCard'
-import Modal from '@/components/general/Dialog'
-import { Icon } from 'react-icons-kit'
-import { ic_close } from 'react-icons-kit/md/ic_close'
+import BaseModal from '@/components/modal/BaseModal'
+import AddToListModalContents from '@/components/modal/AddToListModalContents'
+import AddToListModal from '@/components/modal/AddToListModal'
 
 // TODO: Disallow adding of games once the user already has them
 // TODO: Add pagination to search for speed
@@ -142,34 +142,7 @@ const SearchGamesPage = () => {
 					</div>
 				</div>
 			)}
-			<Modal id="modal" open={!isModalOpen} onClose={() => setIsModalOpen(false)}>
-				<div className="h-full w-[250px] mx-auto">
-					<div className="grid grid-cols-2 border-b-2 pb-2">
-						<h4 className="text-left">Save game to...</h4>
-						<div onClick={() => setIsModalOpen(false)} className="cursor-pointer text-right">
-							<Icon icon={ic_close} size={24} />
-						</div>
-					</div>
-
-					<div></div>
-					<div></div>
-				</div>
-				{/* <h2 id="modal-title" className="mb-1 text-lg font-bold">
-					Modal
-				</h2>
-				<p id="modal-desc">
-					Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ab optio totam nihil eos, dolor aut maiores, voluptatum
-					reprehenderit sit incidunt culpa? Voluptatum corrupti blanditiis nihil voluptatem atque, dolor ducimus! Beatae.
-				</p>
-				<button
-					autoFocus={true}
-					className="float-right underline outline-none focus-visible:ring"
-					onClick={() => setIsModalOpen(false)}
-					aria-label="Close modal"
-				>
-					Close
-				</button> */}
-			</Modal>
+			<AddToListModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
 		</div>
 	)
 }
