@@ -6,17 +6,20 @@ import {
 	DocumentResponses,
 	GGUser,
 	GGUsername,
-	GeneralAPIResponses
+	GeneralAPIResponses,
+	TypedRequest
 } from '@/shared/types'
 import { generateUsername } from '@/shared/utils'
-import { User, clerkClient } from '@clerk/nextjs/dist/types/server'
+import { User, clerkClient } from '@clerk/nextjs/server'
 import { collection, getFirestore, where, query as dbQuery, getDocs, addDoc } from 'firebase/firestore'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 // TODO: Eventually handle the case where username is undefined here
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-	const { method, query } = req
+const handler = async (req: TypedRequest<User>, res: NextApiResponse) => {
+	const { method, query, body: user } = req
 	const clerkId = query.clerkId as string
+	const { firstName, lastName, externalAccounts } = user
+	const { emailAddress, username } = externalAccounts[0]
 
 	if (!clerkId) {
 		console.error('User not authorized.')
@@ -29,56 +32,33 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 	if (method === APIMethods.POST) {
 		try {
-			const foundUser: User = await clerkClient.users.getUser(clerkId)
+			const foundUser = await clerkClient.users.getUser(clerkId)
 
 			if (foundUser) {
 				const db = getFirestore(firebase_app)
 				const usersCollectionRef = collection(db, CollectionNames.USERS)
-				const q = dbQuery(usersCollectionRef, where('clerkId', '==', clerkId))
-				const querySnapshot = await getDocs(q)
-
-				// TODO: Finish user data collection here
-				// 1. Create a user intake flow
-				// 2. Flesh the GGUser type out with additional info (if the clerk user doesn't have what we need)
-				// 3. Redirect to that flow in afterAuth
-				// 4. Call this endpoint upon completion
-				if (querySnapshot.empty && foundUser.username) {
-					const newUserEntry: GGUser = {
-						clerkId,
-						friendIds: [],
-						lists: {
-							['My Collection']: [],
-							['My Backlog']: []
-						}
+				const newUserEntry: GGUser = {
+					clerkId,
+					emailAddress,
+					firstName: firstName ?? '',
+					lastName: lastName ?? '',
+					username: username ?? '',
+					friendIds: [],
+					lists: {
+						['Collection']: [],
+						['Backlog']: []
 					}
 				}
-				// const db = getFirestore(firebase_app)
-				// const usernamesCollectionRef = collection(db, CollectionNames.USERNAMES)
 
-				// const q = dbQuery(usernamesCollectionRef, where('ownerId', '==', clerkId))
-				// const querySnapshot = await getDocs(q)
+				await addDoc(usersCollectionRef, newUserEntry)
+				await clerkClient.users.updateUser(clerkId, {
+					privateMetadata: { ...foundUser.privateMetadata, hasSignedUp: true }
+				})
 
-				// if (querySnapshot.empty && foundUser.username) {
-				// 	const newUsername: GGUsername = {
-				// 		ownerId: clerkId,
-				// 		username: generateUsername(foundUser.username!)
-				// 	}
-				// 	await addDoc(usernamesCollectionRef, newUsername)
-
-				// 	return res.status(200).json({
-				// 		status: APIStatuses.SUCCESS,
-				// 		type: DocumentResponses.DATA_CREATED,
-				// 		data: { username: newUsername.username }
-				// 	})
-				// } else {
-				// 	return res.status(200).json({
-				// 		status: APIStatuses.AMBIGUOUS,
-				// 		type: GeneralAPIResponses.FAILURE,
-				// 		data: {
-				// 			error: `Unable to create username. Either clerk username was undefined, or the username already exists. UserID: ${clerkId}.`
-				// 		}
-				// 	})
-				// }
+				return res.status(200).json({
+					status: APIStatuses.SUCCESS,
+					type: DocumentResponses.DATA_CREATED
+				})
 			} else {
 				throw new Error(`User not found with ID ${clerkId}`)
 			}

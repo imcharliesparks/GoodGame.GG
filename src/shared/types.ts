@@ -92,6 +92,10 @@ export type GGUser = {
 	clerkId: string
 	friendIds: string[]
 	lists: GGList
+	firstName: string
+	lastName: string
+	emailAddress: string
+	username?: string
 }
 
 export type GGLists = Record<string, GGList>
