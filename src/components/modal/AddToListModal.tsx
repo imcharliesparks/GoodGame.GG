@@ -1,19 +1,19 @@
 import React from 'react'
 import BaseModal from './BaseModal'
 import AddToListModalContents from './AddToListModalContents'
-import { GGLists, ListWithOwnership } from '@/shared/types'
+import { GGLists, ListWithOwnership, MobyGame } from '@/shared/types'
 
 type AddToListModalProps = {
 	isModalOpen: boolean
 	lists: ListWithOwnership[]
-	isListLoading: boolean
 	setIsModalOpen: (isModalOpen: boolean) => void
+	handleAddGameToList: (list: string) => void
 }
 
-const AddToListModal = ({ isModalOpen, setIsModalOpen, lists, isListLoading }: AddToListModalProps) => {
+const AddToListModal = ({ isModalOpen, setIsModalOpen, lists, handleAddGameToList }: AddToListModalProps) => {
 	return (
 		<BaseModal id="modal" open={isModalOpen} onClose={() => setIsModalOpen(false)}>
-			<AddToListModalContents isListLoading={isListLoading} lists={lists} setIsModalOpen={setIsModalOpen} />
+			<AddToListModalContents handleAddGameToList={handleAddGameToList} lists={lists} setIsModalOpen={setIsModalOpen} />
 		</BaseModal>
 	)
 }

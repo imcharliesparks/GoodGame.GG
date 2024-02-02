@@ -7,7 +7,8 @@ import {
 	GGLists,
 	GamePlayStatus,
 	ListWithOwnership,
-	MobyGame
+	MobyGame,
+	StoredGame
 } from '@/shared/types'
 import SearchGameCard from '@/components/general/SearchGameCard'
 import LoadingSpinner from '@/components/general/LoadingSpinner'
@@ -29,6 +30,9 @@ type SearchGamePageProps = {
 	userIsAuthd: boolean
 }
 
+// fuckin figure this out at some point. Or don't I don't care if it works
+let currentlySelectedGame: MobyGame
+
 // TODO: Disallow adding of games once the user already has them
 // TODO: Add pagination to search for speed
 // TODO: Grab user data here to determine if they have the game or not
@@ -40,10 +44,6 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd }: SearchGamePageProp
 	const [isLoading, setIsLoading] = React.useState<boolean>(false)
 	const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false)
 	const [listsWithOwnership, setListsWithOwnership] = React.useState<ListWithOwnership[]>([])
-	const [isListLoading, setIsListLoading] = React.useState<boolean>(true)
-
-	// Grab the user
-	// build a map of their lists
 
 	const handleShowErrorToast = (errorText: string) => {
 		setSearchError(errorText)
@@ -77,7 +77,6 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd }: SearchGamePageProp
 					body: JSON.stringify(payload)
 				})
 				const response = await request.json()
-				console.log('response', response)
 				if (response.status === APIStatuses.ERROR) {
 					throw new Error(response.data.error)
 				} else {
@@ -92,37 +91,50 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd }: SearchGamePageProp
 		}
 	}
 
-	const handleOpenListsModal = (gameId: number) => {
-		setIsModalOpen(true)
-		const foundListsWithOwnership = useUserHasGameInCollection(gameId, lists!)
-		setListsWithOwnership(foundListsWithOwnership)
-	}
-
-	const igdbHandleSearch = async () => {
-		if (!inputRef.current?.value) {
-			handleShowErrorToast('Enter a search term!')
-		} else {
-			setIsLoading(true)
+	const handleAddGameToList = async (list: string) => {
+		if (currentlySelectedGame) {
 			try {
-				const request = await fetch(`/api/games/${inputRef.current.value}/search`, {
+				const { game_id, moby_score, sample_cover, title } = currentlySelectedGame!
+				const payload: Omit<StoredGame, 'dateAdded'> = {
+					game_id,
+					moby_score,
+					sample_cover,
+					title,
+					platform: 'N/A', // TODO: FIX THIS
+					playStatus: GamePlayStatus.NOT_PLAYED
+				}
+
+				console.log('payload', payload)
+
+				const request = await fetch(`/api/lists/${list}/add`, {
 					method: APIMethods.POST,
 					headers: {
 						'Content-Type': 'application/json'
-					}
+					},
+					body: JSON.stringify(payload)
 				})
 				const response = await request.json()
 				if (response.status === APIStatuses.ERROR) {
 					throw new Error(response.data.error)
 				} else {
-					setGames(response.data.foundGames)
+					// router.replace(router.asPath)
+					handleShowSuccessToast(`Success! We've added ${currentlySelectedGame!.title} to your ${list} list.`)
 				}
 			} catch (error) {
-				console.error(`Could not find a game with the name ${inputRef.current.value}`, error)
-				handleShowErrorToast(`We couldn't find a game by that name!`)
-			} finally {
-				setIsLoading(false)
+				console.error(`Unable to add game to list`, error)
+				handleShowErrorToast(
+					`We couldn't add ${currentlySelectedGame!.title} to your ${list} list. Please try again in a bit.`
+				)
 			}
 		}
+	}
+
+	const handleOpenListsModal = (game: MobyGame) => {
+		const { game_id } = game
+		currentlySelectedGame = game
+		setIsModalOpen(true)
+		const foundListsWithOwnership = useUserHasGameInCollection(game_id, lists!)
+		setListsWithOwnership(foundListsWithOwnership)
 	}
 
 	return (
@@ -151,7 +163,9 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd }: SearchGamePageProp
 							lastCard={i === games.length - 1}
 							key={game.game_id}
 							game={game}
-							handleOpenModal={() => handleOpenListsModal(game.game_id)}
+							handleOpenModal={() => {
+								handleOpenListsModal(game)
+							}}
 							handleShowSuccessToast={handleShowSuccessToast}
 							handleShowErrorToast={handleShowErrorToast}
 						/>
@@ -179,10 +193,10 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd }: SearchGamePageProp
 
 			{userIsAuthd && (
 				<AddToListModal
-					isListLoading={isListLoading}
 					lists={listsWithOwnership!}
 					isModalOpen={isModalOpen}
 					setIsModalOpen={setIsModalOpen}
+					handleAddGameToList={handleAddGameToList}
 				/>
 			)}
 		</div>

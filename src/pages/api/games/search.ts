@@ -1,4 +1,4 @@
-import { mobyGamesSearchSchema } from '@/shared/ValidationSchemas'
+import { MobyGamesSearchSchema } from '@/shared/ValidationSchemas'
 import { SubstandardGenres } from '@/shared/constants'
 import {
 	APIMethods,
@@ -15,7 +15,7 @@ import { convert } from 'html-to-text'
 const handler = async (req: TypedRequest<MobyAPIGameSearchParameters>, res: NextApiResponse) => {
 	const { method, body: searchParameters } = req
 	const { userId } = getAuth(req)
-	const { error: schemaError } = mobyGamesSearchSchema.validate(searchParameters)
+	const { error: validationError } = MobyGamesSearchSchema.validate(searchParameters)
 
 	if (!userId) {
 		console.error('User is not authenticated.')
@@ -26,8 +26,8 @@ const handler = async (req: TypedRequest<MobyAPIGameSearchParameters>, res: Next
 		})
 	}
 
-	if (schemaError) {
-		console.log('schemaError', schemaError)
+	if (validationError) {
+		console.log('validationError', validationError)
 		console.error('Search request body did not pass validation check')
 		return res.status(400).json({
 			status: APIStatuses.ERROR,
@@ -50,18 +50,22 @@ const handler = async (req: TypedRequest<MobyAPIGameSearchParameters>, res: Next
 
 			const request = await fetch(reqUrl)
 			const response = await request.json()
-			const filteredGamesList = response.games.filter(
-				(game: MobyGame) => !SubstandardGenres.has(game.genres[0].genre_name)
-			)
-			const finalGamesList = filteredGamesList.map((game: MobyGame) => ({
-				...game,
-				description: convert(
-					game.description,
-					{ selectors: [{ selector: 'a', options: { ignoreHref: true } }] },
-					{ selector: 'img', options: { ignoreHref: true } }
+			if (response.games && response.games.length) {
+				const filteredGamesList = response.games.filter(
+					(game: MobyGame) => !SubstandardGenres.has(game.genres[0].genre_name)
 				)
-			}))
-			return res.json({ data: { games: finalGamesList } })
+				const finalGamesList = filteredGamesList.map((game: MobyGame) => ({
+					...game,
+					description: convert(
+						game.description,
+						{ selectors: [{ selector: 'a', options: { ignoreHref: true } }] },
+						{ selector: 'img', options: { ignoreHref: true } }
+					)
+				}))
+				return res.json({ data: { games: finalGamesList } })
+			} else {
+				throw new Error('No games by that title were found!')
+			}
 		} catch (error) {
 			console.error(error)
 			return res.status(400).json({ status: APIStatuses.ERROR, type: GeneralAPIResponses.FAILURE })

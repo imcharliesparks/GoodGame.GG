@@ -1,4 +1,5 @@
 import type { EmailAddress, ExternalAccount, PhoneNumber, Web3WalletJSON } from '@clerk/nextjs/server'
+import { Timestamp } from 'firebase/firestore'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 // TODO: Clean up/order by type
@@ -125,6 +126,7 @@ export type StoredGame = {
 	sample_cover: SampleCover
 	title: string
 	playStatus: GamePlayStatus
+	dateAdded: Timestamp
 }
 
 export type UserByEmail = {

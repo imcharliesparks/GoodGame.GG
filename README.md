@@ -28,6 +28,7 @@
 - [ ] Remove node environment checks in middleware before golive
 - [ ] Come back to the user intake flow when we have more data to add (steam integrations, other APIs, etc.)
 - [ ] Set up SSR handled search queries in search/games
+- [ ] Refactor lists so that they support platform and digital/physical
 
 Handling Lists
 
