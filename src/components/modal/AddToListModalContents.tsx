@@ -1,4 +1,4 @@
-import { ListWithOwnership } from '@/shared/types'
+import { GGLists, ListWithOwnership } from '@/shared/types'
 import React from 'react'
 import Icon from 'react-icons-kit'
 import { ic_close } from 'react-icons-kit/md/ic_close'
@@ -6,11 +6,12 @@ import { ic_close } from 'react-icons-kit/md/ic_close'
 type AddToListModalContentsProps = {
 	setIsModalOpen: (isModalOpen: boolean) => void
 	lists: ListWithOwnership[]
+	isListLoading: boolean
 }
 
 // Pseudo Code
 // 1. If a game is already in your list, this needs to be checked by default
-const AddToListModalContents = ({ setIsModalOpen, lists }: AddToListModalContentsProps) => {
+const AddToListModalContents = ({ setIsModalOpen, lists, isListLoading }: AddToListModalContentsProps) => {
 	const handleCheckboxClick = (e: any) => {
 		console.log('e.target', e.target.checked)
 	}
@@ -24,7 +25,8 @@ const AddToListModalContents = ({ setIsModalOpen, lists }: AddToListModalContent
 				</div>
 			</div>
 			<div>
-				{lists.map((list: ListWithOwnership, i: number) => (
+				{!lists.length ? <h1>Loading...</h1> : <h1>Not loading!</h1>}
+				{/* {lists.map((list: ListWithOwnership, i: number) => (
 					<div key={`${list.listName}_${i}`}>
 						<div className="my-3 block min-h-[1.5rem] pl-[1.5rem]">
 							<input
@@ -40,7 +42,7 @@ const AddToListModalContents = ({ setIsModalOpen, lists }: AddToListModalContent
 							</label>
 						</div>
 					</div>
-				))}
+				))} */}
 			</div>
 			<div></div>
 		</div>

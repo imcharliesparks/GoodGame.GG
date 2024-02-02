@@ -10,6 +10,7 @@ const beforeAuthMiddleware = (req: NextRequest) => {
 }
 
 export default authMiddleware({
+	// TODO: In the future consider making search and such public for demoing the functionality
 	publicRoutes: ['/', '/user-intake'],
 	afterAuth: async (auth, req, evt) => {
 		if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'test') {

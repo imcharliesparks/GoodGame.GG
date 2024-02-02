@@ -27,6 +27,7 @@
 - [ ] Eventually sign up for the metacritic API and use that
 - [ ] Remove node environment checks in middleware before golive
 - [ ] Come back to the user intake flow when we have more data to add (steam integrations, other APIs, etc.)
+- [ ] Set up SSR handled search queries in search/games
 
 Handling Lists
 

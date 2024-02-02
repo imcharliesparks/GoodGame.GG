@@ -98,10 +98,18 @@ export type GGUser = {
 	username?: string
 }
 
-export type GGLists = Record<string, GGList>
+export enum UserLists {
+	BACKLOG = 'Backlog',
+	COLLECTION = 'Collection',
+	WISHLIST = 'Wishlist'
+}
+
+export type GGLists = {
+	[collectionName: UserLists | string]: GGList
+}
 
 export type GGList = {
-	[collectionName: string]: StoredGame[]
+	[gameId: string]: StoredGame
 }
 
 export type ListWithOwnership = {

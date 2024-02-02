@@ -92,7 +92,7 @@ const NewSearchGameCard = ({
 			: 'No platforms found'
 	}
 
-	console.log('game', convertMobyScore(game.moby_score))
+	// console.log('game', convertMobyScore(game.moby_score))
 
 	return (
 		<div className={`border-t-[.25px] border-black w-full min-h-[246px]  ${lastCard && 'border-b-[.25px] border-black'}`}>

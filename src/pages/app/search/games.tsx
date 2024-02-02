@@ -1,22 +1,46 @@
 import React from 'react'
-import { APIMethods, APIStatuses, GGGame, GamePlayStatus, MobyGame } from '@/shared/types'
+import {
+	APIMethods,
+	APIStatuses,
+	CollectionNames,
+	GGGame,
+	GGLists,
+	GamePlayStatus,
+	ListWithOwnership,
+	MobyGame
+} from '@/shared/types'
 import SearchGameCard from '@/components/general/SearchGameCard'
 import LoadingSpinner from '@/components/general/LoadingSpinner'
 import NewSearchGameCard from '@/components/general/NewSearchGameCard'
 import BaseModal from '@/components/modal/BaseModal'
 import AddToListModalContents from '@/components/modal/AddToListModalContents'
 import AddToListModal from '@/components/modal/AddToListModal'
+import { getAuth } from '@clerk/nextjs/server'
+import { GetServerSidePropsContext } from 'next'
+import { clerkClient } from '@clerk/nextjs'
+import firebase_app from '@/lib/firebase'
+import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore'
+import { useUserHasGameInCollection } from '@/components/hooks/useUserHasGameInCollection'
+
+type SearchGamePageProps = {
+	searchQuery?: string
+	// TODO: If this is made public factor that in here
+	lists?: GGLists
+	userIsAuthd: boolean
+}
 
 // TODO: Disallow adding of games once the user already has them
 // TODO: Add pagination to search for speed
 // TODO: Grab user data here to determine if they have the game or not
-const SearchGamesPage = () => {
+const SearchGamesPage = ({ searchQuery, lists, userIsAuthd }: SearchGamePageProps) => {
 	const inputRef = React.useRef<HTMLInputElement | null>(null)
 	const [searchError, setSearchError] = React.useState<string | null>(null)
 	const [addSuccessText, setAddSuccessText] = React.useState<string | null>(null)
 	const [games, setGames] = React.useState<MobyGame[]>()
 	const [isLoading, setIsLoading] = React.useState<boolean>(false)
 	const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false)
+	const [listsWithOwnership, setListsWithOwnership] = React.useState<ListWithOwnership[]>([])
+	const [isListLoading, setIsListLoading] = React.useState<boolean>(true)
 
 	// Grab the user
 	// build a map of their lists
@@ -66,6 +90,12 @@ const SearchGamesPage = () => {
 				setIsLoading(false)
 			}
 		}
+	}
+
+	const handleOpenListsModal = (gameId: number) => {
+		setIsModalOpen(true)
+		const foundListsWithOwnership = useUserHasGameInCollection(gameId, lists!)
+		setListsWithOwnership(foundListsWithOwnership)
 	}
 
 	const igdbHandleSearch = async () => {
@@ -121,7 +151,7 @@ const SearchGamesPage = () => {
 							lastCard={i === games.length - 1}
 							key={game.game_id}
 							game={game}
-							handleOpenModal={() => setIsModalOpen(true)}
+							handleOpenModal={() => handleOpenListsModal(game.game_id)}
 							handleShowSuccessToast={handleShowSuccessToast}
 							handleShowErrorToast={handleShowErrorToast}
 						/>
@@ -146,9 +176,47 @@ const SearchGamesPage = () => {
 					</div>
 				</div>
 			)}
-			<AddToListModal isModalOpen={!isModalOpen} setIsModalOpen={setIsModalOpen} />
+
+			{userIsAuthd && (
+				<AddToListModal
+					isListLoading={isListLoading}
+					lists={listsWithOwnership!}
+					isModalOpen={isModalOpen}
+					setIsModalOpen={setIsModalOpen}
+				/>
+			)}
 		</div>
 	)
+}
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+	const { userId } = getAuth(ctx.req)
+	const props: SearchGamePageProps = {
+		userIsAuthd: userId ? true : false
+	}
+
+	try {
+		const db = getFirestore(firebase_app)
+		const userCollectionRef = collection(db, CollectionNames.USERS)
+		const q = query(userCollectionRef, where('clerkId', '==', userId))
+		const querySnapshot = await getDocs(q)
+
+		if (querySnapshot.empty) {
+			console.error('Non logged in user accessing search')
+		} else {
+			const { lists } = Object.assign(querySnapshot.docs[0].data(), {})
+
+			if (lists && Object.keys(lists).length) {
+				props.lists = lists
+			}
+		}
+	} catch (error) {
+		console.error('there was an error fetching initial data on the search/games page', error)
+	} finally {
+		return {
+			props
+		}
+	}
 }
 
 export default SearchGamesPage
