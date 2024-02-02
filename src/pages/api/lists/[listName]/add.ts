@@ -19,6 +19,9 @@ const handler = async (req: TypedRequest<Omit<StoredGame, 'dateAdded'>>, res: Ne
 	const { method, body, query: urlQuery } = req
 	const { userId } = getAuth(req)
 	const listName = urlQuery.listName as string
+	if (!body.moby_score) {
+		delete body.moby_score
+	}
 	const { error: validationError } = GameToAddToCollectionSchema.validate(body)
 
 	if (!userId) {
@@ -31,7 +34,7 @@ const handler = async (req: TypedRequest<Omit<StoredGame, 'dateAdded'>>, res: Ne
 	}
 
 	if (validationError || !listName) {
-		console.error('Game request body did not pass validation check')
+		console.error('Game request body did not pass validation check', validationError)
 		return res.status(400).json({
 			status: APIStatuses.ERROR,
 			type: GeneralAPIResponses.UNAUTHORIZED,
