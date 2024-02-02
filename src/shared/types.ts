@@ -104,6 +104,11 @@ export type GGList = {
 	[collectionName: string]: StoredGame[]
 }
 
+export type ListWithOwnership = {
+	listName: string
+	hasGame: boolean
+}
+
 // TODO: Update as needed
 export type StoredGame = {
 	game_id: number

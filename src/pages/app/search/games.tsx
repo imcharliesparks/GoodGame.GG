@@ -9,6 +9,7 @@ import AddToListModal from '@/components/modal/AddToListModal'
 
 // TODO: Disallow adding of games once the user already has them
 // TODO: Add pagination to search for speed
+// TODO: Grab user data here to determine if they have the game or not
 const SearchGamesPage = () => {
 	const inputRef = React.useRef<HTMLInputElement | null>(null)
 	const [searchError, setSearchError] = React.useState<string | null>(null)
@@ -16,6 +17,9 @@ const SearchGamesPage = () => {
 	const [games, setGames] = React.useState<MobyGame[]>()
 	const [isLoading, setIsLoading] = React.useState<boolean>(false)
 	const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false)
+
+	// Grab the user
+	// build a map of their lists
 
 	const handleShowErrorToast = (errorText: string) => {
 		setSearchError(errorText)
