@@ -42,7 +42,7 @@ const handler = async (req: TypedRequest<Omit<StoredGame, 'dateAdded'>>, res: Ne
 		})
 	}
 
-	if (method === APIMethods.POST) {
+	if (method === APIMethods.PATCH) {
 		try {
 			const db = getFirestore(firebase_app)
 			const collectionsCollectionRef = collection(db, CollectionNames.USERS)
@@ -56,17 +56,20 @@ const handler = async (req: TypedRequest<Omit<StoredGame, 'dateAdded'>>, res: Ne
 
 			const updatedGame: StoredGame = Object.assign({ dateAdded: Timestamp.now() }, body)
 			const updatedUser: GGUser = Object.assign({}, querySnapshot.docs[0].data()) as GGUser
+			let operation: string
 
 			if (updatedUser.lists[listName]) {
 				// @ts-ignore
 				if (updatedUser.lists[listName][updatedGame.game_id.toString()]) {
-					console.error('This game already exists in the users') // TODO: Should we remove?
-					return res.status(404).json({ status: APIStatuses.ERROR, type: GeneralAPIResponses.NOT_FOUND })
+					operation = 'Game removed from list'
+					delete updatedUser.lists[listName][updatedGame.game_id.toString()]
 				} else {
+					operation = 'Game added to list'
 					// @ts-ignore
 					updatedUser.lists[listName][updatedGame.game_id.toString()] = updatedGame
 				}
 			} else {
+				operation = 'List created and game added'
 				// @ts-ignore
 				updatedUser.lists[listName] = {
 					[updatedGame.game_id.toString()]: updatedGame
@@ -76,10 +79,11 @@ const handler = async (req: TypedRequest<Omit<StoredGame, 'dateAdded'>>, res: Ne
 			const userDocumentPath = querySnapshot.docs[0].ref.path
 			const userDocumentRef = doc(db, userDocumentPath)
 			await updateDoc(userDocumentRef, updatedUser)
+
 			return res.status(200).json({
 				status: APIStatuses.SUCCESS,
-				type: DocumentResponses.DATA_CREATED,
-				data: { user: updatedUser }
+				type: DocumentResponses.DATA_UPDATED,
+				data: { updatedList: updatedUser.lists, operation }
 			})
 		} catch (error) {
 			console.error(error)

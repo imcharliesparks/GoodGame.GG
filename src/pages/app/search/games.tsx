@@ -92,12 +92,9 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd }: SearchGamePageProp
 		}
 	}
 
-	const handleAddGameToList = async (list: string): Promise<boolean> => {
-		const indexOfListingToUpdate = listsWithOwnership.findIndex(
-			(listWithOwnership: ListWithOwnership) => listWithOwnership.listName === list
-		)
-
+	const handleAddGameToList = async (listName: string, index: number): Promise<boolean> => {
 		let success: boolean = false
+		handleUpdateListWithOwnership(index)
 		try {
 			const { game_id, moby_score, sample_cover, title } = currentlySelectedGame!
 			const payload: Omit<StoredGame, 'dateAdded'> = {
@@ -109,8 +106,8 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd }: SearchGamePageProp
 				playStatus: GamePlayStatus.NOT_PLAYED
 			}
 
-			const request = await fetch(`/api/lists/${list}/update`, {
-				method: APIMethods.POST,
+			const request = await fetch(`/api/lists/${listName}/update`, {
+				method: APIMethods.PATCH,
 				headers: {
 					'Content-Type': 'application/json'
 				},
@@ -122,15 +119,13 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd }: SearchGamePageProp
 			} else {
 				// router.replace(router.asPath)
 				success = true
-				handleShowSuccessToast(`Success! We've added ${currentlySelectedGame!.title} to your ${list} list.`)
-				handleUpdateListWithOwnership(indexOfListingToUpdate, true)
+				handleShowSuccessToast(`Success! We've added ${currentlySelectedGame!.title} to your ${listName} list.`)
 			}
 		} catch (error) {
 			console.error(`Unable to add game to list`, error)
 			handleShowErrorToast(
-				`We couldn't add ${currentlySelectedGame!.title} to your ${list} list. Please try again in a bit.`
+				`We couldn't add ${currentlySelectedGame!.title} to your ${listName} list. Please try again in a bit.`
 			)
-			handleUpdateListWithOwnership(indexOfListingToUpdate, false)
 		} finally {
 			return success
 		}
@@ -144,10 +139,14 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd }: SearchGamePageProp
 		setListsWithOwnership(foundListsWithOwnership)
 	}
 
-	const handleUpdateListWithOwnership = (index: number, ownershipStatus: boolean) => {
+	const handleUpdateListWithOwnership = (index: number, ownershipStatus?: boolean) => {
 		setListsWithOwnership((prev: ListWithOwnership[]) => {
 			const updated = Array.from(prev)
-			updated[index].hasGame = ownershipStatus
+			const updatedOwnershipStatus = ownershipStatus ? ownershipStatus : !prev[index].hasGame
+			console.log('old', updated[index])
+			console.log('expression', updatedOwnershipStatus)
+			updated[index].hasGame = ownershipStatus ?? !prev[index].hasGame
+			console.log('new', updated[index])
 			return updated
 		})
 	}

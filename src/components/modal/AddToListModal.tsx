@@ -1,13 +1,13 @@
 import React from 'react'
 import BaseModal from './BaseModal'
 import AddToListModalContents from './AddToListModalContents'
-import { GGLists, ListWithOwnership, MobyGame } from '@/shared/types'
+import { ListWithOwnership } from '@/shared/types'
 
 type AddToListModalProps = {
 	isModalOpen: boolean
 	lists: ListWithOwnership[]
 	setIsModalOpen: (isModalOpen: boolean) => void
-	handleAddGameToList: (list: string) => Promise<boolean>
+	handleAddGameToList: (listName: string, index: number) => Promise<boolean>
 }
 
 const AddToListModal = ({ isModalOpen, setIsModalOpen, lists, handleAddGameToList }: AddToListModalProps) => {

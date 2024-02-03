@@ -6,7 +6,7 @@ import { ic_close } from 'react-icons-kit/md/ic_close'
 type AddToListModalContentsProps = {
 	setIsModalOpen: (isModalOpen: boolean) => void
 	lists: ListWithOwnership[]
-	handleAddGameToList: (list: string) => Promise<boolean>
+	handleAddGameToList: (listName: string, index: number) => Promise<boolean>
 }
 
 // TODO: Implement loading
@@ -15,18 +15,10 @@ const AddToListModalContents = ({ setIsModalOpen, lists, handleAddGameToList }: 
 	const [checkboxStates, setCheckBoxStates] = React.useState<boolean[]>(lists.map((list) => list.hasGame))
 	const [addToListLoading, setAddToListLoading] = React.useState<boolean>(false)
 
-	const handleCheckboxClick = async (index: number, list: string) => {
+	const handleCheckboxClick = async (listName: string, index: number) => {
 		setAddToListLoading(true)
 
-		// setCheckBoxStates((currentCheckedStates) =>
-		// 	currentCheckedStates!.map((checked, i) => (i === index ? !checked : checked))
-		// )
-
-		const result = await handleAddGameToList(list)
-
-		// if (result) {
-		// 	lists[i]
-		// }
+		const result = await handleAddGameToList(listName, index)
 
 		setAddToListLoading(false)
 	}
@@ -51,7 +43,7 @@ const AddToListModalContents = ({ setIsModalOpen, lists, handleAddGameToList }: 
 									type="checkbox"
 									id={`${list.listName}_${i}`}
 									onChange={() => {
-										handleCheckboxClick(i, list.listName)
+										handleCheckboxClick(list.listName, i)
 									}}
 									checked={list.hasGame}
 								/>
