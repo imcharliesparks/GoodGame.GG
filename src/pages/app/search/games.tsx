@@ -219,7 +219,9 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 			console.error('Non logged in user accessing search')
 		} else {
 			const { lists } = Object.assign(querySnapshot.docs[0].data(), {})
-
+			Object.keys(lists).forEach((key: string) => {
+				lists[key].dateAdded = lists[key].dateAdded.toDate()
+			})
 			if (lists && Object.keys(lists).length) {
 				props.lists = lists
 			}

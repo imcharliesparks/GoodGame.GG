@@ -30,7 +30,7 @@ const AddToListModalContents = ({ setIsModalOpen, lists, handleAddGameToList }: 
 			<div className="grid grid-cols-2 border-b-2 pb-2">
 				<h4 className="text-left">Save game to...</h4>
 				<div onClick={() => setIsModalOpen(false)} className="cursor-pointer text-right">
-					<Icon icon={ic_close} size={24} />
+					{/* TODO: Fix this bs <Icon icon={ic_close} size={24} /> */}X
 				</div>
 			</div>
 			<div>

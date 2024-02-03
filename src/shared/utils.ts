@@ -1,6 +1,7 @@
 import Fuse from 'fuse.js'
 import { IGDB_ACCESS_TOKEN, IGDB_BASE_URL } from './constants'
 import { APIMethods, UserByEmail } from './types'
+import { Timestamp } from 'firebase/firestore'
 
 /*
  * Data fetching wrapper for the IGDB API
@@ -85,3 +86,13 @@ export const generateUsername = (username: string): string => {
 }
 
 export const convertMobyScore = (mobyScore: number): number => Number(mobyScore.toString().split('.').join(''))
+
+const convertFirebaseTimestamps = (obj: any) => {
+	Object.keys(obj).forEach((key) => {
+		if (obj[key] instanceof Timestamp) {
+			obj[key] = obj[key].toDate() // or obj[key].toMillis() for UNIX timestamp
+		} else if (typeof obj[key] === 'object') {
+			convertFirebaseTimestamps(obj[key])
+		}
+	})
+}
