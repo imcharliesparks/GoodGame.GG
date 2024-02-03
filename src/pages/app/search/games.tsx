@@ -23,12 +23,15 @@ import { clerkClient } from '@clerk/nextjs'
 import firebase_app from '@/lib/firebase'
 import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore'
 import { useUserHasGameInCollection } from '@/components/hooks/useUserHasGameInCollection'
+import { SubstandardGenres } from '@/shared/constants'
+import { convert } from 'html-to-text'
 
 type SearchGamePageProps = {
 	searchQuery?: string
 	// TODO: If this is made public factor that in here
 	lists?: GGLists
 	userIsAuthd: boolean
+	foundGames?: MobyGame[]
 }
 
 // fuckin figure this out at some point. Or don't I don't care if it works
@@ -37,7 +40,7 @@ let currentlySelectedGame: MobyGame
 // TODO: Disallow adding of games once the user already has them
 // TODO: Add pagination to search for speed
 // TODO: Need to better handle removal from lists
-const SearchGamesPage = ({ searchQuery, lists, userIsAuthd }: SearchGamePageProps) => {
+const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: SearchGamePageProps) => {
 	const inputRef = React.useRef<HTMLInputElement | null>(null)
 	const [searchError, setSearchError] = React.useState<string | null>(null)
 	const [addSuccessText, setAddSuccessText] = React.useState<string | null>(null)
@@ -45,6 +48,17 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd }: SearchGamePageProp
 	const [isLoading, setIsLoading] = React.useState<boolean>(false)
 	const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false)
 	const [listsWithOwnership, setListsWithOwnership] = React.useState<ListWithOwnership[]>([])
+
+	React.useEffect(() => {
+		if (searchQuery) {
+			// @ts-ignore
+			inputRef.current.value = searchQuery
+		}
+
+		if (foundGames) {
+			setGames(foundGames)
+		}
+	}, [])
 
 	const handleShowErrorToast = (errorText: string) => {
 		setSearchError(errorText)
@@ -61,15 +75,21 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd }: SearchGamePageProp
 	}
 
 	const handleSearch = async () => {
-		if (!inputRef.current?.value) {
+		const searchTerm = inputRef.current?.value
+
+		if (!searchTerm) {
 			handleShowErrorToast('Enter a search term!')
 		} else {
 			setIsLoading(true)
+
+			const queryParams = new URLSearchParams(window.location.search)
+			queryParams.set('search', searchTerm)
+			const newRelativePathQuery = window.location.pathname + '?' + queryParams.toString()
+			window.history.pushState(null, '', newRelativePathQuery)
+
 			try {
 				// TODO: Add filtering for genre and platform
-				const payload = {
-					title: inputRef?.current.value
-				}
+				const payload = { title: searchTerm }
 				const request = await fetch(`/api/games/search`, {
 					method: APIMethods.POST,
 					headers: {
@@ -84,7 +104,7 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd }: SearchGamePageProp
 					setGames(response.data.games)
 				}
 			} catch (error) {
-				console.error(`Could not find a game with the name ${inputRef.current.value}`, error)
+				console.error(`Could not find a game with the name ${searchTerm}`, error)
 				handleShowErrorToast(`We couldn't find a game by that name!`)
 			} finally {
 				setIsLoading(false)
@@ -217,6 +237,8 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd }: SearchGamePageProp
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 	const { userId } = getAuth(ctx.req)
+	const searchTerm = ctx.query.search
+	console.log('searchTerm', searchTerm)
 	const props: SearchGamePageProps = {
 		userIsAuthd: userId ? true : false
 	}
@@ -242,6 +264,36 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 			}
 			if (lists && Object.keys(lists).length) {
 				props.lists = lists
+			}
+		}
+
+		if (searchTerm) {
+			props.searchQuery = searchTerm as string
+			let reqUrl = `https://api.mobygames.com/v1/games?format=normal&api_key=${process.env.MOBY_GAMES_API_KEY}&title=${searchTerm}`
+
+			// if (searchParameters.genre) {
+			// 	reqUrl += `&genre=${searchParameters.genre}`
+			// }
+
+			// if (searchParameters.platform) {
+			// 	reqUrl += `&platform=${searchParameters.platform}`
+			// }
+
+			const request = await fetch(reqUrl)
+			const response = await request.json()
+			if (response.games && response.games.length) {
+				const filteredGamesList = response.games.filter(
+					(game: MobyGame) => !SubstandardGenres.has(game.genres[0].genre_name)
+				)
+				const finalGamesList = filteredGamesList.map((game: MobyGame) => ({
+					...game,
+					description: convert(
+						game.description,
+						{ selectors: [{ selector: 'a', options: { ignoreHref: true } }] },
+						{ selector: 'img', options: { ignoreHref: true } }
+					)
+				}))
+				props.foundGames = finalGamesList
 			}
 		}
 	} catch (error) {
