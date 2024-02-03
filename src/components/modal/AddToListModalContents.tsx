@@ -6,7 +6,7 @@ import { ic_close } from 'react-icons-kit/md/ic_close'
 type AddToListModalContentsProps = {
 	setIsModalOpen: (isModalOpen: boolean) => void
 	lists: ListWithOwnership[]
-	handleAddGameToList: (list: string) => boolean
+	handleAddGameToList: (list: string) => Promise<boolean>
 }
 
 // TODO: Implement loading

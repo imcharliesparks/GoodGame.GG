@@ -7,7 +7,7 @@ type AddToListModalProps = {
 	isModalOpen: boolean
 	lists: ListWithOwnership[]
 	setIsModalOpen: (isModalOpen: boolean) => void
-	handleAddGameToList: (list: string) => void
+	handleAddGameToList: (list: string) => Promise<boolean>
 }
 
 const AddToListModal = ({ isModalOpen, setIsModalOpen, lists, handleAddGameToList }: AddToListModalProps) => {

@@ -92,49 +92,47 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd }: SearchGamePageProp
 		}
 	}
 
-	const handleAddGameToList = async (list: string) => {
+	const handleAddGameToList = async (list: string): Promise<boolean> => {
 		const indexOfListingToUpdate = listsWithOwnership.findIndex(
 			(listWithOwnership: ListWithOwnership) => listWithOwnership.listName === list
 		)
 
 		let success: boolean = false
-		if (currentlySelectedGame) {
-			try {
-				const { game_id, moby_score, sample_cover, title } = currentlySelectedGame!
-				const payload: Omit<StoredGame, 'dateAdded'> = {
-					game_id,
-					moby_score,
-					sample_cover,
-					title,
-					platform: 'N/A', // TODO: FIX THIS
-					playStatus: GamePlayStatus.NOT_PLAYED
-				}
-
-				const request = await fetch(`/api/lists/${list}/add`, {
-					method: APIMethods.POST,
-					headers: {
-						'Content-Type': 'application/json'
-					},
-					body: JSON.stringify(payload)
-				})
-				const response = await request.json()
-				if (response.status === APIStatuses.ERROR) {
-					throw new Error(response.data.error)
-				} else {
-					// router.replace(router.asPath)
-					success = true
-					handleShowSuccessToast(`Success! We've added ${currentlySelectedGame!.title} to your ${list} list.`)
-					handleUpdateListWithOwnership(indexOfListingToUpdate, true)
-				}
-			} catch (error) {
-				console.error(`Unable to add game to list`, error)
-				handleShowErrorToast(
-					`We couldn't add ${currentlySelectedGame!.title} to your ${list} list. Please try again in a bit.`
-				)
-				handleUpdateListWithOwnership(indexOfListingToUpdate, false)
-			} finally {
-				return success
+		try {
+			const { game_id, moby_score, sample_cover, title } = currentlySelectedGame!
+			const payload: Omit<StoredGame, 'dateAdded'> = {
+				game_id,
+				moby_score,
+				sample_cover,
+				title,
+				platform: 'N/A', // TODO: FIX THIS
+				playStatus: GamePlayStatus.NOT_PLAYED
 			}
+
+			const request = await fetch(`/api/lists/${list}/update`, {
+				method: APIMethods.POST,
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(payload)
+			})
+			const response = await request.json()
+			if (response.status === APIStatuses.ERROR) {
+				throw new Error(response.data.error)
+			} else {
+				// router.replace(router.asPath)
+				success = true
+				handleShowSuccessToast(`Success! We've added ${currentlySelectedGame!.title} to your ${list} list.`)
+				handleUpdateListWithOwnership(indexOfListingToUpdate, true)
+			}
+		} catch (error) {
+			console.error(`Unable to add game to list`, error)
+			handleShowErrorToast(
+				`We couldn't add ${currentlySelectedGame!.title} to your ${list} list. Please try again in a bit.`
+			)
+			handleUpdateListWithOwnership(indexOfListingToUpdate, false)
+		} finally {
+			return success
 		}
 	}
 
@@ -183,8 +181,6 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd }: SearchGamePageProp
 							handleOpenModal={() => {
 								handleOpenListsModal(game)
 							}}
-							handleShowSuccessToast={handleShowSuccessToast}
-							handleShowErrorToast={handleShowErrorToast}
 						/>
 					))}
 				</div>

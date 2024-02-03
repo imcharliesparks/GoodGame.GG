@@ -86,7 +86,7 @@ const handler = async (req: TypedRequest<Omit<StoredGame, 'dateAdded'>>, res: Ne
 			return res.status(400).json({ status: APIStatuses.ERROR, type: GeneralAPIResponses.FAILURE })
 		}
 	} else {
-		console.error('Invalid request to lists/[listName]/add.')
+		console.error('Invalid request to lists/[listName]/update.')
 		return res.status(404).json({ status: APIStatuses.ERROR, type: GeneralAPIResponses.INVALID_REQUEST_TYPE })
 	}
 }

@@ -10,79 +10,10 @@ type NewSearchGameCardProps = {
 	game: MobyGame
 	lastCard: boolean
 	handleOpenModal: () => void
-	handleShowSuccessToast: (message: string) => void
-	handleShowErrorToast: (message: string) => void
 }
 
-const NewSearchGameCard = ({
-	game,
-	lastCard,
-	handleOpenModal,
-	handleShowSuccessToast,
-	handleShowErrorToast
-}: NewSearchGameCardProps) => {
+const NewSearchGameCard = ({ game, lastCard, handleOpenModal }: NewSearchGameCardProps) => {
 	const [showFullDescription, setShowFullDescription] = React.useState<boolean>(game.description?.length < 150)
-	const [addToCollectionLoading, setAddToCollectionLoading] = React.useState<boolean>(false)
-	const [addToWishlistLoading, setAddToWishlistLoading] = React.useState<boolean>(false)
-	const dropdownRef = React.useRef(null)
-
-	const handleDropdownClick = () => {
-		const elem = document.activeElement as HTMLLinkElement
-
-		if (elem) {
-			elem?.blur()
-		}
-	}
-
-	const handleAddToCollection = async (game: MobyGame) => {
-		handleDropdownClick()
-		setAddToCollectionLoading(true)
-		try {
-			const request = await fetch(`/api/collection/add`, {
-				method: APIMethods.PATCH,
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(game)
-			})
-			const response = await request.json()
-			if (response.status === APIStatuses.ERROR) {
-				throw new Error(response.data.error)
-			} else {
-				handleShowSuccessToast('Success! Game added to collection.')
-			}
-		} catch (error) {
-			console.error(`Unable to add game to collection.`, error)
-			handleShowErrorToast(`Couldn't add that game to your collection! Please try again in a bit.`)
-		} finally {
-			setAddToCollectionLoading(false)
-		}
-	}
-
-	const handleAddToWishlist = async (game: MobyGame) => {
-		handleDropdownClick()
-		setAddToWishlistLoading(true)
-		try {
-			const request = await fetch(`/api/wishlist/add`, {
-				method: APIMethods.PATCH,
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(game)
-			})
-			const response = await request.json()
-			if (response.status === APIStatuses.ERROR) {
-				throw new Error(response.data.error)
-			} else {
-				handleShowSuccessToast('Success! Game added to wishlist.')
-			}
-		} catch (error) {
-			console.error(`Unable to add game to wishlist.`, error)
-			handleShowErrorToast(`Couldn't add that game to your wishlist! Please try again in a bit.`)
-		} finally {
-			setAddToWishlistLoading(false)
-		}
-	}
 
 	const generatePlatformsString = (): string => {
 		return game.platforms.length
@@ -91,8 +22,6 @@ const NewSearchGameCard = ({
 				: game.platforms.map((platform: Platform) => platform.platform_name).join(', ')
 			: 'No platforms found'
 	}
-
-	// console.log('game', convertMobyScore(game.moby_score))
 
 	return (
 		<div className={`border-t-[.25px] border-black w-full min-h-[246px]  ${lastCard && 'border-b-[.25px] border-black'}`}>
@@ -137,9 +66,3 @@ const NewSearchGameCard = ({
 }
 
 export default NewSearchGameCard
-
-const lists = {
-	userId: {
-		listName: []
-	}
-}
