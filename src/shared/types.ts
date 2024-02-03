@@ -125,6 +125,7 @@ export type StoredGame = {
 	platform: string
 	sample_cover: SampleCover
 	title: string
+	description?: string
 	playStatus: GamePlayStatus
 	dateAdded: Timestamp | string
 }

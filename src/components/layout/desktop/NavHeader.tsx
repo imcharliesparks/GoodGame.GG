@@ -32,19 +32,27 @@ const NavHeader = () => {
 						{router.pathname.includes('app') && (
 							<>
 								<li className="transition-all ease-in-out" onClick={handleDropdownClick}>
+									<Link href="/app/user/lists">My Lists</Link>
+								</li>
+								{/* TODO: Add this as a search bar instead */}
+								<li className="transition-all ease-in-out" onClick={handleDropdownClick}>
 									<Link href="/app/search/games">Search Games</Link>
 								</li>
 								<li className="transition-all ease-in-out" onClick={handleDropdownClick}>
 									<Link href="/app/search/users">Search for Friends</Link>
 								</li>
-								<li className="transition-all ease-in-out" onClick={handleDropdownClick}>
+								{/* TODO: Make these a sub menu out of lists */}
+								{/* <li className="transition-all ease-in-out" onClick={handleDropdownClick}>
 									<Link href="/app/user/collection">My Collection</Link>
 								</li>
 								<li className="transition-all ease-in-out" onClick={handleDropdownClick}>
-									<Link href="/app/user/wishlist">My Wishlist</Link>
+									<Link href="/app/user/collection">My Backlog</Link>
 								</li>
 								<li className="transition-all ease-in-out" onClick={handleDropdownClick}>
-									<Link href="/app/user/friendslist">View Friends</Link>
+									<Link href="/app/user/wishlist">My Wishlist</Link>
+								</li> */}
+								<li className="transition-all ease-in-out" onClick={handleDropdownClick}>
+									<Link href="/app/user/friendslist">My Friends</Link>
 								</li>
 							</>
 						)}

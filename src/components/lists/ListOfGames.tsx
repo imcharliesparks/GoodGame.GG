@@ -1,7 +1,7 @@
 import React from 'react'
 import HorizontalScroll from '../general/HorizontalScroll'
-import NewCollectionGameCard from '../general/NewCollectionGameCard'
 import { GGList, StoredGame } from '@/shared/types'
+import ListCard from '../general/ListCard'
 
 type ListOfGamesProps = {
 	list: GGList
@@ -19,11 +19,16 @@ const ListOfGames = ({ list, listName }: ListOfGamesProps) => {
 	return (
 		<div>
 			<h3 className="text-3xl text-center">{listName}</h3>
-			<HorizontalScroll>
-				{games.map((game: StoredGame) => (
-					<NewCollectionGameCard key={`${listName}_${game.game_id}`} game={game} setError={() => console.log('oh no')} />
-				))}
-			</HorizontalScroll>
+			{games.length ? (
+				<HorizontalScroll>
+					{games.map((game: StoredGame) => (
+						<ListCard key={`${listName}_${game.game_id}`} game={game} setError={() => console.log('oh no')} />
+					))}
+				</HorizontalScroll>
+			) : (
+				// TODO: Do something better tbh
+				<h1 className="text-center mt-4">No games added to this list yet!</h1>
+			)}
 		</div>
 	)
 }

@@ -7,6 +7,7 @@ import {
 	GamePlayStatus,
 	ListWithOwnership,
 	MobyGame,
+	Platform,
 	StoredGame
 } from '@/shared/types'
 import LoadingSpinner from '@/components/general/LoadingSpinner'
@@ -28,9 +29,6 @@ type SearchGamePageProps = {
 	userIsAuthd: boolean
 	foundGames?: MobyGame[]
 }
-
-// fuckin figure this out at some point. Or don't I don't care if it works
-let currentlySelectedGame: MobyGame
 
 // TODO: Disallow adding of games once the user already has them
 // TODO: Add pagination to search for speed
@@ -109,15 +107,24 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 
 	const handleAddGameToList = async (listName: string, index: number): Promise<boolean> => {
 		let success: boolean = false
+		const gameFromLocalStorage = localStorage.getItem('currentlySelectedGame')
+		let currentlySelectedGame: MobyGame
+
 		try {
-			const { game_id, moby_score, sample_cover, title } = currentlySelectedGame!
+			if (!gameFromLocalStorage) throw new Error('No game found in local storage on search page')
+			currentlySelectedGame = JSON.parse(gameFromLocalStorage)
+			const { game_id, moby_score, sample_cover, title, platforms } = currentlySelectedGame!
 			const payload: Omit<StoredGame, 'dateAdded'> = {
 				game_id,
 				moby_score,
 				sample_cover,
 				title,
-				platform: 'N/A', // TODO: FIX THIS
-				playStatus: GamePlayStatus.NOT_PLAYED
+				platform: platforms.reduce(
+					(prev: string, platform: Platform, i: number) =>
+						i === 0 ? `${platform.platform_name}` : `${prev}, ${platform.platform_name}`,
+					''
+				), // TODO: Alow users to chooose
+				playStatus: GamePlayStatus.NOT_PLAYED // TODO: Allow users to choose
 			}
 
 			const request = await fetch(`/api/lists/${listName}/update`, {
@@ -143,7 +150,10 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 		} catch (error) {
 			console.error(`Unable to add game to list`, error)
 			handleShowErrorToast(
-				`We couldn't add ${currentlySelectedGame!.title} to your ${listName} list. Please try again in a bit.`
+				`We couldn't add ${
+					// @ts-ignore
+					currentlySelectedGame ? currentlySelectedGame.title : 'NO TITLE'
+				} to your ${listName} list. Please try again in a bit.`
 			)
 		} finally {
 			return success
@@ -152,7 +162,7 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 
 	const handleOpenListsModal = (game: MobyGame) => {
 		const { game_id } = game
-		currentlySelectedGame = game
+		localStorage.setItem('currentlySelectedGame', JSON.stringify(game))
 		setIsModalOpen(true)
 		const foundListsWithOwnership = useUserHasGameInCollection(game_id, lists!)
 		setListsWithOwnership(foundListsWithOwnership)

@@ -12,7 +12,14 @@ type AddToListModalProps = {
 
 const AddToListModal = ({ isModalOpen, setIsModalOpen, lists, handleAddGameToList }: AddToListModalProps) => {
 	return (
-		<BaseModal id="modal" open={isModalOpen} onClose={() => setIsModalOpen(false)}>
+		<BaseModal
+			id="modal"
+			open={isModalOpen}
+			onClose={() => {
+				localStorage.removeItem('currentlySelectedGame')
+				setIsModalOpen(false)
+			}}
+		>
 			<AddToListModalContents handleAddGameToList={handleAddGameToList} lists={lists} setIsModalOpen={setIsModalOpen} />
 		</BaseModal>
 	)

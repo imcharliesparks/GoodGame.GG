@@ -13,5 +13,6 @@ export const GameToAddToCollectionSchema = Joi.object<StoredGame>({
 	platform: Joi.string().optional(),
 	sample_cover: Joi.object().optional(), // TODO: Flesh this out
 	title: Joi.string().required(),
+	description: Joi.string().optional(),
 	playStatus: Joi.string().required()
 })
