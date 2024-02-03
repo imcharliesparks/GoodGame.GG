@@ -30,5 +30,6 @@
 - [ ] Set up SSR handled search queries in search/games
 - [ ] Refactor lists so that they support platform and digital/physical
 - [ ] look into APICalypse for your API caching Handling Lists
+- [ ] Convert your after auth call to just a req that fires to an endpoint instead of doing user lookup logic
 
 - [ ] When a user gets added, we need to create two lists for them: Collection and Backlog
