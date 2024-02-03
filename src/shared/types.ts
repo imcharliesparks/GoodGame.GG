@@ -126,7 +126,7 @@ export type StoredGame = {
 	sample_cover: SampleCover
 	title: string
 	playStatus: GamePlayStatus
-	dateAdded: Timestamp
+	dateAdded: Timestamp | string
 }
 
 export type UserByEmail = {

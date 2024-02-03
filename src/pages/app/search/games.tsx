@@ -3,28 +3,23 @@ import {
 	APIMethods,
 	APIStatuses,
 	CollectionNames,
-	GGGame,
-	GGList,
 	GGLists,
 	GamePlayStatus,
 	ListWithOwnership,
 	MobyGame,
 	StoredGame
 } from '@/shared/types'
-import SearchGameCard from '@/components/general/SearchGameCard'
 import LoadingSpinner from '@/components/general/LoadingSpinner'
 import NewSearchGameCard from '@/components/general/NewSearchGameCard'
-import BaseModal from '@/components/modal/BaseModal'
-import AddToListModalContents from '@/components/modal/AddToListModalContents'
 import AddToListModal from '@/components/modal/AddToListModal'
 import { getAuth } from '@clerk/nextjs/server'
 import { GetServerSidePropsContext } from 'next'
-import { clerkClient } from '@clerk/nextjs'
 import firebase_app from '@/lib/firebase'
 import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore'
 import { useUserHasGameInCollection } from '@/components/hooks/useUserHasGameInCollection'
 import { SubstandardGenres } from '@/shared/constants'
 import { convert } from 'html-to-text'
+import { convertFirebaseTimestamps } from '@/shared/utils'
 
 type SearchGamePageProps = {
 	searchQuery?: string
@@ -253,13 +248,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 		} else {
 			const { lists } = Object.assign(querySnapshot.docs[0].data(), {})
 
-			for (let list in lists) {
-				for (let game in lists[list]) {
-					if (lists[list][game].dateAdded) {
-						// TODO: Consider doing something about this
-						delete lists[list][game].dateAdded
-					}
-				}
+			for (const listName in lists) {
+				convertFirebaseTimestamps(lists[listName])
 			}
 			if (lists && Object.keys(lists).length) {
 				props.lists = lists
