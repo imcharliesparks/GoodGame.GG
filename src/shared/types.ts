@@ -92,7 +92,7 @@ export type ClerkUser = {
 export type GGUser = {
 	clerkId: string
 	friendIds: string[]
-	lists: GGList
+	lists: GGLists
 	firstName: string
 	lastName: string
 	emailAddress: string
