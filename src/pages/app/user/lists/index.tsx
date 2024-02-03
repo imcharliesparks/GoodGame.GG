@@ -1,5 +1,10 @@
+import CollectionGameCard from '@/components/general/CollectionGameCard'
+import HorizontalScroll from '@/components/general/HorizontalScroll'
+import ListCard from '@/components/general/ListCard'
+import NewCollectionGameCard from '@/components/general/NewCollectionGameCard'
+import NewSearchGameCard from '@/components/general/NewSearchGameCard'
 import firebase_app from '@/lib/firebase'
-import { CollectionNames, GGLists, UserLists } from '@/shared/types'
+import { CollectionNames, GGList, GGLists, UserLists } from '@/shared/types'
 import { convertFirebaseTimestamps } from '@/shared/utils'
 import { getAuth } from '@clerk/nextjs/server'
 import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore'
@@ -12,7 +17,18 @@ type UserListsPageProps = {
 }
 
 const UserListsPage = ({ dataFetchingError, lists }: UserListsPageProps) => {
-	return <div>UserListsPage</div>
+	console.log('lists', lists)
+	return (
+		<div>
+			<HorizontalScroll>
+				<NewCollectionGameCard game={lists.Collection['23178']} setError={() => console.log('oh no')} />
+				<NewCollectionGameCard game={lists.Collection['23178']} setError={() => console.log('oh no')} />
+				<NewCollectionGameCard game={lists.Collection['23178']} setError={() => console.log('oh no')} />
+				<NewCollectionGameCard game={lists.Collection['23178']} setError={() => console.log('oh no')} />
+				<NewCollectionGameCard game={lists.Collection['23178']} setError={() => console.log('oh no')} />
+			</HorizontalScroll>
+		</div>
+	)
 }
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
