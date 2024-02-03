@@ -114,7 +114,6 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 
 	const handleAddGameToList = async (listName: string, index: number): Promise<boolean> => {
 		let success: boolean = false
-		handleUpdateListWithOwnership(index)
 		try {
 			const { game_id, moby_score, sample_cover, title } = currentlySelectedGame!
 			const payload: Omit<StoredGame, 'dateAdded'> = {
@@ -137,7 +136,12 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 			if (response.status === APIStatuses.ERROR) {
 				throw new Error(response.data.error)
 			} else {
-				// router.replace(router.asPath)
+				// TODO: Make this an enum
+				if (response.data.operation === 'Game removed from list') {
+					handleUpdateListWithOwnership(index, false)
+				} else {
+					handleUpdateListWithOwnership(index, true)
+				}
 				success = true
 				handleShowSuccessToast(`Success! We've added ${currentlySelectedGame!.title} to your ${listName} list.`)
 			}
@@ -159,14 +163,10 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 		setListsWithOwnership(foundListsWithOwnership)
 	}
 
-	const handleUpdateListWithOwnership = (index: number, ownershipStatus?: boolean) => {
+	const handleUpdateListWithOwnership = (index: number, ownershipStatus: boolean) => {
 		setListsWithOwnership((prev: ListWithOwnership[]) => {
 			const updated = Array.from(prev)
-			const updatedOwnershipStatus = ownershipStatus ? ownershipStatus : !prev[index].hasGame
-			console.log('old', updated[index])
-			console.log('expression', updatedOwnershipStatus)
-			updated[index].hasGame = ownershipStatus ?? !prev[index].hasGame
-			console.log('new', updated[index])
+			updated[index].hasGame = ownershipStatus
 			return updated
 		})
 	}
@@ -238,7 +238,6 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 	const { userId } = getAuth(ctx.req)
 	const searchTerm = ctx.query.search
-	console.log('searchTerm', searchTerm)
 	const props: SearchGamePageProps = {
 		userIsAuthd: userId ? true : false
 	}
@@ -257,7 +256,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 			for (let list in lists) {
 				for (let game in lists[list]) {
 					if (lists[list][game].dateAdded) {
-						// TODO: Fix this bs start here
+						// TODO: Consider doing something about this
 						delete lists[list][game].dateAdded
 					}
 				}
