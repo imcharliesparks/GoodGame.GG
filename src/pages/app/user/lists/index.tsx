@@ -3,6 +3,7 @@ import HorizontalScroll from '@/components/general/HorizontalScroll'
 import ListCard from '@/components/general/ListCard'
 import NewCollectionGameCard from '@/components/general/NewCollectionGameCard'
 import NewSearchGameCard from '@/components/general/NewSearchGameCard'
+import ListOfGames from '@/components/lists/ListOfGames'
 import firebase_app from '@/lib/firebase'
 import { CollectionNames, GGList, GGLists, UserLists } from '@/shared/types'
 import { convertFirebaseTimestamps } from '@/shared/utils'
@@ -16,18 +17,22 @@ type UserListsPageProps = {
 	lists: GGLists
 }
 
+// TODO: Add some sort of ordering here
+// TODO: Handle error page
 const UserListsPage = ({ dataFetchingError, lists }: UserListsPageProps) => {
-	console.log('lists', lists)
+	const [listNames, setListNames] = React.useState<string[]>([])
+
+	React.useEffect(() => {
+		setListNames(Object.keys(lists))
+	}, [lists])
 	return (
-		<div>
-			<HorizontalScroll>
-				<NewCollectionGameCard game={lists.Collection['23178']} setError={() => console.log('oh no')} />
-				<NewCollectionGameCard game={lists.Collection['23178']} setError={() => console.log('oh no')} />
-				<NewCollectionGameCard game={lists.Collection['23178']} setError={() => console.log('oh no')} />
-				<NewCollectionGameCard game={lists.Collection['23178']} setError={() => console.log('oh no')} />
-				<NewCollectionGameCard game={lists.Collection['23178']} setError={() => console.log('oh no')} />
-			</HorizontalScroll>
-		</div>
+		<>
+			{listNames.map((listName: string) => (
+				<section key={listName} className="py-4 px-4">
+					<ListOfGames list={lists[listName]} listName={listName} />
+				</section>
+			))}
+		</>
 	)
 }
 
