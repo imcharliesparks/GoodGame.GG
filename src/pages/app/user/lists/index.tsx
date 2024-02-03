@@ -4,7 +4,6 @@ import { convertFirebaseTimestamps } from '@/shared/utils'
 import { getAuth } from '@clerk/nextjs/server'
 import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore'
 import { GetServerSidePropsContext } from 'next'
-import { Props } from 'next/script'
 import React from 'react'
 
 type UserListsPageProps = {
