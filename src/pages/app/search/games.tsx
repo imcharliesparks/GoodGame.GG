@@ -36,7 +36,7 @@ let currentlySelectedGame: MobyGame
 
 // TODO: Disallow adding of games once the user already has them
 // TODO: Add pagination to search for speed
-// TODO: Grab user data here to determine if they have the game or not
+// TODO: Need to better handle removal from lists
 const SearchGamesPage = ({ searchQuery, lists, userIsAuthd }: SearchGamePageProps) => {
 	const inputRef = React.useRef<HTMLInputElement | null>(null)
 	const [searchError, setSearchError] = React.useState<string | null>(null)
@@ -93,6 +93,11 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd }: SearchGamePageProp
 	}
 
 	const handleAddGameToList = async (list: string) => {
+		const indexOfListingToUpdate = listsWithOwnership.findIndex(
+			(listWithOwnership: ListWithOwnership) => listWithOwnership.listName === list
+		)
+
+		let success: boolean = false
 		if (currentlySelectedGame) {
 			try {
 				const { game_id, moby_score, sample_cover, title } = currentlySelectedGame!
@@ -104,8 +109,6 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd }: SearchGamePageProp
 					platform: 'N/A', // TODO: FIX THIS
 					playStatus: GamePlayStatus.NOT_PLAYED
 				}
-
-				console.log('payload', payload)
 
 				const request = await fetch(`/api/lists/${list}/add`, {
 					method: APIMethods.POST,
@@ -119,13 +122,18 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd }: SearchGamePageProp
 					throw new Error(response.data.error)
 				} else {
 					// router.replace(router.asPath)
+					success = true
 					handleShowSuccessToast(`Success! We've added ${currentlySelectedGame!.title} to your ${list} list.`)
+					handleUpdateListWithOwnership(indexOfListingToUpdate, true)
 				}
 			} catch (error) {
 				console.error(`Unable to add game to list`, error)
 				handleShowErrorToast(
 					`We couldn't add ${currentlySelectedGame!.title} to your ${list} list. Please try again in a bit.`
 				)
+				handleUpdateListWithOwnership(indexOfListingToUpdate, false)
+			} finally {
+				return success
 			}
 		}
 	}
@@ -136,6 +144,14 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd }: SearchGamePageProp
 		setIsModalOpen(true)
 		const foundListsWithOwnership = useUserHasGameInCollection(game_id, lists!)
 		setListsWithOwnership(foundListsWithOwnership)
+	}
+
+	const handleUpdateListWithOwnership = (index: number, ownershipStatus: boolean) => {
+		setListsWithOwnership((prev: ListWithOwnership[]) => {
+			const updated = Array.from(prev)
+			updated[index].hasGame = ownershipStatus
+			return updated
+		})
 	}
 
 	return (
