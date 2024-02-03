@@ -4,6 +4,7 @@ import {
 	APIStatuses,
 	CollectionNames,
 	GGGame,
+	GGList,
 	GGLists,
 	GamePlayStatus,
 	ListWithOwnership,
@@ -219,9 +220,15 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 			console.error('Non logged in user accessing search')
 		} else {
 			const { lists } = Object.assign(querySnapshot.docs[0].data(), {})
-			Object.keys(lists).forEach((key: string) => {
-				lists[key].dateAdded = lists[key].dateAdded.toDate()
-			})
+
+			for (let list in lists) {
+				for (let game in lists[list]) {
+					if (lists[list][game].dateAdded) {
+						// TODO: Fix this bs start here
+						delete lists[list][game].dateAdded
+					}
+				}
+			}
 			if (lists && Object.keys(lists).length) {
 				props.lists = lists
 			}

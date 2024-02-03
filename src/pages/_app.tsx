@@ -75,16 +75,16 @@ class MyApp extends App<AppPropsWithLayout> {
 		const { Component, pageProps } = this.props
 		const renderWithLayout = Component.getLayout || ((page: ReactNode) => <Layout>{page}</Layout>)
 		return (
-			<ErrorBoundary>
-				<ClerkProvider
-					publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
-					signInUrl="/sign-in"
-					signUpUrl="sign-up"
-					{...pageProps}
-				>
-					{renderWithLayout(<Component {...pageProps} />)}
-				</ClerkProvider>
-			</ErrorBoundary>
+			<ClerkProvider
+				publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+				signInUrl="/sign-in"
+				signUpUrl="sign-up"
+				{...pageProps}
+			>
+				{renderWithLayout(<Component {...pageProps} />)}
+			</ClerkProvider>
+			// <ErrorBoundary>
+			// </ErrorBoundary>
 		)
 	}
 }

@@ -34,6 +34,7 @@ const handler = async (req: TypedRequest<User>, res: NextApiResponse) => {
 		try {
 			const foundUser = await clerkClient.users.getUser(clerkId)
 
+			// TODO validate that this works
 			if (foundUser) {
 				const db = getFirestore(firebase_app)
 				const usersCollectionRef = collection(db, CollectionNames.USERS)
@@ -45,7 +46,9 @@ const handler = async (req: TypedRequest<User>, res: NextApiResponse) => {
 					username: username ?? '',
 					friendIds: [],
 					lists: {
+						// @ts-ignore
 						['Collection']: [],
+						// @ts-ignore
 						['Backlog']: []
 					}
 				}
