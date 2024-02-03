@@ -113,7 +113,7 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 		try {
 			if (!gameFromLocalStorage) throw new Error('No game found in local storage on search page')
 			currentlySelectedGame = JSON.parse(gameFromLocalStorage)
-			const { game_id, moby_score, sample_cover, title, platforms } = currentlySelectedGame!
+			const { game_id, moby_score, sample_cover, title, platforms, description } = currentlySelectedGame!
 			const payload: Omit<StoredGame, 'dateAdded'> = {
 				game_id,
 				moby_score,
@@ -124,7 +124,8 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 						i === 0 ? `${platform.platform_name}` : `${prev}, ${platform.platform_name}`,
 					''
 				), // TODO: Alow users to chooose
-				playStatus: GamePlayStatus.NOT_PLAYED // TODO: Allow users to choose
+				playStatus: GamePlayStatus.NOT_PLAYED, // TODO: Allow users to choose
+				description: description ?? 'No Description Found'
 			}
 
 			const request = await fetch(`/api/lists/${listName}/update`, {
