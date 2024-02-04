@@ -3,6 +3,7 @@ import HorizontalScroll from '@/components/general/HorizontalScroll'
 import ListCard from '@/components/general/ListCard'
 import NewCollectionGameCard from '@/components/general/NewCollectionGameCard'
 import NewSearchGameCard from '@/components/general/NewSearchGameCard'
+import { useSortedListNames } from '@/components/hooks/useUserLists'
 import ListOfGames from '@/components/lists/ListOfGames'
 import firebase_app from '@/lib/firebase'
 import { CollectionNames, GGList, GGLists, UserLists } from '@/shared/types'
@@ -20,28 +21,8 @@ type UserListsPageProps = {
 // TODO: Add some sort of ordering here
 // TODO: Handle error page
 const UserListsPage = ({ dataFetchingError, lists }: UserListsPageProps) => {
-	const [listNames, setListNames] = React.useState<string[]>([])
+	const listNames = useSortedListNames(lists)
 
-	React.useEffect(() => {
-		const order = ['Collection', 'Backlog', 'Wishlist']
-
-		setListNames(
-			Object.keys(lists).sort((a, b) => {
-				const indexA = order.indexOf(a)
-				const indexB = order.indexOf(b)
-
-				if (indexA !== -1 && indexB !== -1) {
-					return indexA - indexB
-				} else if (indexA !== -1) {
-					return -1
-				} else if (indexB !== -1) {
-					return 1
-				}
-
-				return a.localeCompare(b)
-			})
-		)
-	}, [lists])
 	return (
 		<>
 			{listNames.map((listName: string) => (

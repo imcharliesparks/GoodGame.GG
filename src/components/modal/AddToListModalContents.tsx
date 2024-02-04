@@ -19,6 +19,10 @@ type AddToListModalContentsProps = {
 const AddToListModalContents = ({ setIsModalOpen, lists, handleAddGameToList }: AddToListModalContentsProps) => {
 	const [buttonLoadingStates, setButtonLoadingStates] = React.useState<boolean[]>(lists.map((list) => list.hasGame))
 
+	React.useEffect(() => {
+		console.log('lists', lists)
+	}, [lists])
+
 	const handleCheckboxClick = async (listName: string, index: number) => {
 		setButtonLoadingStates((prev: boolean[]) => {
 			const updated = Array.from(prev)
