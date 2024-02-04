@@ -1,9 +1,8 @@
-import { APIMethods, GamePlayStatus, ListWithOwnership, MobyGame, StoredGame } from '@/shared/types'
+import { ListWithOwnership } from '@/shared/types'
 import React from 'react'
 import Icon from 'react-icons-kit'
 import { ic_close } from 'react-icons-kit/md/ic_close'
 import { ic_add } from 'react-icons-kit/md/ic_add'
-import { buttonAdd } from 'react-icons-kit/metrize/buttonAdd'
 import { buttonCheck } from 'react-icons-kit/metrize/buttonCheck'
 import { blank } from 'react-icons-kit/metrize/blank'
 
@@ -18,10 +17,6 @@ type AddToListModalContentsProps = {
 // TODO: Implement create list
 const AddToListModalContents = ({ setIsModalOpen, lists, handleAddGameToList }: AddToListModalContentsProps) => {
 	const [buttonLoadingStates, setButtonLoadingStates] = React.useState<boolean[]>(lists.map((list) => list.hasGame))
-
-	React.useEffect(() => {
-		console.log('lists', lists)
-	}, [lists])
 
 	const handleCheckboxClick = async (listName: string, index: number) => {
 		setButtonLoadingStates((prev: boolean[]) => {

@@ -21,6 +21,7 @@ import { useUserHasGameInCollection } from '@/components/hooks/useUserHasGameInC
 import { SubstandardGenres } from '@/shared/constants'
 import { convert } from 'html-to-text'
 import { convertFirebaseTimestamps } from '@/shared/utils'
+import { useRouter } from 'next/router'
 
 type SearchGamePageProps = {
 	searchQuery?: string
@@ -34,6 +35,7 @@ type SearchGamePageProps = {
 // TODO: Add pagination to search for speed
 // TODO: Need to better handle removal from lists
 const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: SearchGamePageProps) => {
+	const router = useRouter()
 	const inputRef = React.useRef<HTMLInputElement | null>(null)
 	const [searchError, setSearchError] = React.useState<string | null>(null)
 	const [addSuccessText, setAddSuccessText] = React.useState<string | null>(null)
@@ -43,6 +45,7 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 	const [listsWithOwnership, setListsWithOwnership] = React.useState<ListWithOwnership[]>([])
 
 	React.useEffect(() => {
+		console.log('listsWithOwnership', listsWithOwnership)
 		if (searchQuery) {
 			// @ts-ignore
 			inputRef.current.value = searchQuery
@@ -147,6 +150,7 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 				}
 				success = true
 				handleShowSuccessToast(`Success! We've added ${currentlySelectedGame!.title} to your ${listName} list.`)
+				router.replace(router.asPath)
 			}
 		} catch (error) {
 			console.error(`Unable to add game to list`, error)
