@@ -22,6 +22,10 @@ const handler = async (req: TypedRequest<Omit<StoredGame, 'dateAdded'>>, res: Ne
 	if (!body.moby_score) {
 		delete body.moby_score
 	}
+
+	// TODO: Make sure to add type safety to allow for almost any field to be undefined, or stop it in the front end
+	body.description = body.description ? body.description : 'No description provided'
+
 	const { error: validationError } = GameToAddToCollectionSchema.validate(body)
 
 	if (!userId) {
@@ -58,6 +62,7 @@ const handler = async (req: TypedRequest<Omit<StoredGame, 'dateAdded'>>, res: Ne
 			const updatedUser: GGUser = Object.assign({}, querySnapshot.docs[0].data()) as GGUser
 			let operation: string
 
+			// TODO: Break the remove into a separate endpoint
 			if (updatedUser.lists[listName]) {
 				// @ts-ignore
 				if (updatedUser.lists[listName][updatedGame.game_id.toString()]) {

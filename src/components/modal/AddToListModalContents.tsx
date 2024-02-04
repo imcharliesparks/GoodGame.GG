@@ -1,15 +1,21 @@
-import { ListWithOwnership } from '@/shared/types'
+import { GamePlayStatus, ListWithOwnership, Platform } from '@/shared/types'
 import React from 'react'
 import Icon from 'react-icons-kit'
 import { ic_close } from 'react-icons-kit/md/ic_close'
 import { ic_add } from 'react-icons-kit/md/ic_add'
 import { buttonCheck } from 'react-icons-kit/metrize/buttonCheck'
 import { blank } from 'react-icons-kit/metrize/blank'
+import SecondaryAddToListModal from './SecondaryAddToListModal'
 
 type AddToListModalContentsProps = {
 	setIsModalOpen: (isModalOpen: boolean) => void
 	lists: ListWithOwnership[]
-	handleAddGameToList: (listName: string, index: number) => Promise<boolean>
+	handleAddGameToList: (
+		listName: string,
+		index: number,
+		gameplayStatus: GamePlayStatus,
+		platforms: Platform[]
+	) => Promise<boolean>
 }
 
 // TODO: Implement make loading pretty tbh
@@ -17,28 +23,49 @@ type AddToListModalContentsProps = {
 // TODO: Implement create list
 const AddToListModalContents = ({ setIsModalOpen, lists, handleAddGameToList }: AddToListModalContentsProps) => {
 	const [buttonLoadingStates, setButtonLoadingStates] = React.useState<boolean[]>(lists.map((list) => list.hasGame))
+	const [isSecondaryModalOpen, setIsSecondaryModalOpen] = React.useState<boolean>(false)
+	const [selectedList, setSelectedList] = React.useState<string>('')
+	const [selectedIndex, setSelectedIndex] = React.useState<number>()
 
-	const handleCheckboxClick = async (listName: string, index: number) => {
+	const handleAddButtonClick = async (listName: string, index: number, gameplayStatus: GamePlayStatus) => {
 		setButtonLoadingStates((prev: boolean[]) => {
 			const updated = Array.from(prev)
 			updated[index] = true
 			return updated
 		})
+		setIsSecondaryModalOpen(true)
+	}
 
-		const result = await handleAddGameToList(listName, index)
+	const handleOpenSecondaryModal = (isOpen: boolean, list: string, index: number) => {
+		if (isOpen) {
+			setSelectedList(list)
+			setSelectedIndex(index)
+			setIsSecondaryModalOpen(true)
+		} else {
+			setIsSecondaryModalOpen(false)
+		}
+	}
 
+	const handleFinalAddGameToList = async (
+		listName: string,
+		index: number,
+		gameplayStatus: GamePlayStatus,
+		platforms: Platform[]
+	) => {
+		const result = await handleAddGameToList(listName, index, gameplayStatus, platforms)
 		setButtonLoadingStates((prev: boolean[]) => {
 			const updated = Array.from(prev)
 			updated[index] = false
 			return updated
 		})
+		return result
 	}
 
 	return (
 		<div className="h-full w-[250px] mx-auto">
 			<div className="grid grid-cols-2 border-b-2 pb-2">
 				<h4 className="text-left">Save game to...</h4>
-				<div onClick={() => setIsModalOpen(false)} className="cursor-pointer text-right">
+				<div autoFocus onClick={() => setIsModalOpen(false)} className="cursor-pointer text-right">
 					<Icon icon={ic_close} size={24} />
 				</div>
 			</div>
@@ -65,7 +92,9 @@ const AddToListModalContents = ({ setIsModalOpen, lists, handleAddGameToList }: 
 									</button>
 								) : (
 									<button
-										onClick={() => handleCheckboxClick(list.listName, i)}
+										onClick={() =>
+											list.hasGame ? console.log('oh no implement game removal') : handleOpenSecondaryModal(true, list.listName, i)
+										}
 										className={`btn btn-link normal-case text-slate-600`}
 									>
 										{list.hasGame ? 'Remove' : 'Add'}
@@ -82,6 +111,15 @@ const AddToListModalContents = ({ setIsModalOpen, lists, handleAddGameToList }: 
 					<Icon icon={ic_add} size={24} />
 				</div>
 			</div>
+			{isSecondaryModalOpen && (
+				<SecondaryAddToListModal
+					isModalOpen={isSecondaryModalOpen}
+					handleAddGameToList={handleFinalAddGameToList}
+					setIsModalOpen={() => setIsSecondaryModalOpen(false)}
+					listName={selectedList}
+					index={selectedIndex!}
+				/>
+			)}
 		</div>
 	)
 }

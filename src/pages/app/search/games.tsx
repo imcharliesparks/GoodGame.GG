@@ -108,7 +108,12 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 		}
 	}
 
-	const handleAddGameToList = async (listName: string, index: number): Promise<boolean> => {
+	const handleAddGameToList = async (
+		listName: string,
+		index: number,
+		gameplayStatus: GamePlayStatus,
+		platforms: Platform[]
+	): Promise<boolean> => {
 		let success: boolean = false
 		const gameFromLocalStorage = localStorage.getItem('currentlySelectedGame')
 		let currentlySelectedGame: MobyGame
@@ -116,7 +121,7 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 		try {
 			if (!gameFromLocalStorage) throw new Error('No game found in local storage on search page')
 			currentlySelectedGame = JSON.parse(gameFromLocalStorage)
-			const { game_id, moby_score, sample_cover, title, platforms, description } = currentlySelectedGame!
+			const { game_id, moby_score, sample_cover, title, description } = currentlySelectedGame!
 			const payload: Omit<StoredGame, 'dateAdded'> = {
 				game_id,
 				moby_score,
@@ -126,8 +131,8 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 					(prev: string, platform: Platform, i: number) =>
 						i === 0 ? `${platform.platform_name}` : `${prev}, ${platform.platform_name}`,
 					''
-				), // TODO: Alow users to chooose
-				playStatus: GamePlayStatus.NOT_PLAYED, // TODO: Allow users to choose
+				),
+				playStatus: gameplayStatus ?? GamePlayStatus.NOT_PLAYED,
 				description: description ?? 'No Description Found'
 			}
 
@@ -142,7 +147,7 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 			if (response.status === APIStatuses.ERROR) {
 				throw new Error(response.data.error)
 			} else {
-				// TODO: Make this an enum
+				// TODO: START HERE: Change this so that it's a seperate OP
 				if (response.data.operation === 'Game removed from list') {
 					handleUpdateListWithOwnership(index, false)
 				} else {

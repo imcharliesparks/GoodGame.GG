@@ -34,4 +34,5 @@
 - [ ] Rewrite nav header to not use daisy
 - [x] Fix bug where currently selectd game is undefined
 - [ ] When a user gets added, we need to create two lists for them: Collection and Backlog
-- [ ] Fix bug where save game to modal checkboxes don't update properly
+- [x] Fix bug where save game to modal checkboxes don't update properly
+- [ ] Fix descriptions being empty breaking bug (see persona 5 ultimate edition)
