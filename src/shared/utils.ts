@@ -88,6 +88,9 @@ export const convertMobyScore = (mobyScore: number): number => Number(mobyScore.
 
 export const convertFirebaseTimestamps = (list: GGList) => {
 	Object.keys(list).forEach((gameId: string) => {
-		if (list[gameId] && list[gameId].dateAdded) list[gameId].dateAdded = list[gameId].dateAdded.toString()
+		if (list[gameId] && list[gameId].dateAdded) list[gameId].dateAdded = list[gameId].dateAdded!.toString()
+		if (list[gameId] && list[gameId].lastUpdated) list[gameId].lastUpdated = list[gameId].lastUpdated!.toString()
+		if (list.dateAdded) list.dateAdded = list.dateAdded.toString()
+		if (list.lastUpdated) list.lastUpdated = list.lastUpdated.toString()
 	})
 }

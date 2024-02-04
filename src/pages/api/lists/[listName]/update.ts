@@ -5,6 +5,7 @@ import {
 	APIStatuses,
 	CollectionNames,
 	DocumentResponses,
+	GGList,
 	GGUser,
 	GeneralAPIResponses,
 	StoredGame,
@@ -54,30 +55,23 @@ const handler = async (req: TypedRequest<Omit<StoredGame, 'dateAdded'>>, res: Ne
 			const querySnapshot = await getDocs(q)
 
 			if (querySnapshot.empty) {
-				console.error('User not found for add to collection endpoint.')
+				console.error('User not found for add to list endpoint.')
 				return res.status(404).json({ status: APIStatuses.ERROR, type: GeneralAPIResponses.NOT_FOUND })
 			}
 
-			const updatedGame: StoredGame = Object.assign({ dateAdded: Timestamp.now() }, body)
+			const addedGame: StoredGame = Object.assign({ dateAdded: Timestamp.now() }, body)
 			const updatedUser: GGUser = Object.assign({}, querySnapshot.docs[0].data()) as GGUser
-			let operation: string
+			const foundList = updatedUser.lists[listName]
 
-			// TODO: Break the remove into a separate endpoint
-			if (updatedUser.lists[listName]) {
-				// @ts-ignore
-				if (updatedUser.lists[listName][updatedGame.game_id.toString()]) {
-					operation = 'Game removed from list'
-					delete updatedUser.lists[listName][updatedGame.game_id.toString()]
-				} else {
-					operation = 'Game added to list'
-					// @ts-ignore
-					updatedUser.lists[listName][updatedGame.game_id.toString()] = updatedGame
-				}
+			if (foundList) {
+				updatedUser.lists[listName][addedGame.game_id.toString()] = addedGame
+				updatedUser.lists[listName].lastUpdated = Timestamp.now()
 			} else {
-				operation = 'List created and game added'
 				// @ts-ignore
 				updatedUser.lists[listName] = {
-					[updatedGame.game_id.toString()]: updatedGame
+					[addedGame.game_id.toString()]: addedGame,
+					dateAdded: Timestamp.now(),
+					lastUpdated: Timestamp.now()
 				}
 			}
 
@@ -88,7 +82,7 @@ const handler = async (req: TypedRequest<Omit<StoredGame, 'dateAdded'>>, res: Ne
 			return res.status(200).json({
 				status: APIStatuses.SUCCESS,
 				type: DocumentResponses.DATA_UPDATED,
-				data: { updatedList: updatedUser.lists, operation }
+				data: { updatedList: updatedUser.lists }
 			})
 		} catch (error) {
 			console.error(error)

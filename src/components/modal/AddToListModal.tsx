@@ -13,9 +13,16 @@ type AddToListModalProps = {
 		gameplayStatus: GamePlayStatus,
 		platforms: Platform[]
 	) => Promise<boolean>
+	handleDeleteGameFromList: (listName: string, index: number) => Promise<boolean>
 }
 
-const AddToListModal = ({ isModalOpen, setIsModalOpen, lists, handleAddGameToList }: AddToListModalProps) => {
+const AddToListModal = ({
+	isModalOpen,
+	setIsModalOpen,
+	lists,
+	handleAddGameToList,
+	handleDeleteGameFromList
+}: AddToListModalProps) => {
 	return (
 		<BaseModal
 			id="addToListModal"
@@ -25,7 +32,12 @@ const AddToListModal = ({ isModalOpen, setIsModalOpen, lists, handleAddGameToLis
 				setIsModalOpen(false)
 			}}
 		>
-			<AddToListModalContents handleAddGameToList={handleAddGameToList} lists={lists} setIsModalOpen={setIsModalOpen} />
+			<AddToListModalContents
+				handleAddGameToList={handleAddGameToList}
+				handleDeleteGameFromList={handleDeleteGameFromList}
+				lists={lists}
+				setIsModalOpen={setIsModalOpen}
+			/>
 		</BaseModal>
 	)
 }

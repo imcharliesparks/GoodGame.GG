@@ -147,12 +147,7 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 			if (response.status === APIStatuses.ERROR) {
 				throw new Error(response.data.error)
 			} else {
-				// TODO: START HERE: Change this so that it's a seperate OP
-				if (response.data.operation === 'Game removed from list') {
-					handleUpdateListWithOwnership(index, false)
-				} else {
-					handleUpdateListWithOwnership(index, true)
-				}
+				handleUpdateListWithOwnership(index, true)
 				success = true
 				handleShowSuccessToast(`Success! We've added ${currentlySelectedGame!.title} to your ${listName} list.`)
 				router.replace(router.asPath)
@@ -164,6 +159,44 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 					// @ts-ignore
 					currentlySelectedGame ? currentlySelectedGame.title : 'NO TITLE'
 				} to your ${listName} list. Please try again in a bit.`
+			)
+		} finally {
+			return success
+		}
+	}
+
+	const handleDeleteGameFromList = async (listName: string, index: number): Promise<boolean> => {
+		let success: boolean = false
+		const gameFromLocalStorage = localStorage.getItem('currentlySelectedGame')
+		let currentlySelectedGame: MobyGame
+
+		try {
+			if (!gameFromLocalStorage) throw new Error('No game found in local storage on search page')
+			currentlySelectedGame = JSON.parse(gameFromLocalStorage)
+			const { game_id } = currentlySelectedGame!
+
+			const request = await fetch(`/api/lists/${listName}/${game_id}/remove`, {
+				method: APIMethods.DELETE,
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+			const response = await request.json()
+			if (response.status === APIStatuses.ERROR) {
+				throw new Error(response.data.error)
+			} else {
+				handleUpdateListWithOwnership(index, false)
+				success = true
+				handleShowSuccessToast(`We've Deleted ${currentlySelectedGame!.title} to your ${listName} list.`)
+				router.replace(router.asPath)
+			}
+		} catch (error) {
+			console.error(`Unable to remove game from list`, error)
+			handleShowErrorToast(
+				`We couldn't remove ${
+					// @ts-ignore
+					currentlySelectedGame ? currentlySelectedGame.title : 'NO TITLE'
+				} from your ${listName} list. Please try again in a bit.`
 			)
 		} finally {
 			return success
@@ -244,6 +277,7 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 					isModalOpen={isModalOpen}
 					setIsModalOpen={setIsModalOpen}
 					handleAddGameToList={handleAddGameToList}
+					handleDeleteGameFromList={handleDeleteGameFromList}
 				/>
 			)}
 		</div>

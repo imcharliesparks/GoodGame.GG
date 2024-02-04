@@ -33,6 +33,7 @@
 - [ ] Convert your after auth call to just a req that fires to an endpoint instead of doing user lookup logic
 - [ ] Rewrite nav header to not use daisy
 - [x] Fix bug where currently selectd game is undefined
-- [ ] When a user gets added, we need to create two lists for them: Collection and Backlog
+- [ ] When a user gets added, we need to create three lists for them: Collection Wishlist and Backlog and make sure they
+      have the `dateAdded` and `dateUpdated` props
 - [x] Fix bug where save game to modal checkboxes don't update properly
 - [ ] Fix descriptions being empty breaking bug (see persona 5 ultimate edition)

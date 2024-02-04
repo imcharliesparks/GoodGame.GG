@@ -16,25 +16,22 @@ type AddToListModalContentsProps = {
 		gameplayStatus: GamePlayStatus,
 		platforms: Platform[]
 	) => Promise<boolean>
+	handleDeleteGameFromList: (listName: string, index: number) => Promise<boolean>
 }
 
 // TODO: Implement make loading pretty tbh
 // TODO: Consider adding click to whole element on list
 // TODO: Implement create list
-const AddToListModalContents = ({ setIsModalOpen, lists, handleAddGameToList }: AddToListModalContentsProps) => {
+const AddToListModalContents = ({
+	setIsModalOpen,
+	lists,
+	handleAddGameToList,
+	handleDeleteGameFromList
+}: AddToListModalContentsProps) => {
 	const [buttonLoadingStates, setButtonLoadingStates] = React.useState<boolean[]>(lists.map((list) => list.hasGame))
 	const [isSecondaryModalOpen, setIsSecondaryModalOpen] = React.useState<boolean>(false)
 	const [selectedList, setSelectedList] = React.useState<string>('')
 	const [selectedIndex, setSelectedIndex] = React.useState<number>()
-
-	const handleAddButtonClick = async (listName: string, index: number, gameplayStatus: GamePlayStatus) => {
-		setButtonLoadingStates((prev: boolean[]) => {
-			const updated = Array.from(prev)
-			updated[index] = true
-			return updated
-		})
-		setIsSecondaryModalOpen(true)
-	}
 
 	const handleOpenSecondaryModal = (isOpen: boolean, list: string, index: number) => {
 		if (isOpen) {
@@ -58,6 +55,12 @@ const AddToListModalContents = ({ setIsModalOpen, lists, handleAddGameToList }: 
 			updated[index] = false
 			return updated
 		})
+
+		if (result) {
+			setIsSecondaryModalOpen(false)
+			setIsModalOpen(false)
+		}
+
 		return result
 	}
 
@@ -93,7 +96,7 @@ const AddToListModalContents = ({ setIsModalOpen, lists, handleAddGameToList }: 
 								) : (
 									<button
 										onClick={() =>
-											list.hasGame ? console.log('oh no implement game removal') : handleOpenSecondaryModal(true, list.listName, i)
+											list.hasGame ? handleDeleteGameFromList(list.listName, i) : handleOpenSecondaryModal(true, list.listName, i)
 										}
 										className={`btn btn-link normal-case text-slate-600`}
 									>

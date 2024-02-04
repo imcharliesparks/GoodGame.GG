@@ -111,6 +111,9 @@ export type GGLists = {
 
 export type GGList = {
 	[gameId: string]: StoredGame
+} & {
+	dateAdded?: Timestamp | string
+	lastUpdated?: Timestamp | string
 }
 
 export type ListWithOwnership = {
@@ -127,7 +130,8 @@ export type StoredGame = {
 	title: string
 	description?: string
 	playStatus: GamePlayStatus
-	dateAdded: Timestamp | string
+	dateAdded?: Timestamp | string
+	lastUpdated?: Timestamp | string
 }
 
 export type UserByEmail = {
