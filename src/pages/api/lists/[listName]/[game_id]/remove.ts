@@ -34,8 +34,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		const q = query(collectionsCollectionRef, where('clerkId', '==', userId))
 		const querySnapshot = await getDocs(q)
 
-		console.log('querySnapshot', querySnapshot.docs[0].data())
-
 		if (querySnapshot.empty) {
 			console.error('User not found for delete from list endpoint.')
 			return res.status(404).json({ status: APIStatuses.ERROR, type: GeneralAPIResponses.NOT_FOUND })

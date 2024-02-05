@@ -21,9 +21,17 @@ const ListOfGames = ({ list, listName }: ListOfGamesProps) => {
 			<h3 className="text-3xl text-center">{listName}</h3>
 			{games.length ? (
 				<HorizontalScroll>
-					{games.map((game: StoredGame) => (
-						<ListCard key={`${listName}_${game.game_id}`} game={game} setError={() => console.log('oh no')} />
-					))}
+					{games.map(
+						(game: StoredGame) =>
+							typeof game !== 'string' && (
+								<ListCard
+									listName={listName}
+									key={`${listName}_${game.game_id}`}
+									game={game}
+									setError={() => console.log('oh no')}
+								/>
+							)
+					)}
 				</HorizontalScroll>
 			) : (
 				// TODO: Do something better tbh

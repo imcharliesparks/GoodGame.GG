@@ -12,7 +12,7 @@ import {
 } from '@/shared/types'
 import LoadingSpinner from '@/components/general/LoadingSpinner'
 import NewSearchGameCard from '@/components/general/NewSearchGameCard'
-import AddToListModal from '@/components/modal/AddToListModal'
+import AddToListModal from '@/components/modal/AddToListModal/AddToListModal'
 import { getAuth } from '@clerk/nextjs/server'
 import { GetServerSidePropsContext } from 'next'
 import firebase_app from '@/lib/firebase'

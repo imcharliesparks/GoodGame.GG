@@ -5,7 +5,7 @@ import { ic_close } from 'react-icons-kit/md/ic_close'
 import { ic_add } from 'react-icons-kit/md/ic_add'
 import { buttonCheck } from 'react-icons-kit/metrize/buttonCheck'
 import { blank } from 'react-icons-kit/metrize/blank'
-import SecondaryAddToListModal from './SecondaryAddToListModal'
+import SecondaryAddToListModal from '../SecondaryAddToListModal/SecondaryAddToListModal'
 
 type AddToListModalContentsProps = {
 	setIsModalOpen: (isModalOpen: boolean) => void

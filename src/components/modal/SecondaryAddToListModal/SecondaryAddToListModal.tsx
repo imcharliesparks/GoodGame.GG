@@ -1,5 +1,5 @@
 import React from 'react'
-import BaseModal from './BaseModal'
+import BaseModal from '../BaseModal'
 import SecondaryAddToListModalContents from './SecondaryAddToListModalContents'
 import { GamePlayStatus, ListWithOwnership, Platform } from '@/shared/types'
 
