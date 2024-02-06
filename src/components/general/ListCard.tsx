@@ -6,6 +6,7 @@ import LoadingSpinner from './LoadingSpinner'
 import { useRouter } from 'next/router'
 import ReactStars from 'react-stars'
 import RemoveGameFromListModal from '../modal/RemoveGameFromListModal/RemoveGameFromListModal'
+import Link from 'next/link'
 
 type ListCardProps = {
 	game: StoredGame
@@ -114,9 +115,13 @@ const ListCard = ({ game, setError, listName }: ListCardProps) => {
 					)} */}
 				</div>
 				<div className="card-actions pt-3">
-					<button onClick={() => console.log('details modal goes here')} className="btn btn-primary btn-sm">
+					<Link
+						href={`/app/user/lists/${listName}/${game.game_id}`}
+						onClick={() => console.log('details modal goes here')}
+						className="btn btn-primary btn-sm"
+					>
 						Details
-					</button>
+					</Link>
 					<button onClick={() => setIsDeleteModalOpen(true)} className="btn btn-outline btn-error btn-sm">
 						Remove
 					</button>
