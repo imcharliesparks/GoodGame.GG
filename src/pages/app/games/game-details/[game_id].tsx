@@ -1,9 +1,10 @@
+import GameDetailsMobileTop from '@/components/general/GameDetailsPage/GameDetailsMobileTop'
 import GameDetailsPageLeft from '@/components/general/GameDetailsPage/GameDetailsPageLeft'
 import GameDetailsPageRight from '@/components/general/GameDetailsPage/GameDetailsPageRight'
 import useScreenSize from '@/components/hooks/useScreenSize'
 import firebase_app from '@/lib/firebase'
 import { getGameByGameId } from '@/shared/serverMethods'
-import { CollectionNames, GGUser, MobyGame, StoredGame } from '@/shared/types'
+import { CollectionNames, GGUser, MobyGame, Platform, StoredGame } from '@/shared/types'
 import { findListsContainingGame } from '@/shared/utils'
 import { getAuth } from '@clerk/nextjs/server'
 import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore'
@@ -17,42 +18,47 @@ type GameDetailsPageProps = {
 	error?: string
 }
 
-const GameDetailsPage = ({ game, error }: GameDetailsPageProps) => {
-	console.log('game', game)
+const GameDetailsPage = ({ game, hasGame, listsWithGame, error }: GameDetailsPageProps) => {
 	const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false)
 	const screenSize = useScreenSize()
 
+	const platformList =
+		game?.platforms.reduce((platforms: string, platform: Platform, index: number) => {
+			return index === 0 ? `${platform.platform_name} | ` : `${platforms} ${platform.platform_name}`
+		}, '') ?? ''
+
+	// TODO: Do something better here
+	if (!game) return <h1>No game found!</h1>
+
 	return screenSize === 'desktop' ? (
 		<div className="grid grid-cols-12 container p-12 mx-auto">
-			{game ? (
-				<>
-					<div className=" col-span-5">
-						<GameDetailsPageLeft
-							game={game}
-							hasGame
-							isModalOpen={isModalOpen}
-							setIsModalOpen={() => setIsModalOpen(!isModalOpen)}
-						/>
-					</div>
-					<div className=" col-span-7">
-						<GameDetailsPageRight
-							game={game}
-							hasGame
-							isModalOpen={isModalOpen}
-							setIsModalOpen={() => setIsModalOpen(!isModalOpen)}
-						/>
-					</div>
-				</>
-			) : (
-				<div>
-					<h1>No game found!</h1>
-				</div>
-			)}
+			<div className=" col-span-5">
+				<GameDetailsPageLeft
+					game={game}
+					hasGame={hasGame ?? false}
+					isModalOpen={isModalOpen}
+					setIsModalOpen={() => setIsModalOpen(!isModalOpen)}
+				/>
+			</div>
+			<div className=" col-span-7">
+				<GameDetailsPageRight
+					platformList={platformList}
+					game={game}
+					hasGame={hasGame ?? false}
+					isModalOpen={isModalOpen}
+					setIsModalOpen={() => setIsModalOpen(!isModalOpen)}
+				/>
+			</div>
 		</div>
 	) : (
-		<div>
-			<h1>Mobile layout goes here</h1>
-		</div>
+		<GameDetailsMobileTop
+			game={game}
+			hasGame={hasGame ?? false}
+			listsWithGame={listsWithGame ?? []}
+			platformList={platformList}
+			isModalOpen={isModalOpen}
+			setIsModalOpen={() => setIsModalOpen(!isModalOpen)}
+		/>
 	)
 }
 
