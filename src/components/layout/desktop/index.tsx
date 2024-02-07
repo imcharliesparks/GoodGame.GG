@@ -11,7 +11,7 @@ type Props = {
 const Layout = ({ children }: Props) => (
 	<>
 		<NavHeader />
-		<main className="pb-20">{children}</main>
+		<main className="max-w-screen-xl mx-auto">{children}</main>
 		<Footer />
 	</>
 )

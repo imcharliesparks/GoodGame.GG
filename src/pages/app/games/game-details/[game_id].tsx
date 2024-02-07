@@ -1,7 +1,9 @@
 import GameDetailsPageLeft from '@/components/general/GameDetailsPage/GameDetailsPageLeft'
+import GameDetailsPageRight from '@/components/general/GameDetailsPage/GameDetailsPageRight'
+import useScreenSize from '@/components/hooks/useScreenSize'
 import firebase_app from '@/lib/firebase'
-import { getGameByGameId, getGameByListName } from '@/shared/serverMethods'
-import { APIMethods, APIStatuses, CollectionNames, GGUser, StoredGame } from '@/shared/types'
+import { getGameByGameId } from '@/shared/serverMethods'
+import { CollectionNames, GGUser, MobyGame, StoredGame } from '@/shared/types'
 import { findListsContainingGame } from '@/shared/utils'
 import { getAuth } from '@clerk/nextjs/server'
 import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore'
@@ -9,27 +11,47 @@ import { GetServerSidePropsContext } from 'next'
 import React from 'react'
 
 type GameDetailsPageProps = {
-	game?: StoredGame
+	game?: MobyGame
 	hasGame?: boolean
 	listsWithGame?: string[]
 	error?: string
 }
 
 const GameDetailsPage = ({ game, error }: GameDetailsPageProps) => {
-	return (
-		<div className="grid grid-cols-12 container">
+	console.log('game', game)
+	const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false)
+	const screenSize = useScreenSize()
+
+	return screenSize === 'desktop' ? (
+		<div className="grid grid-cols-12 container p-12 mx-auto">
 			{game ? (
 				<>
 					<div className=" col-span-5">
-						<GameDetailsPageLeft game={game} hasGame />
+						<GameDetailsPageLeft
+							game={game}
+							hasGame
+							isModalOpen={isModalOpen}
+							setIsModalOpen={() => setIsModalOpen(!isModalOpen)}
+						/>
 					</div>
-					<div className=" col-span-7">howdy</div>
+					<div className=" col-span-7">
+						<GameDetailsPageRight
+							game={game}
+							hasGame
+							isModalOpen={isModalOpen}
+							setIsModalOpen={() => setIsModalOpen(!isModalOpen)}
+						/>
+					</div>
 				</>
 			) : (
 				<div>
 					<h1>No game found!</h1>
 				</div>
 			)}
+		</div>
+	) : (
+		<div>
+			<h1>Mobile layout goes here</h1>
 		</div>
 	)
 }

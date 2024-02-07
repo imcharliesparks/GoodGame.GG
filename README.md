@@ -39,6 +39,7 @@
 - [ ] Fix descriptions being empty breaking bug (see persona 5 ultimate edition)
 - [ ] Get more user data (see SparkAssit project for how to do it)
 - [ ] Make sure all error instances are properly handled (just text search error)
+- [ ] Fix all usages of `container` so they actually are enforcing max width
 
 ##### Final Design Changes
 

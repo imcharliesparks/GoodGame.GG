@@ -15,34 +15,41 @@ const NavHeader = () => {
 
 	return (
 		<header className="navbar bg-base-100">
-			<div className="navbar-start">
-				<div className="dropdown transition-all ease-in-out">
-					<label tabIndex={0} className="btn btn-ghost btn-circle transition-all ease-in-out">
-						<svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h7" />
-						</svg>
-					</label>
-					<ul
-						tabIndex={0}
-						className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52 transition-all ease-in-out"
-					>
-						<li className="transition-all ease-in-out" onClick={handleDropdownClick}>
-							<Link href="/">Home</Link>
-						</li>
-						{router.pathname.includes('app') && (
-							<>
-								<li className="transition-all ease-in-out" onClick={handleDropdownClick}>
-									<Link href="/app/user/lists">My Lists</Link>
-								</li>
-								{/* TODO: Add this as a search bar instead */}
-								<li className="transition-all ease-in-out" onClick={handleDropdownClick}>
-									<Link href="/app/search/games">Search Games</Link>
-								</li>
-								<li className="transition-all ease-in-out" onClick={handleDropdownClick}>
-									<Link href="/app/search/users">Search for Friends</Link>
-								</li>
-								{/* TODO: Make these a sub menu out of lists */}
-								{/* <li className="transition-all ease-in-out" onClick={handleDropdownClick}>
+			<nav className="max-w-screen-xl m-auto navbar">
+				<div className="navbar-start">
+					<div className="dropdown transition-all ease-in-out">
+						<label tabIndex={0} className="btn btn-ghost btn-circle transition-all ease-in-out">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								className="h-5 w-5"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h7" />
+							</svg>
+						</label>
+						<ul
+							tabIndex={0}
+							className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52 transition-all ease-in-out"
+						>
+							<li className="transition-all ease-in-out" onClick={handleDropdownClick}>
+								<Link href="/">Home</Link>
+							</li>
+							{router.pathname.includes('app') && (
+								<>
+									<li className="transition-all ease-in-out" onClick={handleDropdownClick}>
+										<Link href="/app/user/lists">My Lists</Link>
+									</li>
+									{/* TODO: Add this as a search bar instead */}
+									<li className="transition-all ease-in-out" onClick={handleDropdownClick}>
+										<Link href="/app/search/games">Search Games</Link>
+									</li>
+									<li className="transition-all ease-in-out" onClick={handleDropdownClick}>
+										<Link href="/app/search/users">Search for Friends</Link>
+									</li>
+									{/* TODO: Make these a sub menu out of lists */}
+									{/* <li className="transition-all ease-in-out" onClick={handleDropdownClick}>
 									<Link href="/app/user/collection">My Collection</Link>
 								</li>
 								<li className="transition-all ease-in-out" onClick={handleDropdownClick}>
@@ -51,27 +58,28 @@ const NavHeader = () => {
 								<li className="transition-all ease-in-out" onClick={handleDropdownClick}>
 									<Link href="/app/user/wishlist">My Wishlist</Link>
 								</li> */}
-								<li className="transition-all ease-in-out" onClick={handleDropdownClick}>
-									<Link href="/app/user/friendslist">My Friends</Link>
-								</li>
-							</>
-						)}
-					</ul>
+									<li className="transition-all ease-in-out" onClick={handleDropdownClick}>
+										<Link href="/app/user/friendslist">My Friends</Link>
+									</li>
+								</>
+							)}
+						</ul>
+					</div>
 				</div>
-			</div>
-			<div className="navbar-center">
-				<Link href="/" className="btn btn-ghost normal-case text-xl">
-					GoodGame.GG
-				</Link>
-			</div>
-			<div className="navbar-end pr-3">
-				<SignedIn>
-					<UserButton signInUrl="/sign-in" afterSignOutUrl="/" />
-				</SignedIn>
-				<SignedOut>
-					<SignInButton />
-				</SignedOut>
-			</div>
+				<div className="navbar-center">
+					<Link href="/" className="btn btn-ghost normal-case text-xl">
+						GoodGame.GG
+					</Link>
+				</div>
+				<div className="navbar-end pr-3">
+					<SignedIn>
+						<UserButton signInUrl="/sign-in" afterSignOutUrl="/" />
+					</SignedIn>
+					<SignedOut>
+						<SignInButton />
+					</SignedOut>
+				</div>
+			</nav>
 		</header>
 	)
 }
