@@ -20,7 +20,7 @@ import { getFirestore, collection, query, where, getDocs } from 'firebase/firest
 import { useUserHasGameInCollection } from '@/components/hooks/useUserHasGameInCollection'
 import { SubstandardGenres } from '@/shared/constants'
 import { convert } from 'html-to-text'
-import { convertFirebaseTimestamps } from '@/shared/utils'
+import { convertFirebaseTimestamps, handleUpdateListsWithOwnership } from '@/shared/utils'
 import { useRouter } from 'next/router'
 
 type SearchGamePageProps = {
@@ -147,7 +147,7 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 			if (response.status === APIStatuses.ERROR) {
 				throw new Error(response.data.error)
 			} else {
-				handleUpdateListWithOwnership(index, true)
+				handleUpdateListsWithOwnership(index, true, setListsWithOwnership)
 				success = true
 				handleShowSuccessToast(`Success! We've added ${currentlySelectedGame!.title} to your ${listName} list.`)
 				router.replace(router.asPath)
@@ -185,7 +185,7 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 			if (response.status === APIStatuses.ERROR) {
 				throw new Error(response.data.error)
 			} else {
-				handleUpdateListWithOwnership(index, false)
+				handleUpdateListsWithOwnership(index, false, setListsWithOwnership)
 				success = true
 				handleShowSuccessToast(`We've Deleted ${currentlySelectedGame!.title} to your ${listName} list.`)
 				router.replace(router.asPath)
@@ -209,14 +209,6 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 		setIsModalOpen(true)
 		const foundListsWithOwnership = useUserHasGameInCollection(game_id, lists!)
 		setListsWithOwnership(foundListsWithOwnership)
-	}
-
-	const handleUpdateListWithOwnership = (index: number, ownershipStatus: boolean) => {
-		setListsWithOwnership((prev: ListWithOwnership[]) => {
-			const updated = Array.from(prev)
-			updated[index].hasGame = ownershipStatus
-			return updated
-		})
 	}
 
 	return (

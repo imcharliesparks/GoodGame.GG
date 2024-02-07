@@ -25,6 +25,7 @@ type PlatformLabelOptions = {
 	value: number
 	platformData: Platform
 }
+
 const SecondaryAddToListModalContents = ({
 	handleAddGameToList,
 	platforms,

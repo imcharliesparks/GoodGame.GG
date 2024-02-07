@@ -7,6 +7,7 @@ import { APIMethods, TypeOfPerson } from '@/shared/types'
 import { ClerkProvider } from '@clerk/nextjs'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import Layout from '@/components/layout/desktop'
+import { ThemeProvider } from '@material-tailwind/react'
 
 export type NextPageWithLayout<P = Record<string, any>, IP = P> = NextPage<P, IP> & {
 	getLayout?: (page: ReactElement) => ReactNode
@@ -28,7 +29,7 @@ function MyApp({ Component, pageProps: { ...pageProps } }: AppPropsWithLayout) {
 				signUpUrl="sign-up"
 				{...pageProps}
 			>
-				{renderWithLayout(<Component {...pageProps} />)}
+				<ThemeProvider>{renderWithLayout(<Component {...pageProps} />)}</ThemeProvider>
 			</ClerkProvider>
 		</ErrorBoundary>
 	)

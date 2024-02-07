@@ -40,6 +40,7 @@
 - [ ] Get more user data (see SparkAssit project for how to do it)
 - [ ] Make sure all error instances are properly handled (just text search error)
 - [ ] Fix all usages of `container` so they actually are enforcing max width
+- [ ] Figure out why drawer is slow to come up
 
 ##### Final Design Changes
 
@@ -48,3 +49,5 @@
 - [ ] Add some way to discover games and see what games are on whose lists from your friends
 - [ ] Could Add something like Minimaps intake with a list of the most popular games and say "Which have you played/can
       you rate these?" - I really hate how you _have_ to complete that step now, though
+- [ ] Copy the goodreads add to list buttons that pull up a menu from the bottom with a list on mobile:
+      https://www.goodreads.com/book/show/123247704-house-of-flame-and-shadow
