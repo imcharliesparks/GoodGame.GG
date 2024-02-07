@@ -15,7 +15,6 @@ import { getAuth } from '@clerk/nextjs/server'
 import { collection, getDocs, getFirestore, query, where, updateDoc, doc, Timestamp } from 'firebase/firestore'
 import { NextApiResponse } from 'next'
 
-// START HERE: Validate that we hit all cases
 const handler = async (req: TypedRequest<Omit<StoredGame, 'dateAdded'>>, res: NextApiResponse) => {
 	const { method, body, query: urlQuery } = req
 	const { userId } = getAuth(req)
@@ -24,7 +23,6 @@ const handler = async (req: TypedRequest<Omit<StoredGame, 'dateAdded'>>, res: Ne
 		delete body.moby_score
 	}
 
-	// TODO: Make sure to add type safety to allow for almost any field to be undefined, or stop it in the front end
 	body.description = body.description ? body.description : 'No description provided'
 
 	const { error: validationError } = GameToAddToCollectionSchema.validate(body)

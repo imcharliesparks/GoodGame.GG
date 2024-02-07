@@ -1,6 +1,6 @@
 import Fuse from 'fuse.js'
 import { IGDB_ACCESS_TOKEN, IGDB_BASE_URL } from './constants'
-import { APIMethods, GGList, UserByEmail } from './types'
+import { APIMethods, GGList, GGUser, UserByEmail } from './types'
 
 /*
  * Data fetching wrapper for the IGDB API
@@ -93,4 +93,18 @@ export const convertFirebaseTimestamps = (list: GGList) => {
 		if (list.dateAdded) list.dateAdded = list.dateAdded.toString()
 		if (list.lastUpdated) list.lastUpdated = list.lastUpdated.toString()
 	})
+}
+
+export const findListsContainingGame = (user: GGUser, game_id: string): string[] => {
+	const listsContainingGame: string[] = []
+
+	for (const listName in user.lists) {
+		const list = user.lists[listName]
+
+		if (game_id in list) {
+			listsContainingGame.push(listName)
+		}
+	}
+
+	return listsContainingGame
 }

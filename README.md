@@ -38,9 +38,12 @@
 - [x] Fix bug where save game to modal checkboxes don't update properly
 - [ ] Fix descriptions being empty breaking bug (see persona 5 ultimate edition)
 - [ ] Get more user data (see SparkAssit project for how to do it)
+- [ ] Make sure all error instances are properly handled (just text search error)
 
 ##### Final Design Changes
 
 - [ ] Find a better UX way of handling deletion, updates, etc., than just pushing router as path
 - [ ] Get an actual image for no image available
 - [ ] Add some way to discover games and see what games are on whose lists from your friends
+- [ ] Could Add something like Minimaps intake with a list of the most popular games and say "Which have you played/can
+      you rate these?" - I really hate how you _have_ to complete that step now, though

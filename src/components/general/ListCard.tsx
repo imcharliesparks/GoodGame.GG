@@ -116,8 +116,8 @@ const ListCard = ({ game, setError, listName }: ListCardProps) => {
 				</div>
 				<div className="card-actions pt-3">
 					<Link
-						href={`/app/user/lists/${listName}/${game.game_id}`}
-						onClick={() => console.log('details modal goes here')}
+						href={`/app/games/game-details/${game.game_id}`}
+						onClick={() => router.push({ pathname: `/app/games/game-details/${game.game_id}` })}
 						className="btn btn-primary btn-sm"
 					>
 						Details
