@@ -12,7 +12,6 @@ type GameDetailsPageLeftProps = {
 }
 
 const GameDetailsPageLeft = ({ game, hasGame, isModalOpen, setIsModalOpen }: GameDetailsPageLeftProps) => {
-	console.log('game', game)
 	return (
 		<div className="flex flex-col md:mr-2 mr-0">
 			<div>
