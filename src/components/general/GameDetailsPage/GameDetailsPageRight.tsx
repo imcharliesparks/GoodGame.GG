@@ -25,32 +25,36 @@ const GameDetailsPageRight = ({ game, hasGame, platformList }: GameDetailsPageRi
 				</h1>
 			</div>
 			<div className="mx-auto">
-				<span className="text-slate-500 font-bold">{platformList}</span>
+				<span className="text-gray-700">{platformList}</span>
 			</div>
 			<div className="mx-auto max-w-[470px]">
-				<section>
-					{showFullDescription ? (
-						<>
-							<p>{game.description}</p>
-							<button
-								onClick={() => setShowFullDescription(false)}
-								className="text-left w-[96%] link text-sm text-slate-400 mt-2"
-							>
-								Less...
-							</button>
-						</>
-					) : (
-						<>
-							<p>{truncateDescription(game.description, 400)}</p>
-							<button
-								onClick={() => setShowFullDescription(true)}
-								className="text-left w-[96%] link text-sm text-slate-400 mt-2"
-							>
-								More...
-							</button>
-						</>
-					)}
-				</section>
+				{game.description ? (
+					<section>
+						{showFullDescription ? (
+							<>
+								<p>{game.description}</p>
+								<button
+									onClick={() => setShowFullDescription(false)}
+									className="text-left w-[96%] link text-sm text-slate-400 mt-2"
+								>
+									Less...
+								</button>
+							</>
+						) : (
+							<>
+								<p>{truncateDescription(game.description, 400)}</p>
+								<button
+									onClick={() => setShowFullDescription(true)}
+									className="text-left w-[96%] link text-sm text-slate-400 mt-2"
+								>
+									More...
+								</button>
+							</>
+						)}
+					</section>
+				) : (
+					<p className="mt-4">No description available</p>
+				)}
 			</div>
 		</div>
 	)

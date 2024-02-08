@@ -64,10 +64,9 @@ const AddToListDialog = ({
 		setSelectedGameplayStatus(value)
 	}
 
-	const addGameToList = () => {
+	const addGameToList = async () => {
 		const addedPlatforms = selectedPlatforms.map((platform: PlatformLabelOptions) => ({ ...platform.platformData }))
-		console.log('here')
-		handleAddGameToList(
+		await handleAddGameToList(
 			game,
 			listName,
 			index,
@@ -76,6 +75,7 @@ const AddToListDialog = ({
 			router,
 			setListsWithOwnership
 		)
+		setIsDialogOpen(false)
 	}
 
 	return (

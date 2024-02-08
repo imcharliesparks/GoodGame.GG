@@ -33,7 +33,7 @@ const GameDetailsBottomDrawer = ({ game, open, close, lists, setListsWithOwnersh
 	// TODO: Make sure it's scrollable if it gets too tall
 	return (
 		<BaseBottomDrawer open={open} close={close}>
-			<div className="h-full w-full mx-auto p-4">
+			<div className="h-full w-full mx-auto p-4 overflow-y-scroll">
 				<div className="grid grid-cols-2 border-b-2 pb-2">
 					<h4 className="text-left">Save game to...</h4>
 					<div autoFocus onClick={close} className="cursor-pointer text-right">
@@ -98,7 +98,7 @@ const GameDetailsBottomDrawer = ({ game, open, close, lists, setListsWithOwnersh
 			<AddToListDialog
 				game={game}
 				isOpen={isDialogOpen}
-				setIsDialogOpen={() => setIsDialogOpen(!isDialogOpen)}
+				setIsDialogOpen={() => setIsDialogOpen(false)}
 				listName={currentlySelectedList}
 				index={currentListIndex}
 				setListsWithOwnership={setListsWithOwnership}

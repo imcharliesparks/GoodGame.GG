@@ -37,7 +37,9 @@ const GameDetailsMobileTop = ({ game, platformList, hasGame, openDrawerBottom }:
 				>
 					{game.title}
 				</h1>
-				<span className="text-slate-500 font-bold">{platformList}</span>
+			</div>
+			<div className="mx-auto mb-1">
+				<span className="text-gray-700">{platformList}</span>
 			</div>
 			<div className="flex flex-row justify-center w-full -mt-3">
 				<ReactStars count={5} edit={false} value={game.moby_score ?? 0} size={36} color2={'#ffd700'} />
@@ -47,31 +49,35 @@ const GameDetailsMobileTop = ({ game, platformList, hasGame, openDrawerBottom }:
 					+ Add to List
 				</button>
 			</div>
-			<div className="mx-auto max-w-[275px]">
-				<section>
-					{showFullDescription ? (
-						<>
-							<p>{game.description}</p>
-							<button
-								onClick={() => setShowFullDescription(false)}
-								className="text-left w-[96%] link text-sm text-slate-400 mt-2"
-							>
-								Less...
-							</button>
-						</>
-					) : (
-						<>
-							<p>{truncateDescription(game.description, 200)}</p>
-							<button
-								onClick={() => setShowFullDescription(true)}
-								className="text-left w-[96%] link text-sm text-slate-400 mt-2"
-							>
-								More...
-							</button>
-						</>
-					)}
-				</section>
-			</div>
+			{game.description ? (
+				<div className="mx-auto max-w-[275px]">
+					<section>
+						{showFullDescription ? (
+							<>
+								<p>{game.description}</p>
+								<button
+									onClick={() => setShowFullDescription(false)}
+									className="text-left w-[96%] link text-sm text-slate-400 mt-2"
+								>
+									Less...
+								</button>
+							</>
+						) : (
+							<>
+								<p>{truncateDescription(game.description, 200)}</p>
+								<button
+									onClick={() => setShowFullDescription(true)}
+									className="text-left w-[96%] link text-sm text-slate-400 mt-2"
+								>
+									More...
+								</button>
+							</>
+						)}
+					</section>
+				</div>
+			) : (
+				<p>No description available</p>
+			)}
 		</div>
 	)
 }

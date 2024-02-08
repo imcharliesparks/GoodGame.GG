@@ -51,3 +51,4 @@
       you rate these?" - I really hate how you _have_ to complete that step now, though
 - [ ] Copy the goodreads add to list buttons that pull up a menu from the bottom with a list on mobile:
       https://www.goodreads.com/book/show/123247704-house-of-flame-and-shadow
+- [ ] Rethink dialog behavior around adding and deleting games (right now the drawer stays up)
