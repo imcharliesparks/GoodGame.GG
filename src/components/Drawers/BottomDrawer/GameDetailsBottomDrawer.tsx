@@ -20,9 +20,17 @@ type DrawerProps = {
 		playStatus: Record<any, any>,
 		platforms: Platform[]
 	) => Promise<boolean>
+	handleDeleteGameFromList: (listName: string, index: number) => Promise<boolean>
 }
 
-const GameDetailsBottomDrawer = ({ game, open, close, lists, handleAddGameToList }: DrawerProps) => {
+const GameDetailsBottomDrawer = ({
+	game,
+	open,
+	close,
+	lists,
+	handleAddGameToList,
+	handleDeleteGameFromList
+}: DrawerProps) => {
 	const [isDialogOpen, setIsDialogOpen] = React.useState<boolean>(false)
 	const [currentlySelectedList, setCurrentlySelectedList] = React.useState<string>('')
 	const [currentListIndex, setCurrentListIndex] = React.useState<number>(0)
@@ -30,10 +38,6 @@ const GameDetailsBottomDrawer = ({ game, open, close, lists, handleAddGameToList
 		setCurrentlySelectedList(listName)
 		setCurrentListIndex(index)
 		setIsDialogOpen(!isDialogOpen)
-	}
-
-	const handleDeleteGameFromList = (listName: string, index: number) => {
-		console.log('implement me')
 	}
 
 	return (

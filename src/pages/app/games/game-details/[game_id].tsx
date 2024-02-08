@@ -29,6 +29,7 @@ type GameDetailsPageProps = {
 	error?: string
 }
 
+// TODO: Replace alerts with toasts
 const GameDetailsPage = ({
 	game,
 	hasGame,
@@ -107,6 +108,41 @@ const GameDetailsPage = ({
 		}
 	}
 
+	const handleDeleteGameFromList = async (listName: string, index: number): Promise<boolean> => {
+		let success: boolean = false
+
+		try {
+			const { game_id } = game!
+
+			const request = await fetch(`/api/lists/${listName}/${game_id}/remove`, {
+				method: APIMethods.DELETE,
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+			const response = await request.json()
+			if (response.status === APIStatuses.ERROR) {
+				throw new Error(response.data.error)
+			} else {
+				handleUpdateListsWithOwnership(index, false, setListsWithOwnership)
+				success = true
+				// handleShowSuccessToast(`We've Deleted ${currentlySelectedGame!.title} to your ${listName} list.`)
+				alert(`We've Deleted ${game!.title} to your ${listName} list.`)
+				router.replace(router.asPath)
+			}
+		} catch (error) {
+			console.error(`Unable to remove game from list`, error)
+			alert(
+				`We couldn't remove ${
+					// @ts-ignore
+					game ? game.title : 'NO TITLE'
+				} from your ${listName} list. Please try again in a bit.`
+			)
+		} finally {
+			return success
+		}
+	}
+
 	// TODO: Do something better here
 	if (!game) return <h1>No game found!</h1>
 
@@ -139,6 +175,7 @@ const GameDetailsPage = ({
 			isModalOpen={isModalOpen}
 			setIsModalOpen={() => setIsModalOpen(!isModalOpen)}
 			handleAddGameToList={handleAddGameToList}
+			handleDeleteGameFromList={handleDeleteGameFromList}
 		/>
 	)
 }

@@ -21,6 +21,7 @@ type GameDetailsMobileTopProps = {
 		playStatus: Record<any, any>,
 		platform: Platform[]
 	) => Promise<boolean>
+	handleDeleteGameFromList: (listName: string, index: number) => Promise<boolean>
 }
 
 const GameDetailsMobileTop = ({
@@ -30,10 +31,13 @@ const GameDetailsMobileTop = ({
 	isModalOpen,
 	listsWithOwnership,
 	setIsModalOpen,
-	handleAddGameToList
+	handleAddGameToList,
+	handleDeleteGameFromList
 }: GameDetailsMobileTopProps) => {
 	const [showFullDescription, setShowFullDescription] = React.useState<boolean>(false)
 	const [openBottom, setOpenBottom] = React.useState(false)
+
+	console.log('handleDeleteGameFromList', handleDeleteGameFromList)
 
 	const openDrawerBottom = () => setOpenBottom(true)
 	const closeDrawerBottom = () => setOpenBottom(false)
@@ -98,6 +102,7 @@ const GameDetailsMobileTop = ({
 				close={closeDrawerBottom}
 				lists={listsWithOwnership}
 				handleAddGameToList={handleAddGameToList}
+				handleDeleteGameFromList={handleDeleteGameFromList}
 			/>
 		</div>
 	)
