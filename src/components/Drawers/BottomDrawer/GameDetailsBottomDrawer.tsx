@@ -10,6 +10,10 @@ import AddToListDialog from '../../Dialogs/AddToListDialog'
 import { useRouter } from 'next/router'
 import { handleDeleteGameFromList } from '@/shared/utils'
 import { useSortedListNamesSecondary } from '@/components/hooks/useUserLists'
+import { Button, IconButton } from '@material-tailwind/react'
+import { ic_bookmark_border } from 'react-icons-kit/md/ic_bookmark_border'
+import ButtonLoadingSpinner from '@/components/UI-Elements/LoadingSpinner'
+import { ic_done } from 'react-icons-kit/md/ic_done'
 
 type DrawerProps = {
 	game: MobyGame
@@ -51,16 +55,23 @@ const GameDetailsBottomDrawer = ({ game, open, close, lists, setListsWithOwnersh
 					) : (
 						sortedListNames.map((list: ListWithOwnership, i: number) => (
 							<div key={`${list}_${i}`}>
-								<div className="my-3 flex items-center justify-between">
+								<div
+									onClick={() =>
+										list.hasGame
+											? handleDeleteGameFromList(game, list.listName, i, router, setListsWithOwnership)
+											: handleOpenDialog(list.listName, i)
+									}
+									className="my-3 flex items-center justify-between"
+								>
 									<div>
-										<Icon
+										{/* <Icon
 											className={`${list.hasGame ? `text-green-600` : ''} mr-2`}
 											icon={list.hasGame ? buttonCheck : blank}
 											size={26}
-										/>
+										/> */}
 										<p className="inline-block pl-[0.15rem]">{list.listName}</p>
 									</div>
-									<button
+									{/* <button
 										onClick={() =>
 											list.hasGame
 												? handleDeleteGameFromList(game, list.listName, i, router, setListsWithOwnership)
@@ -69,7 +80,18 @@ const GameDetailsBottomDrawer = ({ game, open, close, lists, setListsWithOwnersh
 										className={`btn btn-link normal-case text-slate-600`}
 									>
 										{list.hasGame ? 'Remove' : 'Add'}
-									</button>
+									</button> */}
+									{list.hasGame ? (
+										<IconButton color="green" ripple variant="outlined" className="rounded-full">
+											<Icon color="green" size={24} icon={ic_done} />
+											{/* <ButtonLoadingSpinner /> */}
+										</IconButton>
+									) : (
+										<IconButton ripple variant="outlined" className="rounded-full">
+											<Icon size={24} icon={ic_bookmark_border} />
+											{/* <ButtonLoadingSpinner /> */}
+										</IconButton>
+									)}
 								</div>
 							</div>
 						))
@@ -78,7 +100,7 @@ const GameDetailsBottomDrawer = ({ game, open, close, lists, setListsWithOwnersh
 				<div onClick={() => console.log('create list')} className="grid grid-cols-2 border-t-2 pt-2 cursor-pointer">
 					<h4 className="text-left">Create new list</h4>
 					<div className="cursor-pointer text-right">
-						<Icon icon={ic_add} size={24} />
+						<Icon icon={ic_add} size={20} />
 					</div>
 				</div>
 			</div>

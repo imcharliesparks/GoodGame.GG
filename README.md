@@ -55,6 +55,7 @@
 - [ ] Add a loading screen on navigation that waits for the page to fully settle before it makes any further changes
 - [ ] When viewing a game, either on search or details, I'd like some way to visually indicate that a game is on one of
       your lists. Maybe a simple one on search/collection view, and more details on the details view
+- [ ] Fix the button getting highlighted after adding to list from the bottom drawer
 
 ### Still To Do for M-ist MVP
 
@@ -62,4 +63,5 @@
 - [ ] Add list creation
 - [ ] Start some form of data backup
 - [x] Fix bug with list names not getting sorted
-- [ ] Fix bug where bottom drop up isn't cleared on exit
+- [x] Fix bug where bottom drop up isn't cleared on exit
+- [ ] Change alerts to toast

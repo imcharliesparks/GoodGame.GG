@@ -12,6 +12,7 @@ import { convert } from 'html-to-text'
 import { convertFirebaseTimestamps } from '@/shared/utils'
 import { useRouter } from 'next/router'
 import GameDetailsBottomDrawer from '@/components/Drawers/BottomDrawer/GameDetailsBottomDrawer'
+import { Button, Input } from '@material-tailwind/react'
 
 type SearchGamePageProps = {
 	searchQuery?: string
@@ -26,7 +27,7 @@ type SearchGamePageProps = {
 // TODO: Need to better handle removal from lists
 const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: SearchGamePageProps) => {
 	const router = useRouter()
-	const inputRef = React.useRef<HTMLInputElement | null>(null)
+	const [searchTerm, setSearchTerm] = React.useState<string>('')
 	const [searchError, setSearchError] = React.useState<string | null>(null)
 	const [addSuccessText, setAddSuccessText] = React.useState<string | null>(null)
 	const [games, setGames] = React.useState<MobyGame[]>()
@@ -42,7 +43,7 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 	React.useEffect(() => {
 		if (searchQuery) {
 			// @ts-ignore
-			inputRef.current.value = searchQuery
+			setSearchTerm(searchQuery)
 		}
 
 		if (foundGames) {
@@ -65,8 +66,6 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 	}
 
 	const handleSearch = async () => {
-		const searchTerm = inputRef.current?.value
-
 		if (!searchTerm) {
 			handleShowErrorToast('Enter a search term!')
 		} else {
@@ -113,13 +112,13 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 		<div className="max-w-screen flex flex-col items-center py-6">
 			<div className="container">
 				<form
-					className="mx-auto w-full flex flex-col md:flex-row justify-center items-center"
+					className="mx-auto w-full flex flex-col md:flex-row justify-center items-center relative"
 					onSubmit={(e) => {
 						e.preventDefault()
 						handleSearch()
 					}}
 				>
-					<input
+					{/* <input
 						ref={inputRef}
 						type="text"
 						placeholder="Search for a game..."
@@ -127,7 +126,26 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 					/>
 					<button type="submit" className="btn  btn-primary ml-0 mt-3 md:ml-2 md:mt-0">
 						{isLoading ? <LoadingSpinner /> : 'Search'}
-					</button>
+					</button> */}{' '}
+					<div className="relative w-full md:max-w-[425px]">
+						<Input
+							value={searchTerm}
+							onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
+							label="Search for a Game"
+							type="text"
+							placeholder="Search for a game..."
+							className=""
+						/>
+						<Button
+							type="submit"
+							loading={isLoading}
+							size="sm"
+							color={'blue-gray'}
+							className="!absolute right-1 top-1 rounded"
+						>
+							Search
+						</Button>
+					</div>
 				</form>
 				<div className="container w-full flex flex-col mt-4">
 					{games?.map((game, i: number) => (
