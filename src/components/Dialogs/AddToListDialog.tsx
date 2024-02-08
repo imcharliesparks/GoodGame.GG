@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { GamePlayStatus, MobyGame, Platform } from '@/shared/types'
+import { GamePlayStatus, ListWithOwnership, MobyGame, Platform } from '@/shared/types'
 import { Dialog } from '@material-tailwind/react'
 import React from 'react'
 import Icon from 'react-icons-kit'
@@ -7,6 +7,7 @@ import Select from 'react-tailwindcss-select'
 import { ic_close } from 'react-icons-kit/md/ic_close'
 import styles from '../../styles/components/AddToListDialog.module.css'
 import { handleAddGameToList } from '@/shared/utils'
+import { useRouter } from 'next/router'
 
 type AddToListDialogProps = {
 	isOpen: boolean
@@ -14,6 +15,7 @@ type AddToListDialogProps = {
 	listName: string
 	index: number
 	game: MobyGame
+	setListsWithOwnership: (list: ListWithOwnership[]) => void
 }
 
 type PlatformLabelOptions = {
@@ -23,7 +25,15 @@ type PlatformLabelOptions = {
 	platformData: Platform
 }
 
-const AddToListDialog = ({ game, setIsDialogOpen, listName, index, isOpen }: AddToListDialogProps) => {
+const AddToListDialog = ({
+	game,
+	setIsDialogOpen,
+	listName,
+	index,
+	isOpen,
+	setListsWithOwnership
+}: AddToListDialogProps) => {
+	const router = useRouter()
 	const [selectedPlatforms, setSelectedPlatforms] = React.useState<PlatformLabelOptions[]>([])
 	const [platformOptions, setPlatformOptions] = React.useState<Record<any, any>>([])
 	const [selectedGameplayStatus, setSelectedGameplayStatus] = React.useState<GamePlayStatus>()
@@ -56,7 +66,16 @@ const AddToListDialog = ({ game, setIsDialogOpen, listName, index, isOpen }: Add
 
 	const addGameToList = () => {
 		const addedPlatforms = selectedPlatforms.map((platform: PlatformLabelOptions) => ({ ...platform.platformData }))
-		handleAddGameToList(game, listName, index, selectedGameplayStatus ?? GamePlayStatus.NOT_PLAYED, addedPlatforms)
+		console.log('here')
+		handleAddGameToList(
+			game,
+			listName,
+			index,
+			selectedGameplayStatus ?? undefined,
+			addedPlatforms,
+			router,
+			setListsWithOwnership
+		)
 	}
 
 	return (

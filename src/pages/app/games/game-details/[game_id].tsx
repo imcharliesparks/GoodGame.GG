@@ -5,23 +5,8 @@ import GameDetailsPageRight from '@/components/general/GameDetailsPage/GameDetai
 import useScreenSize from '@/components/hooks/useScreenSize'
 import firebase_app from '@/lib/firebase'
 import { getGameByGameId } from '@/shared/serverMethods'
-import {
-	APIMethods,
-	APIStatuses,
-	CollectionNames,
-	GGUser,
-	GamePlayStatus,
-	ListWithOwnership,
-	MobyGame,
-	Platform,
-	StoredGame
-} from '@/shared/types'
-import {
-	findListsContainingGame,
-	getListsWithOwnership,
-	handleAddGameToList,
-	handleUpdateListsWithOwnership
-} from '@/shared/utils'
+import { APIMethods, APIStatuses, CollectionNames, GGUser, ListWithOwnership, MobyGame, Platform } from '@/shared/types'
+import { getListsWithOwnership, handleUpdateListsWithOwnership } from '@/shared/utils'
 import { getAuth } from '@clerk/nextjs/server'
 import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore'
 import { GetServerSidePropsContext } from 'next'

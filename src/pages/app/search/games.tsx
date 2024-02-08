@@ -1,18 +1,7 @@
 import React from 'react'
-import {
-	APIMethods,
-	APIStatuses,
-	CollectionNames,
-	GGLists,
-	GamePlayStatus,
-	ListWithOwnership,
-	MobyGame,
-	Platform,
-	StoredGame
-} from '@/shared/types'
+import { APIMethods, APIStatuses, CollectionNames, GGLists, ListWithOwnership, MobyGame } from '@/shared/types'
 import LoadingSpinner from '@/components/general/LoadingSpinner'
 import NewSearchGameCard from '@/components/general/NewSearchGameCard'
-import AddToListModal from '@/components/modal/AddToListModal/AddToListModal'
 import { getAuth } from '@clerk/nextjs/server'
 import { GetServerSidePropsContext } from 'next'
 import firebase_app from '@/lib/firebase'
@@ -20,9 +9,8 @@ import { getFirestore, collection, query, where, getDocs } from 'firebase/firest
 import { useUserHasGameInCollection } from '@/components/hooks/useUserHasGameInCollection'
 import { SubstandardGenres } from '@/shared/constants'
 import { convert } from 'html-to-text'
-import { convertFirebaseTimestamps, handleAddGameToList, handleUpdateListsWithOwnership } from '@/shared/utils'
+import { convertFirebaseTimestamps } from '@/shared/utils'
 import { useRouter } from 'next/router'
-import AddToListDialog from '@/components/Dialogs/AddToListDialog'
 import GameDetailsBottomDrawer from '@/components/Drawers/BottomDrawer/GameDetailsBottomDrawer'
 
 type SearchGamePageProps = {
@@ -52,7 +40,6 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 	const closeDrawer = () => setIsDrawerOpen(false)
 
 	React.useEffect(() => {
-		console.log('listsWithOwnership', listsWithOwnership)
 		if (searchQuery) {
 			// @ts-ignore
 			inputRef.current.value = searchQuery
@@ -115,12 +102,11 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 		}
 	}
 
-	const handleOpenListsModal = (game: MobyGame) => {
-		const { game_id } = game
-		localStorage.setItem('currentlySelectedGame', JSON.stringify(game))
-		setIsModalOpen(true)
-		const foundListsWithOwnership = useUserHasGameInCollection(game_id, lists!)
+	const handleOpenDrawer = (game: MobyGame) => {
+		const foundListsWithOwnership = useUserHasGameInCollection(game.game_id, lists!)
 		setListsWithOwnership(foundListsWithOwnership)
+		setSelectedGame(game)
+		openDrawer()
 	}
 
 	return (
@@ -149,10 +135,7 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 							lastCard={i === games.length - 1}
 							key={game.game_id}
 							game={game}
-							handleOpenModal={() => {
-								setSelectedGame(game)
-								openDrawer()
-							}}
+							handleOpenDrawer={() => handleOpenDrawer(game)}
 						/>
 					))}
 				</div>
@@ -218,6 +201,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 			props.searchQuery = searchTerm as string
 			let reqUrl = `https://api.mobygames.com/v1/games?format=normal&api_key=${process.env.MOBY_GAMES_API_KEY}&title=${searchTerm}`
 
+			// TODO: Add support for search parameters
 			// if (searchParameters.genre) {
 			// 	reqUrl += `&genre=${searchParameters.genre}`
 			// }

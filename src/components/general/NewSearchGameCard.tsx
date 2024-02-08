@@ -9,10 +9,10 @@ import HeartIcon from './HeartIcon'
 type NewSearchGameCardProps = {
 	game: MobyGame
 	lastCard: boolean
-	handleOpenModal: () => void
+	handleOpenDrawer: () => void
 }
 
-const NewSearchGameCard = ({ game, lastCard, handleOpenModal }: NewSearchGameCardProps) => {
+const NewSearchGameCard = ({ game, lastCard, handleOpenDrawer }: NewSearchGameCardProps) => {
 	const [showFullDescription, setShowFullDescription] = React.useState<boolean>(game.description?.length < 150)
 
 	const generatePlatformsString = (): string => {
@@ -54,7 +54,7 @@ const NewSearchGameCard = ({ game, lastCard, handleOpenModal }: NewSearchGameCar
 							<p className="text-left w-[96%] link text-sm text-slate-400">Add modal...</p>
 						</div>
 						<div>
-							<button onClick={handleOpenModal} className="btn btn-block btn-sm text-white">
+							<button onClick={handleOpenDrawer} className="btn btn-block btn-sm text-white">
 								+ Add to List
 							</button>
 						</div>

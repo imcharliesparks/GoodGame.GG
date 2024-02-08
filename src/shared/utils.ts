@@ -12,7 +12,7 @@ import {
 	StoredGame,
 	UserByEmail
 } from './types'
-import { NextRouter, Router } from 'next/router'
+import { NextRouter } from 'next/router'
 
 /*
  * Data fetching wrapper for the IGDB API

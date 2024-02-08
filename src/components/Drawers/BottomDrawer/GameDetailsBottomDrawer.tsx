@@ -5,10 +5,9 @@ import { ic_close } from 'react-icons-kit/md/ic_close'
 import { ic_add } from 'react-icons-kit/md/ic_add'
 import { buttonCheck } from 'react-icons-kit/metrize/buttonCheck'
 import { blank } from 'react-icons-kit/metrize/blank'
-import { GamePlayStatus, ListWithOwnership, MobyGame, Platform } from '@/shared/types'
+import { ListWithOwnership, MobyGame } from '@/shared/types'
 import AddToListDialog from '../../Dialogs/AddToListDialog'
-import { Router, useRouter } from 'next/router'
-import { ListStylesType } from '@material-tailwind/react'
+import { useRouter } from 'next/router'
 import { handleDeleteGameFromList } from '@/shared/utils'
 
 type DrawerProps = {
@@ -102,6 +101,7 @@ const GameDetailsBottomDrawer = ({ game, open, close, lists, setListsWithOwnersh
 				setIsDialogOpen={() => setIsDialogOpen(!isDialogOpen)}
 				listName={currentlySelectedList}
 				index={currentListIndex}
+				setListsWithOwnership={setListsWithOwnership}
 			/>
 		</BaseBottomDrawer>
 	)
