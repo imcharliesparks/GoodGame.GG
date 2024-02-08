@@ -65,3 +65,4 @@
 - [x] Fix bug with list names not getting sorted
 - [x] Fix bug where bottom drop up isn't cleared on exit
 - [ ] Change alerts to toast
+- [ ] Fix overflow on cards on lists page of titles

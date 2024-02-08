@@ -1,5 +1,5 @@
 import React from 'react'
-// import Footer from '../default/Footer'
+import Footer from '../default/Footer'
 import NavHeader from './NavHeader'
 
 type Props = {
@@ -12,7 +12,7 @@ const Layout = ({ children }: Props) => (
 	<>
 		<NavHeader />
 		<main className="max-w-screen-xl mx-auto pb-24 overflow-y-scroll">{children}</main>
-		{/* <Footer /> */}
+		<Footer />
 	</>
 )
 

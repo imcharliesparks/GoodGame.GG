@@ -116,5 +116,3 @@ export default function Home() {
 		</div>
 	)
 }
-
-Home.getLayout = (page: React.ReactChild) => <>{page}</>

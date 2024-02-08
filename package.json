@@ -24,6 +24,7 @@
 		"eslint-config-next": "13.4.2",
 		"firebase": "^9.23.0",
 		"fuse.js": "^6.6.2",
+		"hamburger-react": "^2.5.0",
 		"html-to-text": "^9.0.5",
 		"joi": "^17.12.1",
 		"next": "13.4.2",

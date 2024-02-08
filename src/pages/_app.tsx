@@ -6,7 +6,8 @@ import cookie from 'cookie'
 import { APIMethods, TypeOfPerson } from '@/shared/types'
 import { ClerkProvider } from '@clerk/nextjs'
 import ErrorBoundary from '@/components/ErrorBoundary'
-import Layout from '@/components/layout/desktop'
+// import Layout from '@/components/layout/desktop'
+import Layout from '@/components/layout/default'
 import { ThemeProvider } from '@material-tailwind/react'
 
 export type NextPageWithLayout<P = Record<string, any>, IP = P> = NextPage<P, IP> & {

@@ -45,8 +45,6 @@ const NewSearchGameCard = ({ game, lastCard, handleOpenDrawer }: NewSearchGameCa
 							<h3 className="text-lg font-bold">{game.title}</h3>
 							<p className="text-slate-600 text-sm">{generatePlatformsString(game)}</p>
 							{game.moby_score && <ReactStars count={5} edit={false} value={Math.round(7.2 / 2)} size={12} />}
-
-							<p className="text-left w-[96%] link text-sm text-slate-400">Add modal...</p>
 						</div>
 						<div>
 							<Button

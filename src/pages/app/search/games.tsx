@@ -22,17 +22,13 @@ type SearchGamePageProps = {
 	foundGames?: MobyGame[]
 }
 
-// TODO: Disallow adding of games once the user already has them
-// TODO: Add pagination to search for speed
-// TODO: Need to better handle removal from lists
+// TODO: Add initial loading when hydrating from SSR
 const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: SearchGamePageProps) => {
-	const router = useRouter()
 	const [searchTerm, setSearchTerm] = React.useState<string>('')
 	const [searchError, setSearchError] = React.useState<string | null>(null)
 	const [addSuccessText, setAddSuccessText] = React.useState<string | null>(null)
 	const [games, setGames] = React.useState<MobyGame[]>()
 	const [isLoading, setIsLoading] = React.useState<boolean>(false)
-	const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false)
 	const [listsWithOwnership, setListsWithOwnership] = React.useState<ListWithOwnership[]>([])
 	const [selectedGame, setSelectedGame] = React.useState<MobyGame>()
 	const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(false)
