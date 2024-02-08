@@ -6,31 +6,21 @@ import { ic_add } from 'react-icons-kit/md/ic_add'
 import { buttonCheck } from 'react-icons-kit/metrize/buttonCheck'
 import { blank } from 'react-icons-kit/metrize/blank'
 import { GamePlayStatus, ListWithOwnership, MobyGame, Platform } from '@/shared/types'
-import BottomDrawerDialog from './BottomDrawerDialog'
+import AddToListDialog from '../../Dialogs/AddToListDialog'
+import { Router, useRouter } from 'next/router'
+import { ListStylesType } from '@material-tailwind/react'
+import { handleDeleteGameFromList } from '@/shared/utils'
 
 type DrawerProps = {
 	game: MobyGame
 	open: boolean
 	close: () => void
 	lists: ListWithOwnership[]
-	handleAddGameToList: (
-		game: MobyGame,
-		listName: string,
-		index: number,
-		playStatus: Record<any, any>,
-		platforms: Platform[]
-	) => Promise<boolean>
-	handleDeleteGameFromList: (listName: string, index: number) => Promise<boolean>
+	setListsWithOwnership: (lists: ListWithOwnership[]) => void
 }
 
-const GameDetailsBottomDrawer = ({
-	game,
-	open,
-	close,
-	lists,
-	handleAddGameToList,
-	handleDeleteGameFromList
-}: DrawerProps) => {
+const GameDetailsBottomDrawer = ({ game, open, close, lists, setListsWithOwnership }: DrawerProps) => {
+	const router = useRouter()
 	const [isDialogOpen, setIsDialogOpen] = React.useState<boolean>(false)
 	const [currentlySelectedList, setCurrentlySelectedList] = React.useState<string>('')
 	const [currentListIndex, setCurrentListIndex] = React.useState<number>(0)
@@ -69,7 +59,9 @@ const GameDetailsBottomDrawer = ({
 									</div>
 									<button
 										onClick={() =>
-											list.hasGame ? handleDeleteGameFromList(list.listName, i) : handleOpenDialog(list.listName, i)
+											list.hasGame
+												? handleDeleteGameFromList(list.listName, i, router, setListsWithOwnership)
+												: handleOpenDialog(list.listName, i)
 										}
 										className={`btn btn-link normal-case text-slate-600`}
 									>
@@ -104,11 +96,10 @@ const GameDetailsBottomDrawer = ({
 					</div>
 				</div>
 			</div>
-			<BottomDrawerDialog
+			<AddToListDialog
 				game={game}
 				isOpen={isDialogOpen}
 				setIsDialogOpen={() => setIsDialogOpen(!isDialogOpen)}
-				handleAddGameToList={handleAddGameToList}
 				listName={currentlySelectedList}
 				index={currentListIndex}
 			/>

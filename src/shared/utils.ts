@@ -1,6 +1,18 @@
 import Fuse from 'fuse.js'
 import { IGDB_ACCESS_TOKEN, IGDB_BASE_URL } from './constants'
-import { APIMethods, GGList, GGUser, ListWithOwnership, UserByEmail } from './types'
+import {
+	APIMethods,
+	APIStatuses,
+	GGList,
+	GGUser,
+	GamePlayStatus,
+	ListWithOwnership,
+	MobyGame,
+	Platform,
+	StoredGame,
+	UserByEmail
+} from './types'
+import { NextRouter, Router } from 'next/router'
 
 /*
  * Data fetching wrapper for the IGDB API
@@ -140,4 +152,113 @@ export const handleUpdateListsWithOwnership = (index: number, ownershipStatus: b
 		updated[index].hasGame = ownershipStatus
 		return updated
 	})
+}
+
+// TODO: Replace the alerts in both of these methods with universal toasts
+export const handleAddGameToList = async (
+	game: MobyGame,
+	listName: string,
+	index: number,
+	playStatus: Record<any, any>,
+	platforms: Platform[],
+	router: NextRouter,
+	setListsWithOwnership: (lists: ListWithOwnership[]) => void
+) => {
+	let success: boolean = false
+
+	try {
+		const { game_id, moby_score, sample_cover, title, description } = game!
+		const payload: Omit<StoredGame, 'dateAdded'> = {
+			game_id,
+			moby_score,
+			sample_cover,
+			title,
+			platform: platforms.reduce(
+				(prev: string, platform: Platform, i: number) =>
+					i === 0 ? `${platform.platform_name}` : `${prev}, ${platform.platform_name}`,
+				''
+			),
+			playStatus: playStatus.value ?? GamePlayStatus.NOT_PLAYED,
+			description: description ?? 'No Description Found'
+		}
+
+		console.log('payload', payload)
+
+		const request = await fetch(`/api/lists/${listName}/update`, {
+			method: APIMethods.PATCH,
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(payload)
+		})
+		const response = await request.json()
+		if (response.status === APIStatuses.ERROR) {
+			throw new Error(response.data.error)
+		} else {
+			handleUpdateListsWithOwnership(index, true, setListsWithOwnership)
+			success = true
+			alert(`Success! We've added ${game!.title} to your ${listName} list.`)
+			// handleShowSuccessToast(`Success! We've added ${currentlySelectedGame!.title} to your ${listName} list.`)
+			router.replace(router.asPath)
+		}
+	} catch (error) {
+		console.error(`Unable to add game to list`, error)
+		alert(
+			`We couldn't add ${
+				// @ts-ignore
+				game ? game.title : 'NO TITLE'
+			} to your ${listName} list. Please try again in a bit.`
+		)
+		// handleShowErrorToast(
+		// 	`We couldn't add ${
+		// 		// @ts-ignore
+		// 		currentlySelectedGame ? currentlySelectedGame.title : 'NO TITLE'
+		// 	} to your ${listName} list. Please try again in a bit.`
+		// )
+	} finally {
+		return success
+	}
+}
+
+export const handleDeleteGameFromList = async (
+	listName: string,
+	index: number,
+	router: NextRouter,
+	setListsWithOwnership: (lists: ListWithOwnership[]) => void
+): Promise<boolean> => {
+	let success: boolean = false
+	const gameFromLocalStorage = localStorage.getItem('currentlySelectedGame')
+	let currentlySelectedGame: MobyGame
+
+	try {
+		if (!gameFromLocalStorage) throw new Error('No game found in local storage on search page')
+		currentlySelectedGame = JSON.parse(gameFromLocalStorage)
+		const { game_id } = currentlySelectedGame!
+
+		const request = await fetch(`/api/lists/${listName}/${game_id}/remove`, {
+			method: APIMethods.DELETE,
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		})
+		const response = await request.json()
+		if (response.status === APIStatuses.ERROR) {
+			throw new Error(response.data.error)
+		} else {
+			handleUpdateListsWithOwnership(index, false, setListsWithOwnership)
+			success = true
+			alert(`We've Deleted ${currentlySelectedGame!.title} to your ${listName} list.`)
+			router.replace(router.asPath)
+		}
+	} catch (error) {
+		console.error(`Unable to remove game from list`, error)
+		alert(
+			`We couldn't remove ${
+				// @ts-ignore
+				currentlySelectedGame ? currentlySelectedGame.title : 'NO TITLE'
+			} from your ${listName} list. Please try again in a bit.`
+		)
+	} finally {
+		return success
+	}
 }

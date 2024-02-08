@@ -5,16 +5,10 @@ import React from 'react'
 import Icon from 'react-icons-kit'
 import Select from 'react-tailwindcss-select'
 import { ic_close } from 'react-icons-kit/md/ic_close'
-import styles from '../../../styles/components/BottomDrawer.module.css'
+import styles from '../../styles/components/AddToListDialog.module.css'
+import { handleAddGameToList } from '@/shared/utils'
 
-type BottomDrawerDialogProps = {
-	handleAddGameToList: (
-		game: MobyGame,
-		listName: string,
-		index: number,
-		playStatus: Record<any, any>,
-		platforms: Platform[]
-	) => Promise<boolean>
+type AddToListDialogProps = {
 	isOpen: boolean
 	setIsDialogOpen: () => void
 	listName: string
@@ -29,14 +23,7 @@ type PlatformLabelOptions = {
 	platformData: Platform
 }
 
-const BottomDrawerDialog = ({
-	game,
-	handleAddGameToList,
-	setIsDialogOpen,
-	listName,
-	index,
-	isOpen
-}: BottomDrawerDialogProps) => {
+const AddToListDialog = ({ game, setIsDialogOpen, listName, index, isOpen }: AddToListDialogProps) => {
 	const [selectedPlatforms, setSelectedPlatforms] = React.useState<PlatformLabelOptions[]>([])
 	const [platformOptions, setPlatformOptions] = React.useState<Record<any, any>>([])
 	const [selectedGameplayStatus, setSelectedGameplayStatus] = React.useState<GamePlayStatus>()
@@ -73,7 +60,7 @@ const BottomDrawerDialog = ({
 	}
 
 	return (
-		<Dialog id={styles.bottomDrawerModal} size="xs" open={isOpen} handler={setIsDialogOpen} className="h-[300px]">
+		<Dialog id={styles.addToListDialog} size="xs" open={isOpen} handler={setIsDialogOpen} className="h-[300px]">
 			<div className="h-full relative h-xl">
 				<div className="grid grid-cols-2 border-b-2 pb-2 mb-2">
 					<h4 className="text-left">One more thing...</h4>
@@ -128,4 +115,4 @@ const BottomDrawerDialog = ({
 	)
 }
 
-export default BottomDrawerDialog
+export default AddToListDialog

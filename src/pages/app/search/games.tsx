@@ -20,8 +20,10 @@ import { getFirestore, collection, query, where, getDocs } from 'firebase/firest
 import { useUserHasGameInCollection } from '@/components/hooks/useUserHasGameInCollection'
 import { SubstandardGenres } from '@/shared/constants'
 import { convert } from 'html-to-text'
-import { convertFirebaseTimestamps, handleUpdateListsWithOwnership } from '@/shared/utils'
+import { convertFirebaseTimestamps, handleAddGameToList, handleUpdateListsWithOwnership } from '@/shared/utils'
 import { useRouter } from 'next/router'
+import AddToListDialog from '@/components/Dialogs/AddToListDialog'
+import GameDetailsBottomDrawer from '@/components/Drawers/BottomDrawer/GameDetailsBottomDrawer'
 
 type SearchGamePageProps = {
 	searchQuery?: string
@@ -43,6 +45,11 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 	const [isLoading, setIsLoading] = React.useState<boolean>(false)
 	const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false)
 	const [listsWithOwnership, setListsWithOwnership] = React.useState<ListWithOwnership[]>([])
+	const [selectedGame, setSelectedGame] = React.useState<MobyGame>()
+	const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(false)
+
+	const openDrawer = () => setIsDrawerOpen(true)
+	const closeDrawer = () => setIsDrawerOpen(false)
 
 	React.useEffect(() => {
 		console.log('listsWithOwnership', listsWithOwnership)
@@ -108,101 +115,6 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 		}
 	}
 
-	const handleAddGameToList = async (
-		listName: string,
-		index: number,
-		gameplayStatus: GamePlayStatus,
-		platforms: Platform[]
-	): Promise<boolean> => {
-		let success: boolean = false
-		const gameFromLocalStorage = localStorage.getItem('currentlySelectedGame')
-		let currentlySelectedGame: MobyGame
-
-		try {
-			if (!gameFromLocalStorage) throw new Error('No game found in local storage on search page')
-			currentlySelectedGame = JSON.parse(gameFromLocalStorage)
-			const { game_id, moby_score, sample_cover, title, description } = currentlySelectedGame!
-			const payload: Omit<StoredGame, 'dateAdded'> = {
-				game_id,
-				moby_score,
-				sample_cover,
-				title,
-				platform: platforms.reduce(
-					(prev: string, platform: Platform, i: number) =>
-						i === 0 ? `${platform.platform_name}` : `${prev}, ${platform.platform_name}`,
-					''
-				),
-				playStatus: gameplayStatus ?? GamePlayStatus.NOT_PLAYED,
-				description: description ?? 'No Description Found'
-			}
-
-			const request = await fetch(`/api/lists/${listName}/update`, {
-				method: APIMethods.PATCH,
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(payload)
-			})
-			const response = await request.json()
-			if (response.status === APIStatuses.ERROR) {
-				throw new Error(response.data.error)
-			} else {
-				handleUpdateListsWithOwnership(index, true, setListsWithOwnership)
-				success = true
-				handleShowSuccessToast(`Success! We've added ${currentlySelectedGame!.title} to your ${listName} list.`)
-				router.replace(router.asPath)
-			}
-		} catch (error) {
-			console.error(`Unable to add game to list`, error)
-			handleShowErrorToast(
-				`We couldn't add ${
-					// @ts-ignore
-					currentlySelectedGame ? currentlySelectedGame.title : 'NO TITLE'
-				} to your ${listName} list. Please try again in a bit.`
-			)
-		} finally {
-			return success
-		}
-	}
-
-	const handleDeleteGameFromList = async (listName: string, index: number): Promise<boolean> => {
-		let success: boolean = false
-		const gameFromLocalStorage = localStorage.getItem('currentlySelectedGame')
-		let currentlySelectedGame: MobyGame
-
-		try {
-			if (!gameFromLocalStorage) throw new Error('No game found in local storage on search page')
-			currentlySelectedGame = JSON.parse(gameFromLocalStorage)
-			const { game_id } = currentlySelectedGame!
-
-			const request = await fetch(`/api/lists/${listName}/${game_id}/remove`, {
-				method: APIMethods.DELETE,
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			})
-			const response = await request.json()
-			if (response.status === APIStatuses.ERROR) {
-				throw new Error(response.data.error)
-			} else {
-				handleUpdateListsWithOwnership(index, false, setListsWithOwnership)
-				success = true
-				handleShowSuccessToast(`We've Deleted ${currentlySelectedGame!.title} to your ${listName} list.`)
-				router.replace(router.asPath)
-			}
-		} catch (error) {
-			console.error(`Unable to remove game from list`, error)
-			handleShowErrorToast(
-				`We couldn't remove ${
-					// @ts-ignore
-					currentlySelectedGame ? currentlySelectedGame.title : 'NO TITLE'
-				} from your ${listName} list. Please try again in a bit.`
-			)
-		} finally {
-			return success
-		}
-	}
-
 	const handleOpenListsModal = (game: MobyGame) => {
 		const { game_id } = game
 		localStorage.setItem('currentlySelectedGame', JSON.stringify(game))
@@ -238,7 +150,8 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 							key={game.game_id}
 							game={game}
 							handleOpenModal={() => {
-								handleOpenListsModal(game)
+								setSelectedGame(game)
+								openDrawer()
 							}}
 						/>
 					))}
@@ -262,14 +175,13 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 					</div>
 				</div>
 			)}
-
-			{userIsAuthd && (
-				<AddToListModal
-					lists={listsWithOwnership!}
-					isModalOpen={isModalOpen}
-					setIsModalOpen={setIsModalOpen}
-					handleAddGameToList={handleAddGameToList}
-					handleDeleteGameFromList={handleDeleteGameFromList}
+			{selectedGame && (
+				<GameDetailsBottomDrawer
+					game={selectedGame!}
+					open={isDrawerOpen}
+					close={closeDrawer}
+					lists={listsWithOwnership}
+					setListsWithOwnership={setListsWithOwnership}
 				/>
 			)}
 		</div>

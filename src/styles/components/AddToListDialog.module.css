@@ -1,0 +1,6 @@
+#addToListDialog {
+	max-width: 400px !important;
+	width: 100%;
+	min-width: 0 !important;
+	padding: 16px;
+}
