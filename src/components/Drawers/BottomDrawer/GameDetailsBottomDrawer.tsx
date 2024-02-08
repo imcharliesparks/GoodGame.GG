@@ -40,6 +40,8 @@ const GameDetailsBottomDrawer = ({
 		setIsDialogOpen(!isDialogOpen)
 	}
 
+	// TODO: Allow truncating of lists names if they're too long
+	// TODO: Make sure it's scrollable if it gets too tall
 	return (
 		<BaseBottomDrawer open={open} close={close}>
 			<div className="h-full w-full mx-auto p-4">

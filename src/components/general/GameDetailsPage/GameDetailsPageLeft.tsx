@@ -1,5 +1,6 @@
 import { MobyGame, StoredGame } from '@/shared/types'
 import { convertMobyScore } from '@/shared/utils'
+import { Button } from '@material-tailwind/react'
 import Image from 'next/image'
 import React from 'react'
 import ReactStars from 'react-stars'
@@ -24,9 +25,10 @@ const GameDetailsPageLeft = ({ game, hasGame, openDrawerBottom }: GameDetailsPag
 				/>
 			</div>
 			<div className="mt-6 mb-2">
-				<button onClick={openDrawerBottom} className="btn btn-block btn-sm btn-primary text-white">
+				{/* TODO: Convert to icon button */}
+				<Button fullWidth onClick={openDrawerBottom}>
 					+ Add to List
-				</button>
+				</Button>
 			</div>
 			<div className="flex flex-row justify-center w-full">
 				<ReactStars count={5} edit={false} value={game.moby_score ?? 0} size={36} color2={'#ffd700'} />

@@ -7,18 +7,11 @@ import ReactStars from 'react-stars'
 type GameDetailsPageRightProps = {
 	game: MobyGame
 	hasGame: boolean
-	isModalOpen: boolean
-	setIsModalOpen: (isOpen: boolean) => void
 	platformList: string
 }
 
-const GameDetailsPageRight = ({
-	game,
-	hasGame,
-	isModalOpen,
-	setIsModalOpen,
-	platformList
-}: GameDetailsPageRightProps) => {
+// TODO: Add indicator for has game here
+const GameDetailsPageRight = ({ game, hasGame, platformList }: GameDetailsPageRightProps) => {
 	const [showFullDescription, setShowFullDescription] = React.useState<boolean>(false)
 
 	return (

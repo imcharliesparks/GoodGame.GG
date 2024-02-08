@@ -5,6 +5,7 @@ import React from 'react'
 import Icon from 'react-icons-kit'
 import Select from 'react-tailwindcss-select'
 import { ic_close } from 'react-icons-kit/md/ic_close'
+import styles from '../../../styles/components/BottomDrawer.module.css'
 
 type BottomDrawerDialogProps = {
 	handleAddGameToList: (
@@ -72,8 +73,8 @@ const BottomDrawerDialog = ({
 	}
 
 	return (
-		<Dialog open={isOpen} handler={setIsDialogOpen} className="h-[300px]">
-			<div className="h-full w-[250px] mx-auto py-4 relative h-xl">
+		<Dialog id={styles.bottomDrawerModal} size="xs" open={isOpen} handler={setIsDialogOpen} className="h-[300px]">
+			<div className="h-full relative h-xl">
 				<div className="grid grid-cols-2 border-b-2 pb-2 mb-2">
 					<h4 className="text-left">One more thing...</h4>
 					<div autoFocus onClick={setIsDialogOpen} className="cursor-pointer text-right">

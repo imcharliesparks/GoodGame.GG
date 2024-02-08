@@ -157,22 +157,10 @@ const GameDetailsPage = ({
 			{screenSize === 'desktop' ? (
 				<div className="grid grid-cols-12 container p-12 mx-auto">
 					<div className=" col-span-5">
-						<GameDetailsPageLeft
-							game={game}
-							hasGame={hasGame ?? false}
-							isModalOpen={isModalOpen}
-							setIsModalOpen={() => setIsModalOpen(!isModalOpen)}
-							openDrawerBottom={openDrawerBottom}
-						/>
+						<GameDetailsPageLeft game={game} hasGame={hasGame ?? false} openDrawerBottom={openDrawerBottom} />
 					</div>
 					<div className=" col-span-7">
-						<GameDetailsPageRight
-							platformList={platformList}
-							game={game}
-							hasGame={hasGame ?? false}
-							isModalOpen={isModalOpen}
-							setIsModalOpen={() => setIsModalOpen(!isModalOpen)}
-						/>
+						<GameDetailsPageRight platformList={platformList} game={game} hasGame={hasGame ?? false} />
 					</div>
 				</div>
 			) : (
