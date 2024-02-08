@@ -125,7 +125,7 @@ export type ListWithOwnership = {
 export type StoredGame = {
 	game_id: number
 	moby_score?: number
-	platform: string
+	platforms: Platform[]
 	sample_cover: SampleCover
 	title: string
 	description?: string

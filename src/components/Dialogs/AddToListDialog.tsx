@@ -64,14 +64,24 @@ const AddToListDialog = ({
 		setSelectedGameplayStatus(value)
 	}
 
+	const handleTeardown = (e: any) => {
+		setSelectedPlatforms([])
+		setPlatformOptions([])
+		setSelectedGameplayStatus()
+		setIsDialogOpen(e)
+	}
+
 	const addGameToList = async () => {
 		const addedPlatforms = selectedPlatforms.map((platform: PlatformLabelOptions) => ({ ...platform.platformData }))
+		const gamePayload = {
+			...game,
+			platforms: selectedPlatforms
+		}
 		await handleAddGameToList(
-			game,
+			gamePayload,
 			listName,
 			index,
 			selectedGameplayStatus ?? undefined,
-			addedPlatforms,
 			router,
 			setListsWithOwnership
 		)
@@ -79,7 +89,7 @@ const AddToListDialog = ({
 	}
 
 	return (
-		<Dialog id={styles.addToListDialog} size="xs" open={isOpen} handler={setIsDialogOpen} className="h-[300px]">
+		<Dialog id={styles.addToListDialog} size="xs" open={isOpen} handler={handleTeardown} className="h-[300px]">
 			<div className="h-full relative h-xl">
 				<div className="grid grid-cols-2 border-b-2 pb-2 mb-2">
 					<h4 className="text-left">One more thing...</h4>

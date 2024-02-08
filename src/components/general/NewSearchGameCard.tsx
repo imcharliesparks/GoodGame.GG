@@ -1,7 +1,7 @@
 import { APIMethods, APIStatuses, MobyGame, GamePlayStatus, GamePlatform, Platform } from '@/shared/types'
 import React from 'react'
 import Image from 'next/image'
-import { truncateDescription, calculateStarRating, convertMobyScore } from '@/shared/utils'
+import { truncateDescription, calculateStarRating, convertMobyScore, generatePlatformsString } from '@/shared/utils'
 import ReactStars from 'react-stars'
 import LoadingSpinner from './LoadingSpinner'
 import HeartIcon from './HeartIcon'
@@ -16,14 +16,6 @@ type NewSearchGameCardProps = {
 
 const NewSearchGameCard = ({ game, lastCard, handleOpenDrawer }: NewSearchGameCardProps) => {
 	const router = useRouter()
-
-	const generatePlatformsString = (): string => {
-		return game.platforms.length
-			? game.platforms.length > 2
-				? 'Multiple Platforms'
-				: game.platforms.map((platform: Platform) => platform.platform_name).join(', ')
-			: 'No platforms found'
-	}
 
 	// TODO: Handle when title and platform list are hella long
 	return (
@@ -51,7 +43,7 @@ const NewSearchGameCard = ({ game, lastCard, handleOpenDrawer }: NewSearchGameCa
 								<span className="indicator-item badge badge-primary py-[.75rem]">{game.genres[0].genre_name}</span>
 							)}
 							<h3 className="text-lg font-bold">{game.title}</h3>
-							<p className="text-slate-600 text-sm">{generatePlatformsString()}</p>
+							<p className="text-slate-600 text-sm">{generatePlatformsString(game)}</p>
 							{game.moby_score && <ReactStars count={5} edit={false} value={Math.round(7.2 / 2)} size={12} />}
 
 							<p className="text-left w-[96%] link text-sm text-slate-400">Add modal...</p>

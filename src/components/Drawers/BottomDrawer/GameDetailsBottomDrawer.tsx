@@ -9,6 +9,7 @@ import { ListWithOwnership, MobyGame } from '@/shared/types'
 import AddToListDialog from '../../Dialogs/AddToListDialog'
 import { useRouter } from 'next/router'
 import { handleDeleteGameFromList } from '@/shared/utils'
+import { useSortedListNamesSecondary } from '@/components/hooks/useUserLists'
 
 type DrawerProps = {
 	game: MobyGame
@@ -19,11 +20,11 @@ type DrawerProps = {
 }
 
 const GameDetailsBottomDrawer = ({ game, open, close, lists, setListsWithOwnership }: DrawerProps) => {
-	console.log('game', game)
 	const router = useRouter()
 	const [isDialogOpen, setIsDialogOpen] = React.useState<boolean>(false)
 	const [currentlySelectedList, setCurrentlySelectedList] = React.useState<string>('')
 	const [currentListIndex, setCurrentListIndex] = React.useState<number>(0)
+	const sortedListNames = useSortedListNamesSecondary(lists)
 	const handleOpenDialog = (listName: string, index: number) => {
 		setCurrentlySelectedList(listName)
 		setCurrentListIndex(index)
@@ -48,7 +49,7 @@ const GameDetailsBottomDrawer = ({ game, open, close, lists, setListsWithOwnersh
 					{!lists.length ? (
 						<h1>Loading...</h1>
 					) : (
-						lists.map((list: ListWithOwnership, i: number) => (
+						sortedListNames.map((list: ListWithOwnership, i: number) => (
 							<div key={`${list}_${i}`}>
 								<div className="my-3 flex items-center justify-between">
 									<div>

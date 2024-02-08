@@ -1,5 +1,4 @@
-import { APIMethods, APIStatuses, GGList, StoredGame } from '@/shared/types'
-import { calculateStarRating, truncateDescription } from '@/shared/utils'
+import { APIMethods, APIStatuses, StoredGame } from '@/shared/types'
 import Image from 'next/image'
 import React from 'react'
 import LoadingSpinner from './LoadingSpinner'
@@ -97,6 +96,7 @@ const ListCard = ({ game, setError, listName }: ListCardProps) => {
 			<div className="card-body items-center text-center pt-3">
 				{/* TODO: Add title wrapping and a max width */}
 				<h2 className="card-title">{game.title}</h2>
+				<p className="text-slate-600 text-sm"></p>
 				<p>
 					{/* {game.description ? (showFullSummary ? game.summary : truncateDescription(game.summary, 150)) : 'No summary available'} */}
 				</p>

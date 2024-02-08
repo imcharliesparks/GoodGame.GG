@@ -160,24 +160,19 @@ export const handleAddGameToList = async (
 	listName: string,
 	index: number,
 	playStatus: Record<any, any>,
-	platforms: Platform[],
 	router: NextRouter,
 	setListsWithOwnership: (lists: ListWithOwnership[]) => void
 ) => {
 	let success: boolean = false
 
 	try {
-		const { game_id, moby_score, sample_cover, title, description } = game!
+		const { game_id, moby_score, sample_cover, title, description, platforms } = game!
 		const payload: Omit<StoredGame, 'dateAdded'> = {
 			game_id,
 			moby_score,
 			sample_cover,
 			title,
-			platform: platforms.reduce(
-				(prev: string, platform: Platform, i: number) =>
-					i === 0 ? `${platform.platform_name}` : `${prev}, ${platform.platform_name}`,
-				''
-			),
+			platforms,
 			playStatus: playStatus.value ?? GamePlayStatus.NOT_PLAYED,
 			description: description ?? 'No Description Found'
 		}
@@ -258,4 +253,12 @@ export const handleDeleteGameFromList = async (
 	} finally {
 		return success
 	}
+}
+
+export const generatePlatformsString = (game: MobyGame): string => {
+	return game.platforms.length
+		? game.platforms.length > 2
+			? 'Multiple Platforms'
+			: game.platforms.map((platform: Platform) => platform.platform_name).join(', ')
+		: 'No platforms found'
 }

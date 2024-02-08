@@ -53,3 +53,13 @@
       https://www.goodreads.com/book/show/123247704-house-of-flame-and-shadow
 - [ ] Rethink dialog behavior around adding and deleting games (right now the drawer stays up)
 - [ ] Add a loading screen on navigation that waits for the page to fully settle before it makes any further changes
+- [ ] When viewing a game, either on search or details, I'd like some way to visually indicate that a game is on one of
+      your lists. Maybe a simple one on search/collection view, and more details on the details view
+
+### Still To Do for M-ist MVP
+
+- [ ] Redo header
+- [ ] Add list creation
+- [ ] Start some form of data backup
+- [x] Fix bug with list names not getting sorted
+- [ ] Fix bug where bottom drop up isn't cleared on exit
