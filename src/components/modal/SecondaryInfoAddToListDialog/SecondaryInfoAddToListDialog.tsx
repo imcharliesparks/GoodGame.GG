@@ -1,9 +1,9 @@
 import React from 'react'
 import BaseModal from '../BaseModal'
-import SecondaryAddToListModalContents from './SecondaryAddToListModalContents'
+import SecondaryAddToListModalContents from './SecondaryInfoAddToListDialogContents'
 import { GamePlayStatus, ListWithOwnership, Platform } from '@/shared/types'
 
-type SecondaryAddToListModalProps = {
+type SecondaryInfoAddToListDialogProps = {
 	isModalOpen: boolean
 	setIsModalOpen: (isModalOpen: boolean) => void
 	handleAddGameToList: (
@@ -16,13 +16,13 @@ type SecondaryAddToListModalProps = {
 	index: number
 }
 
-const SecondaryAddToListModal = ({
+const SecondaryInfoAddToListDialog = ({
 	setIsModalOpen,
 	handleAddGameToList,
 	listName,
 	index
 }: // platforms
-SecondaryAddToListModalProps) => {
+SecondaryInfoAddToListDialogProps) => {
 	const gameInLocalStorage = localStorage.getItem('currentlySelectedGame')
 	const currentlySelectedGame = gameInLocalStorage ? JSON.parse(gameInLocalStorage) : null
 	return (
@@ -38,4 +38,4 @@ SecondaryAddToListModalProps) => {
 	)
 }
 
-export default SecondaryAddToListModal
+export default SecondaryInfoAddToListDialog

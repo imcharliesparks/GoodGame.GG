@@ -6,7 +6,7 @@ import Icon from 'react-icons-kit'
 import Select from 'react-tailwindcss-select'
 import { ic_close } from 'react-icons-kit/md/ic_close'
 
-type SecondaryAddToListModalContentsProps = {
+type SecondaryInfoAddToListDialogContentsProps = {
 	handleAddGameToList: (
 		listName: string,
 		index: number,
@@ -26,13 +26,13 @@ type PlatformLabelOptions = {
 	platformData: Platform
 }
 
-const SecondaryAddToListModalContents = ({
+const SecondaryInfoAddToListDialogContents = ({
 	handleAddGameToList,
 	platforms,
 	setIsModalOpen,
 	listName,
 	index
-}: SecondaryAddToListModalContentsProps) => {
+}: SecondaryInfoAddToListDialogContentsProps) => {
 	const [selectedPlatforms, setSelectedPlatforms] = React.useState<PlatformLabelOptions>()
 	const [platformOptions, setPlatformOptions] = React.useState<Record<any, any>>([])
 	const [selectedGameplayStatus, setSelectedGameplayStatus] = React.useState<GamePlayStatus>()
@@ -117,4 +117,4 @@ const SecondaryAddToListModalContents = ({
 	)
 }
 
-export default SecondaryAddToListModalContents
+export default SecondaryInfoAddToListDialogContents

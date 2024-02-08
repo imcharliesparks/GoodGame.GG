@@ -61,7 +61,7 @@ const NewSearchGameCard = ({ game, lastCard, handleOpenDrawer }: NewSearchGameCa
 								onClick={() => router.push(`/app/games/game-details/${game.game_id}`)}
 								fullWidth
 								color="blue"
-								className="flex items-center gap-3 btn-sm mb-2"
+								className="flex items-center justify-center gap-3 btn-sm mb-2"
 							>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
@@ -75,14 +75,19 @@ const NewSearchGameCard = ({ game, lastCard, handleOpenDrawer }: NewSearchGameCa
 								</svg>
 								<span className="tracking-wide font-normal">More Details</span>
 							</Button>
-							<Button onClick={handleOpenDrawer} fullWidth color="green" className="flex items-center gap-3 btn-sm">
+							<Button
+								onClick={handleOpenDrawer}
+								fullWidth
+								color="green"
+								className="flex items-center justify-center gap-3 btn-sm"
+							>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
 									fill="none"
 									viewBox="0 0 24 24"
 									strokeWidth={2}
 									stroke="currentColor"
-									className="h-5 w-5 ml-[5px]"
+									className="h-5 w-5"
 								>
 									<path
 										strokeLinecap="round"

@@ -19,6 +19,7 @@ type DrawerProps = {
 }
 
 const GameDetailsBottomDrawer = ({ game, open, close, lists, setListsWithOwnership }: DrawerProps) => {
+	console.log('game', game)
 	const router = useRouter()
 	const [isDialogOpen, setIsDialogOpen] = React.useState<boolean>(false)
 	const [currentlySelectedList, setCurrentlySelectedList] = React.useState<string>('')
@@ -31,6 +32,7 @@ const GameDetailsBottomDrawer = ({ game, open, close, lists, setListsWithOwnersh
 
 	// TODO: Allow truncating of lists names if they're too long
 	// TODO: Make sure it's scrollable if it gets too tall
+	// TODO: Add loading spinner
 	return (
 		<BaseBottomDrawer open={open} close={close}>
 			<div className="h-full w-full mx-auto p-4 overflow-y-scroll">
@@ -42,6 +44,7 @@ const GameDetailsBottomDrawer = ({ game, open, close, lists, setListsWithOwnersh
 				</div>
 				<div>
 					{/* TODO: When you rewrite this, do it in a component that can be shared */}
+					{/* TODO: Add back in loading states and better icons */}
 					{!lists.length ? (
 						<h1>Loading...</h1>
 					) : (
@@ -59,30 +62,13 @@ const GameDetailsBottomDrawer = ({ game, open, close, lists, setListsWithOwnersh
 									<button
 										onClick={() =>
 											list.hasGame
-												? handleDeleteGameFromList(list.listName, i, router, setListsWithOwnership)
+												? handleDeleteGameFromList(game, list.listName, i, router, setListsWithOwnership)
 												: handleOpenDialog(list.listName, i)
 										}
 										className={`btn btn-link normal-case text-slate-600`}
 									>
 										{list.hasGame ? 'Remove' : 'Add'}
 									</button>
-									{/* TODO: Add back in loading states and better icons */}
-									{/* {buttonLoadingStates[i] ? (
-										<button className="btn btn-link normal-case text-slate-600">
-											{' '}
-											<span className="loading loading-spinner"></span>
-											loading...
-										</button>
-									) : (
-										<button
-											onClick={() =>
-												list.hasGame ? handleDeleteGameFromList(list.listName, i) : handleOpenSecondaryModal(true, list.listName, i)
-											}
-											className={`btn btn-link normal-case text-slate-600`}
-										>
-											{list.hasGame ? 'Remove' : 'Add'}
-										</button>
-									)} */}
 								</div>
 							</div>
 						))

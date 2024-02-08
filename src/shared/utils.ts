@@ -221,19 +221,16 @@ export const handleAddGameToList = async (
 }
 
 export const handleDeleteGameFromList = async (
+	game: MobyGame,
 	listName: string,
 	index: number,
 	router: NextRouter,
 	setListsWithOwnership: (lists: ListWithOwnership[]) => void
 ): Promise<boolean> => {
 	let success: boolean = false
-	const gameFromLocalStorage = localStorage.getItem('currentlySelectedGame')
-	let currentlySelectedGame: MobyGame
 
 	try {
-		if (!gameFromLocalStorage) throw new Error('No game found in local storage on search page')
-		currentlySelectedGame = JSON.parse(gameFromLocalStorage)
-		const { game_id } = currentlySelectedGame!
+		const { game_id } = game!
 
 		const request = await fetch(`/api/lists/${listName}/${game_id}/remove`, {
 			method: APIMethods.DELETE,
@@ -247,7 +244,7 @@ export const handleDeleteGameFromList = async (
 		} else {
 			handleUpdateListsWithOwnership(index, false, setListsWithOwnership)
 			success = true
-			alert(`We've Deleted ${currentlySelectedGame!.title} to your ${listName} list.`)
+			alert(`We've Deleted ${game!.title} to your ${listName} list.`)
 			router.replace(router.asPath)
 		}
 	} catch (error) {
@@ -255,7 +252,7 @@ export const handleDeleteGameFromList = async (
 		alert(
 			`We couldn't remove ${
 				// @ts-ignore
-				currentlySelectedGame ? currentlySelectedGame.title : 'NO TITLE'
+				game ? game.title : 'NO TITLE'
 			} from your ${listName} list. Please try again in a bit.`
 		)
 	} finally {
