@@ -52,3 +52,4 @@
 - [ ] Copy the goodreads add to list buttons that pull up a menu from the bottom with a list on mobile:
       https://www.goodreads.com/book/show/123247704-house-of-flame-and-shadow
 - [ ] Rethink dialog behavior around adding and deleting games (right now the drawer stays up)
+- [ ] Add a loading screen on navigation that waits for the page to fully settle before it makes any further changes

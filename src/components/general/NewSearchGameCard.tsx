@@ -5,6 +5,8 @@ import { truncateDescription, calculateStarRating, convertMobyScore } from '@/sh
 import ReactStars from 'react-stars'
 import LoadingSpinner from './LoadingSpinner'
 import HeartIcon from './HeartIcon'
+import { Button } from '@material-tailwind/react'
+import { useRouter } from 'next/router'
 
 type NewSearchGameCardProps = {
 	game: MobyGame
@@ -13,7 +15,7 @@ type NewSearchGameCardProps = {
 }
 
 const NewSearchGameCard = ({ game, lastCard, handleOpenDrawer }: NewSearchGameCardProps) => {
-	const [showFullDescription, setShowFullDescription] = React.useState<boolean>(game.description?.length < 150)
+	const router = useRouter()
 
 	const generatePlatformsString = (): string => {
 		return game.platforms.length
@@ -23,8 +25,9 @@ const NewSearchGameCard = ({ game, lastCard, handleOpenDrawer }: NewSearchGameCa
 			: 'No platforms found'
 	}
 
+	// TODO: Handle when title and platform list are hella long
 	return (
-		<div className={`border-t-[.25px] border-black w-full min-h-[246px]  ${lastCard && 'border-b-[.25px] border-black'}`}>
+		<div className={`border-t-[.25px] border-black w-full min-h-[245px]  ${lastCard && 'border-b-[.25px] border-black'}`}>
 			<div className="grid grid-cols-12 min-h-[245px]">
 				<div className="col-span-5 bg-gray-200 p-4">
 					{/* TODO: Consider placing this here */}
@@ -54,9 +57,41 @@ const NewSearchGameCard = ({ game, lastCard, handleOpenDrawer }: NewSearchGameCa
 							<p className="text-left w-[96%] link text-sm text-slate-400">Add modal...</p>
 						</div>
 						<div>
-							<button onClick={handleOpenDrawer} className="btn btn-block btn-sm text-white">
-								+ Add to List
-							</button>
+							<Button
+								onClick={() => router.push(`/app/games/game-details/${game.game_id}`)}
+								fullWidth
+								color="blue"
+								className="flex items-center gap-3 btn-sm mb-2"
+							>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									fill="none"
+									viewBox="0 0 24 24"
+									strokeWidth={2}
+									stroke="currentColor"
+									className="h-5 w-5"
+								>
+									<path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+								</svg>
+								<span className="tracking-wide font-normal">More Details</span>
+							</Button>
+							<Button onClick={handleOpenDrawer} fullWidth color="green" className="flex items-center gap-3 btn-sm">
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									fill="none"
+									viewBox="0 0 24 24"
+									strokeWidth={2}
+									stroke="currentColor"
+									className="h-5 w-5 ml-[5px]"
+								>
+									<path
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"
+									/>
+								</svg>
+								<span className="tracking-wide font-normal">Add to List</span>
+							</Button>
 						</div>
 					</div>
 				</div>
