@@ -9,38 +9,14 @@ import GameDetailsBottomDrawer from '@/components/Drawers/BottomDrawer/GameDetai
 
 type GameDetailsMobileTopProps = {
 	game: MobyGame
-	hasGame: boolean
 	platformList: string
-	isModalOpen: boolean
-	listsWithOwnership: ListWithOwnership[]
-	setIsModalOpen: (isOpen: boolean) => void
-	handleAddGameToList: (
-		game: MobyGame,
-		listName: string,
-		index: number,
-		playStatus: Record<any, any>,
-		platform: Platform[]
-	) => Promise<boolean>
-	handleDeleteGameFromList: (listName: string, index: number) => Promise<boolean>
+	hasGame: boolean
+	openDrawerBottom: () => void
 }
 
-const GameDetailsMobileTop = ({
-	game,
-	hasGame,
-	platformList,
-	isModalOpen,
-	listsWithOwnership,
-	setIsModalOpen,
-	handleAddGameToList,
-	handleDeleteGameFromList
-}: GameDetailsMobileTopProps) => {
+// TODO: Add some sort of marker to indicate that the game is on a list
+const GameDetailsMobileTop = ({ game, platformList, hasGame, openDrawerBottom }: GameDetailsMobileTopProps) => {
 	const [showFullDescription, setShowFullDescription] = React.useState<boolean>(false)
-	const [openBottom, setOpenBottom] = React.useState(false)
-
-	console.log('handleDeleteGameFromList', handleDeleteGameFromList)
-
-	const openDrawerBottom = () => setOpenBottom(true)
-	const closeDrawerBottom = () => setOpenBottom(false)
 
 	return (
 		<div className="flex flex-col gap-2 items-center pt-8 pb-24">
@@ -96,14 +72,6 @@ const GameDetailsMobileTop = ({
 					)}
 				</section>
 			</div>
-			<GameDetailsBottomDrawer
-				game={game}
-				open={openBottom}
-				close={closeDrawerBottom}
-				lists={listsWithOwnership}
-				handleAddGameToList={handleAddGameToList}
-				handleDeleteGameFromList={handleDeleteGameFromList}
-			/>
 		</div>
 	)
 }

@@ -1,3 +1,4 @@
+import GameDetailsBottomDrawer from '@/components/Drawers/BottomDrawer/GameDetailsBottomDrawer'
 import GameDetailsMobileTop from '@/components/general/GameDetailsPage/GameDetailsMobileTop'
 import GameDetailsPageLeft from '@/components/general/GameDetailsPage/GameDetailsPageLeft'
 import GameDetailsPageRight from '@/components/general/GameDetailsPage/GameDetailsPageRight'
@@ -38,6 +39,11 @@ const GameDetailsPage = ({
 }: GameDetailsPageProps) => {
 	const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false)
 	const [listsWithOwnership, setListsWithOwnership] = React.useState<ListWithOwnership[]>(initialListsWithOwnership)
+	const [showFullDescription, setShowFullDescription] = React.useState<boolean>(false)
+	const [openBottom, setOpenBottom] = React.useState(false)
+
+	const openDrawerBottom = () => setOpenBottom(true)
+	const closeDrawerBottom = () => setOpenBottom(false)
 	const screenSize = useScreenSize()
 
 	const platformList =
@@ -146,37 +152,47 @@ const GameDetailsPage = ({
 	// TODO: Do something better here
 	if (!game) return <h1>No game found!</h1>
 
-	return screenSize === 'desktop' ? (
-		<div className="grid grid-cols-12 container p-12 mx-auto">
-			<div className=" col-span-5">
-				<GameDetailsPageLeft
+	return (
+		<div>
+			{screenSize === 'desktop' ? (
+				<div className="grid grid-cols-12 container p-12 mx-auto">
+					<div className=" col-span-5">
+						<GameDetailsPageLeft
+							game={game}
+							hasGame={hasGame ?? false}
+							isModalOpen={isModalOpen}
+							setIsModalOpen={() => setIsModalOpen(!isModalOpen)}
+							openDrawerBottom={openDrawerBottom}
+						/>
+					</div>
+					<div className=" col-span-7">
+						<GameDetailsPageRight
+							platformList={platformList}
+							game={game}
+							hasGame={hasGame ?? false}
+							isModalOpen={isModalOpen}
+							setIsModalOpen={() => setIsModalOpen(!isModalOpen)}
+						/>
+					</div>
+				</div>
+			) : (
+				<GameDetailsMobileTop
+					openDrawerBottom={openDrawerBottom}
 					game={game}
 					hasGame={hasGame ?? false}
-					isModalOpen={isModalOpen}
-					setIsModalOpen={() => setIsModalOpen(!isModalOpen)}
-				/>
-			</div>
-			<div className=" col-span-7">
-				<GameDetailsPageRight
 					platformList={platformList}
-					game={game}
-					hasGame={hasGame ?? false}
-					isModalOpen={isModalOpen}
-					setIsModalOpen={() => setIsModalOpen(!isModalOpen)}
 				/>
-			</div>
+			)}
+
+			<GameDetailsBottomDrawer
+				game={game}
+				open={openBottom}
+				close={closeDrawerBottom}
+				lists={listsWithOwnership}
+				handleAddGameToList={handleAddGameToList}
+				handleDeleteGameFromList={handleDeleteGameFromList}
+			/>
 		</div>
-	) : (
-		<GameDetailsMobileTop
-			game={game}
-			hasGame={hasGame ?? false}
-			listsWithOwnership={listsWithOwnership}
-			platformList={platformList}
-			isModalOpen={isModalOpen}
-			setIsModalOpen={() => setIsModalOpen(!isModalOpen)}
-			handleAddGameToList={handleAddGameToList}
-			handleDeleteGameFromList={handleDeleteGameFromList}
-		/>
 	)
 }
 

@@ -42,7 +42,7 @@ const GameDetailsBottomDrawer = ({
 
 	return (
 		<BaseBottomDrawer open={open} close={close}>
-			<div className="h-full w-full mx-auto">
+			<div className="h-full w-full mx-auto p-4">
 				<div className="grid grid-cols-2 border-b-2 pb-2">
 					<h4 className="text-left">Save game to...</h4>
 					<div autoFocus onClick={close} className="cursor-pointer text-right">

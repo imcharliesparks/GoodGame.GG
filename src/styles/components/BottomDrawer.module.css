@@ -1,0 +1,8 @@
+#bottomDrawer {
+	position: fixed;
+	margin: 0 auto;
+	left: 0;
+	right: 0;
+	max-width: 400px !important;
+	width: 100%; /* Added to ensure it takes up the full width when max-width is not reached */
+}
