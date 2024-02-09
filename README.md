@@ -56,6 +56,7 @@
 - [ ] When viewing a game, either on search or details, I'd like some way to visually indicate that a game is on one of
       your lists. Maybe a simple one on search/collection view, and more details on the details view
 - [ ] Fix the button getting highlighted after adding to list from the bottom drawer
+- [ ] Replace all icons with Hero Icons instead of icons kit
 
 ### Still To Do for M-ist MVP
 
@@ -66,3 +67,4 @@
 - [x] Fix bug where bottom drop up isn't cleared on exit
 - [ ] Change alerts to toast
 - [ ] Fix overflow on cards on lists page of titles
+- [ ] Resconsider adding a search bar to the header
