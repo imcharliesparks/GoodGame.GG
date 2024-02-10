@@ -48,7 +48,7 @@ const NewSearchGameCard = ({ game, lastCard, handleOpenDrawer }: NewSearchGameCa
 						</div>
 						<div>
 							<Button
-								onClick={() => router.push(`/app/games/game-details/${game.game_id}`)}
+								onClick={() => router.push(`/app/games/${game.game_id}/details`)}
 								fullWidth
 								color="blue"
 								className="flex items-center justify-center gap-3 btn-sm mb-2"

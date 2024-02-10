@@ -2,26 +2,21 @@ import { MenuItem } from '@material-tailwind/react'
 import React from 'react'
 import NavMenu from './NavMenu'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
-const NavMenuLists = () => (
-	<NavMenu menuHandlerText="Lists">
-		<MenuItem>
-			<Link href="/app/user/lists">My Lists</Link>
-		</MenuItem>
-		<hr className="my-3" />
-		<MenuItem>
-			<Link href="/app/user/lists/Collection">Collection</Link>
-		</MenuItem>
-		<MenuItem>
-			<Link href="/app/user/lists/Wishlist">Wishlist</Link>
-		</MenuItem>
-		<MenuItem>
-			<Link href="/app/user/lists/Backlog">Backlog</Link>
-		</MenuItem>
-		<MenuItem>
-			<Link href="/app/user/lists/shared">Shared Lists</Link>
-		</MenuItem>
-	</NavMenu>
-)
+const NavMenuLists = () => {
+	const router = useRouter()
+
+	return (
+		<NavMenu menuHandlerText="Lists">
+			<MenuItem onClick={() => router.push('/app/user/lists')}>My Lists</MenuItem>
+			<hr className="my-3" />
+			<MenuItem onClick={() => router.push('/app/user/lists/Collection')}>Collection</MenuItem>
+			<MenuItem onClick={() => router.push('/app/user/lists/Wishlist')}>Wishlist</MenuItem>
+			<MenuItem onClick={() => router.push('/app/user/lists/Backlog')}>Backlog</MenuItem>
+			<MenuItem onClick={() => router.push('/app/user/lists/Shared')}>Shared</MenuItem>
+		</NavMenu>
+	)
+}
 
 export default NavMenuLists
