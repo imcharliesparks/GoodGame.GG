@@ -53,15 +53,6 @@ const AddToListDialog = ({
 		setSelectedPlatforms(value)
 	}
 
-	React.useEffect(() => {
-		const mappedPlatformOptions = game.platforms.map((platform: Platform) => ({
-			platformData: platform,
-			value: platform.platform_id,
-			label: platform.platform_name
-		}))
-		setPlatformOptions(mappedPlatformOptions)
-	}, [game.platforms])
-
 	const handleGameplayStatusChange = (value: Record<string, any>) => {
 		setSelectedGameplayStatus(value)
 	}
@@ -75,9 +66,17 @@ const AddToListDialog = ({
 
 	const addGameToList = async () => {
 		setIsLoading(true)
+		const finalPlatforms = selectedPlatforms.reduce((prev: Platform[], curr: PlatformLabelOptions) => {
+			const platform: Platform = {
+				...curr.platformData
+			}
+
+			return [...prev, platform]
+		}, [])
+
 		const gamePayload = {
 			...game,
-			platforms: selectedPlatforms
+			platforms: finalPlatforms
 		}
 		const result = await handleAddGameToList(
 			gamePayload,

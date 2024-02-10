@@ -57,6 +57,7 @@
       your lists. Maybe a simple one on search/collection view, and more details on the details view
 - [ ] Fix the button getting highlighted after adding to list from the bottom drawer
 - [ ] Replace all icons with Hero Icons instead of icons kit
+- [ ] Add badge to add to list buttons (see checkmark example in material docs)
 
 ### Still To Do for M-ist MVP
 

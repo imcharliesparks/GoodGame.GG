@@ -1,0 +1,14 @@
+/* #contextButton {
+	position: absolute !important;
+} */
+
+#contextButton > span {
+	position: relative;
+	top: 0;
+	left: 0;
+	transform: none;
+}
+
+#menuHandler {
+	position: absolute !important;
+}

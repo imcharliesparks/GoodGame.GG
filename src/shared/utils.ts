@@ -255,7 +255,7 @@ export const handleDeleteGameFromList = async (
 	}
 }
 
-export const generatePlatformsString = (game: MobyGame): string => {
+export const generatePlatformsString = (game: MobyGame | StoredGame): string => {
 	return game.platforms.length
 		? game.platforms.length > 2
 			? 'Multiple Platforms'

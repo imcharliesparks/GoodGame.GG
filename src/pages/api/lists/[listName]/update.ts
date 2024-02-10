@@ -23,6 +23,7 @@ const handler = async (req: TypedRequest<Omit<StoredGame, 'dateAdded'>>, res: Ne
 		delete body.moby_score
 	}
 
+	console.log('body', body)
 	body.description = body.description ? body.description : 'No description provided'
 
 	const { error: validationError } = GameToAddToCollectionSchema.validate(body)

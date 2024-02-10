@@ -32,7 +32,6 @@ const ListCard = ({ game, setError, listName }: ListCardProps) => {
 			// @ts-ignore
 			detailsInputRef.current.open = null
 		}
-		console.log('detailsInputRef.current', detailsInputRef.current)
 	}
 
 	const removeFromList = async (game_id: number, listName: string) => {
@@ -111,15 +110,11 @@ const ListCard = ({ game, setError, listName }: ListCardProps) => {
 						<ReactStars count={5} edit={false} value={game.moby_score} size={12} color2={'#ffd700'} />
 					) : (
 						// TOOD: Tweak this so you have one of the review scores if possible
-						<span className="text-sm inline-flex items-center text-black">N/A</span>
+					<span className="text-sm inline-flex items-center text-black">N/A</span>
 					)} */}
 				</div>
 				<div className="card-actions pt-3">
-					<Link
-						href={`/app/games/game-details/${game.game_id}`}
-						onClick={() => router.push({ pathname: `/app/games/game-details/${game.game_id}` })}
-						className="btn btn-primary btn-sm"
-					>
+					<Link href={`/app/games/${game.game_id}/details`} className="btn btn-primary btn-sm">
 						Details
 					</Link>
 					<button onClick={() => setIsDeleteModalOpen(true)} className="btn btn-outline btn-error btn-sm">
