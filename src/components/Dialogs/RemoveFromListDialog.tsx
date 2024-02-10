@@ -55,12 +55,12 @@ const RemoveFromListDialog = ({
 				</CardBody>
 				<CardFooter>
 					<Button
-						className="flex justify-center"
+						className="flex justify-center leading-3 tracking-tight"
 						loading={isDeleteButtonLoading}
 						onClick={handleRemoveFromList}
 						color="red"
 						size="lg"
-						fullWidth={true}
+						fullWidth
 					>
 						Remove
 					</Button>
