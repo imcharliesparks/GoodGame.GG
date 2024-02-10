@@ -70,3 +70,4 @@
 - [ ] Fix overflow on cards on lists page of titles
 - [ ] Resconsider adding a search bar to the header
 - [ ] Consider removing Good Game text from mobile view (or place in the center)
+- [ ] Maybe add a dopeass carosel on the discover games page (or the home page)

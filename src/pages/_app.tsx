@@ -27,7 +27,7 @@ function MyApp({ Component, pageProps: { ...pageProps } }: AppPropsWithLayout) {
 			<ClerkProvider
 				publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
 				signInUrl="/sign-in"
-				signUpUrl="sign-up"
+				signUpUrl="/sign-up"
 				{...pageProps}
 			>
 				<ThemeProvider>{renderWithLayout(<Component {...pageProps} />)}</ThemeProvider>
