@@ -50,7 +50,7 @@ export const NewGameCard = ({
 				}}
 				className={`absolute inset-0 m-0 h-full w-full rounded-none`}
 			>
-				<div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-t from-black/80 via-black/50" />
+				<div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-t from-black/70 via-black/50" />
 			</CardHeader>
 			<CardBody className="relative flex flex-col justify-end">
 				<Typography
@@ -64,7 +64,7 @@ export const NewGameCard = ({
 				<Typography
 					style={{ wordBreak: 'break-word', overflowWrap: 'break-word', whiteSpace: 'break-spaces' }}
 					variant="small"
-					className="text-gray-600"
+					className="text-gray-500"
 				>
 					{platformString.length ? platformString : 'N/A'}
 				</Typography>
