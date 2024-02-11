@@ -1,11 +1,13 @@
+import RemoveFromListDialog from '@/components/Dialogs/RemoveFromListDialog'
 import NewGameCard from '@/components/Games/NewGameCard'
 import firebase_app from '@/lib/firebase'
-import { CollectionNames, StoredGame } from '@/shared/types'
+import { APIMethods, APIStatuses, CollectionNames, StoredGame } from '@/shared/types'
 import { convertFirebaseTimestamps } from '@/shared/utils'
 import { getAuth } from '@clerk/nextjs/server'
 import { Typography } from '@material-tailwind/react'
 import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore'
 import { GetServerSidePropsContext } from 'next'
+import router, { useRouter } from 'next/router'
 import React from 'react'
 
 type IndividualListPageProps = {
@@ -15,9 +17,47 @@ type IndividualListPageProps = {
 }
 
 // TODO Add toasts for errors here
+// TODO: Add sorting
 const IndividualListPage = ({ games, listName, error }: IndividualListPageProps) => {
+	const router = useRouter()
 	const [currentlySelectedGame, setCurrentlySelectedGame] = React.useState<StoredGame>()
-	const toggleRemoveFromListDialog = () => console.log('implement me')
+	const [showRemoveFromListDialog, setShowRemoveFromListDialog] = React.useState<boolean>(false)
+	const [isLoading, setIsLoading] = React.useState<boolean>(false)
+
+	const toggleRemoveFromListDialog = (isOpen?: boolean) =>
+		setShowRemoveFromListDialog(isOpen ?? !showRemoveFromListDialog)
+
+	const removeFromList = async (game_id: number, currentListName: string) => {
+		setIsLoading(true)
+		try {
+			const request = await fetch(`/api/lists/${currentListName}/${game_id}/remove`, {
+				method: APIMethods.DELETE,
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+			const response = await request.json()
+			if (response.status === APIStatuses.ERROR) {
+				throw new Error(response.data.error)
+			} else {
+				// TODO: Update with alert from material
+				alert(`Success! We removed the game.`)
+				toggleRemoveFromListDialog()
+				// CS NOTE: This is the pattern for refreshing GSSP data 😬
+				router.replace(router.asPath)
+			}
+		} catch (error) {
+			console.error(`Could not delete game with gameId ${game_id}`, error)
+			// TODO: Update with alert from material
+			alert(`We couldn't remove that game! Please try again.`)
+			// setError(`We couldn't remove that game! Please try again.`)
+			// setTimeout(() => {
+			// 	setError('')
+			// }, 6000)
+		} finally {
+			setIsLoading(false)
+		}
+	}
 
 	return (
 		<section className="w-full">
@@ -29,6 +69,7 @@ const IndividualListPage = ({ games, listName, error }: IndividualListPageProps)
 					(game: StoredGame) =>
 						typeof game !== 'string' && (
 							<NewGameCard
+								key={game.game_id}
 								game={game}
 								listName={listName}
 								toggleRemoveFromListDialog={toggleRemoveFromListDialog}
@@ -37,6 +78,16 @@ const IndividualListPage = ({ games, listName, error }: IndividualListPageProps)
 						)
 				)}
 			</div>
+			{currentlySelectedGame && (
+				<RemoveFromListDialog
+					isOpen={showRemoveFromListDialog}
+					gameName={currentlySelectedGame.title}
+					listName={listName}
+					isDeleteButtonLoading={isLoading}
+					handler={toggleRemoveFromListDialog}
+					handleRemoveFromList={() => removeFromList(currentlySelectedGame.game_id, listName)}
+				/>
+			)}
 		</section>
 	)
 }

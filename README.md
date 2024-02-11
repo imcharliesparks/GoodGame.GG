@@ -71,3 +71,9 @@
 - [ ] Resconsider adding a search bar to the header
 - [ ] Consider removing Good Game text from mobile view (or place in the center)
 - [ ] Maybe add a dopeass carosel on the discover games page (or the home page)
+
+### Central State Management Changes
+
+- [ ] Toasts with dispatchers from anywhere
+- [ ] Dialog/Modal openers from anywhere
+- [ ] Logic for: adding a game, removing a game
