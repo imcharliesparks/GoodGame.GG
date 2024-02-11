@@ -48,7 +48,9 @@ import { authMiddleware } from '@clerk/nextjs'
 // export const config = {
 // 	matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)']
 // }
-export default authMiddleware({ publicRoutes: ['/', '/user-intake'] })
+export default authMiddleware({
+	publicRoutes: ['/', '/sign-in', '/sign-in/*', '/sign-up', '/sign-up/*', '/user-intake']
+})
 
 export const config = {
 	matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)']
