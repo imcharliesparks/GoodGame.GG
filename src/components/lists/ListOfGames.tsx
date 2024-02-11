@@ -73,6 +73,7 @@ const ListOfGames = ({ list, listName }: ListOfGamesProps) => {
 									listName={listName}
 									toggleRemoveFromListDialog={toggleRemoveFromListDialog}
 									setCurrentlySelectedGame={setCurrentlySelectedGame}
+									classes="mr-2"
 								/>
 							)
 					)}

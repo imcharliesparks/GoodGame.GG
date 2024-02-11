@@ -4,20 +4,25 @@ import { APIMethods, APIStatuses, MobyGame, StoredGame } from '@/shared/types'
 import { generatePlatformsString } from '@/shared/utils'
 import { useRouter } from 'next/router'
 import GameCardIconMenu from './GameCardIconMenu'
+import Link from 'next/link'
+import Icon from 'react-icons-kit'
 
 type NewGameCardProps = {
 	game: StoredGame
 	listName: string
 	toggleRemoveFromListDialog: (isOpen?: boolean) => void
 	setCurrentlySelectedGame: (game: StoredGame) => void
+	classes?: string
 }
 
 export const NewGameCard = ({
 	game,
 	listName,
 	toggleRemoveFromListDialog,
-	setCurrentlySelectedGame
+	setCurrentlySelectedGame,
+	classes
 }: NewGameCardProps) => {
+	const router = useRouter()
 	const currentHeight = 640
 	const currentWidth = 443.5
 	const newHeight = 300
@@ -36,7 +41,7 @@ export const NewGameCard = ({
 				width: newWidth,
 				height: newHeight
 			}}
-			className="relative grid items-end justify-center text-center mr-2 min-w-[208px]"
+			className={`${classes ? classes : ''} relative grid items-end justify-center text-center min-w-[208px] group`}
 		>
 			<GameCardIconMenu game={game} openRemoveFromListDialog={setGameAndOpenDialog} />
 			<CardHeader
@@ -51,6 +56,15 @@ export const NewGameCard = ({
 				className={`absolute inset-0 m-0 h-full w-full rounded-none`}
 			>
 				<div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-t from-black/70 via-black/50" />
+				{/* <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black h-52 w-52 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 ease-in-out"></div> */}
+
+				<ul className="list-none absolute right-0 left-0 -bottom-20 group-hover:bottom-5 transition-all duration-500 ease-in-out z-3">
+					<li className="inline mx-1">
+						<Button onClick={() => router.replace(`/app/games/${game.game_id}/details`)} variant="gradient">
+							Details
+						</Button>
+					</li>
+				</ul>
 			</CardHeader>
 			<CardBody className="relative flex flex-col justify-end">
 				<Typography

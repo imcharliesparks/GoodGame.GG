@@ -61,22 +61,58 @@ const IndividualListPage = ({ games, listName, error }: IndividualListPageProps)
 
 	return (
 		<section className="w-full">
-			<Typography variant="h4" className="mx-auto text-center my-4">
+			<Typography variant="h3" className="mx-auto text-center my-4">
 				{listName}
 			</Typography>
-			<div className="flex flex-col mx-auto lg:hidden gap-4 max-w-[208px]">
-				{games.map(
-					(game: StoredGame) =>
-						typeof game !== 'string' && (
-							<NewGameCard
-								key={game.game_id}
-								game={game}
-								listName={listName}
-								toggleRemoveFromListDialog={toggleRemoveFromListDialog}
-								setCurrentlySelectedGame={setCurrentlySelectedGame}
-							/>
-						)
-				)}
+			<div className="flex justify-center md:hidden">
+				<div className="grid grid-cols-2 gap-4 max-w-screen-lg ">
+					{games.map(
+						(game: StoredGame) =>
+							typeof game !== 'string' && (
+								<NewGameCard
+									key={game.game_id}
+									game={game}
+									listName={listName}
+									toggleRemoveFromListDialog={toggleRemoveFromListDialog}
+									setCurrentlySelectedGame={setCurrentlySelectedGame}
+								/>
+							)
+					)}
+				</div>
+			</div>
+			<div className="md:flex justify-center hidden lg:hidden">
+				<div className="grid grid-cols-3 gap-6 max-w-screen-lg">
+					{games.map(
+						(game: StoredGame) =>
+							typeof game !== 'string' && (
+								<NewGameCard
+									key={game.game_id}
+									game={game}
+									listName={listName}
+									toggleRemoveFromListDialog={toggleRemoveFromListDialog}
+									setCurrentlySelectedGame={setCurrentlySelectedGame}
+									classes="flex-shrink-0"
+								/>
+							)
+					)}
+				</div>
+			</div>
+			<div className="lg:flex justify-center hidden">
+				<div className="grid grid-cols-4 gap-6 max-w-screen-lg">
+					{games.map(
+						(game: StoredGame) =>
+							typeof game !== 'string' && (
+								<NewGameCard
+									key={game.game_id}
+									game={game}
+									listName={listName}
+									toggleRemoveFromListDialog={toggleRemoveFromListDialog}
+									setCurrentlySelectedGame={setCurrentlySelectedGame}
+									classes="flex-shrink-0"
+								/>
+							)
+					)}
+				</div>
 			</div>
 			{currentlySelectedGame && (
 				<RemoveFromListDialog

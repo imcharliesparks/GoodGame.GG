@@ -2,20 +2,19 @@ import { MenuItem } from '@material-tailwind/react'
 import React from 'react'
 import NavMenu from './NavMenu'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
-const NavMenuGames = () => (
-	<NavMenu menuHandlerText="Games">
-		<MenuItem>
-			<Link href="/app/user/lists/Collection">My Games</Link>
-		</MenuItem>
-		<hr className="my-3" />
-		<MenuItem>
-			<Link href="/app/games/discover">Discover</Link>
-		</MenuItem>
-		<MenuItem>
-			<Link href="/app/search/games">Search</Link>
-		</MenuItem>
-	</NavMenu>
-)
+const NavMenuGames = () => {
+	const router = useRouter()
+
+	return (
+		<NavMenu menuHandlerText="Games">
+			<MenuItem onClick={() => router.push('/app/user/lists/Collection')}>My Games</MenuItem>
+			<hr className="my-3" />
+			<MenuItem onClick={() => router.push('/app/games/discover')}>Discover</MenuItem>
+			<MenuItem onClick={() => router.push('/app/search/games')}>Find a Game</MenuItem>
+		</NavMenu>
+	)
+}
 
 export default NavMenuGames

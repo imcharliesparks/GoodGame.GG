@@ -58,6 +58,7 @@
 - [ ] Fix the button getting highlighted after adding to list from the bottom drawer
 - [ ] Replace all icons with Hero Icons instead of icons kit
 - [ ] Add badge to add to list buttons (see checkmark example in material docs)
+- [ ] Rethink the hover on the collection page
 
 ### Still To Do for M-ist MVP
 
@@ -71,6 +72,7 @@
 - [ ] Resconsider adding a search bar to the header
 - [ ] Consider removing Good Game text from mobile view (or place in the center)
 - [ ] Maybe add a dopeass carosel on the discover games page (or the home page)
+- [ ] Add auto adding to backlog and wishlist based on answers
 
 ### Central State Management Changes
 
