@@ -43,23 +43,22 @@ const GameDetailsPage = ({
 
 	return (
 		<div>
-			{screenSize === 'desktop' ? (
-				<div className="grid grid-cols-12 container p-12 mx-auto">
-					<div className=" col-span-5">
-						<GameDetailsPageLeft game={game} hasGame={hasGame ?? false} openDrawerBottom={openDrawerBottom} />
-					</div>
-					<div className=" col-span-7">
-						<GameDetailsPageRight platformList={platformList} game={game} hasGame={hasGame ?? false} />
-					</div>
+			<div className="md:grid hidden grid-cols-12 container p-12 mx-auto">
+				<div className=" col-span-5">
+					<GameDetailsPageLeft game={game} hasGame={hasGame ?? false} openDrawerBottom={openDrawerBottom} />
 				</div>
-			) : (
+				<div className="col-span-7">
+					<GameDetailsPageRight platformList={platformList} game={game} hasGame={hasGame ?? false} />
+				</div>
+			</div>
+			<div className="block md:hidden">
 				<GameDetailsMobileTop
 					openDrawerBottom={openDrawerBottom}
 					game={game}
 					hasGame={hasGame ?? false}
 					platformList={platformList}
 				/>
-			)}
+			</div>
 
 			<GameDetailsBottomDrawer
 				game={game}

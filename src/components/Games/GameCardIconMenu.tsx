@@ -41,7 +41,9 @@ const GameCardIconMenu = ({ game, openRemoveFromListDialog, setGameAndOpenUpdate
 				</IconButton>
 			</MenuHandler>
 			<MenuList>
-				<MenuItem onClick={setGameAndOpenUpdateDialog}>Update</MenuItem>
+				{/* TODO: Consider making this a modal instead */}
+				{/* <MenuItem onClick={setGameAndOpenUpdateDialog}>Update</MenuItem> */}
+				<MenuItem onClick={() => router.push(`/app/games/${game.game_id}/update`)}>Update</MenuItem>
 				<MenuItem onClick={openRemoveFromListDialog}>Remove from List</MenuItem>
 			</MenuList>
 		</Menu>

@@ -119,6 +119,7 @@ export type GGList = {
 export type ListWithOwnership = {
 	listName: string
 	hasGame: boolean
+	platforms: Platform[]
 }
 
 // TODO: Update as needed

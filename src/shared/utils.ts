@@ -131,13 +131,15 @@ export const getListsWithOwnership = (user: GGUser, game_id: string) => {
 		if (game_id in list) {
 			listsContainingGame.push({
 				listName,
-				hasGame: true
+				hasGame: true,
+				platforms: list[game_id].platforms
 			})
 			userHasGame = true
 		} else {
 			listsContainingGame.push({
 				listName,
-				hasGame: false
+				hasGame: false,
+				platforms: []
 			})
 		}
 	}
