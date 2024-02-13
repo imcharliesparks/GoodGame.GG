@@ -8,9 +8,10 @@ import { StoredGame } from '@/shared/types'
 type GameCardIconMenuProps = {
 	game: StoredGame
 	openRemoveFromListDialog: () => void
+	setGameAndOpenUpdateDialog: () => void
 }
 
-const GameCardIconMenu = ({ game, openRemoveFromListDialog }: GameCardIconMenuProps) => {
+const GameCardIconMenu = ({ game, openRemoveFromListDialog, setGameAndOpenUpdateDialog }: GameCardIconMenuProps) => {
 	const router = useRouter()
 
 	return (
@@ -40,7 +41,7 @@ const GameCardIconMenu = ({ game, openRemoveFromListDialog }: GameCardIconMenuPr
 				</IconButton>
 			</MenuHandler>
 			<MenuList>
-				<MenuItem onClick={() => router.push(`/app/games/${game.game_id}/update`)}>Update</MenuItem>
+				<MenuItem onClick={setGameAndOpenUpdateDialog}>Update</MenuItem>
 				<MenuItem onClick={openRemoveFromListDialog}>Remove from List</MenuItem>
 			</MenuList>
 		</Menu>

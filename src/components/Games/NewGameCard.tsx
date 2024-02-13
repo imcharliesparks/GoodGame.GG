@@ -11,6 +11,7 @@ type NewGameCardProps = {
 	game: StoredGame
 	listName: string
 	toggleRemoveFromListDialog: (isOpen?: boolean) => void
+	toggleUpdateGameDialog: (isOpen?: boolean) => void
 	setCurrentlySelectedGame: (game: StoredGame) => void
 	classes?: string
 }
@@ -19,6 +20,7 @@ export const NewGameCard = ({
 	game,
 	listName,
 	toggleRemoveFromListDialog,
+	toggleUpdateGameDialog,
 	setCurrentlySelectedGame,
 	classes
 }: NewGameCardProps) => {
@@ -29,7 +31,12 @@ export const NewGameCard = ({
 	const newWidth = (currentWidth / currentHeight) * newHeight
 	const platformString = generatePlatformsString(game)
 
-	const setGameAndOpenDialog = () => {
+	const setGameAndOpenDeleteDialog = () => {
+		setCurrentlySelectedGame(game)
+		toggleRemoveFromListDialog(true)
+	}
+
+	const setGameAndOpenUpdateDialog = () => {
 		setCurrentlySelectedGame(game)
 		toggleRemoveFromListDialog(true)
 	}
@@ -43,7 +50,11 @@ export const NewGameCard = ({
 			}}
 			className={`${classes ? classes : ''} relative grid items-end justify-center text-center min-w-[208px] group`}
 		>
-			<GameCardIconMenu game={game} openRemoveFromListDialog={setGameAndOpenDialog} />
+			<GameCardIconMenu
+				game={game}
+				openRemoveFromListDialog={setGameAndOpenDeleteDialog}
+				setGameAndOpenUpdateDialog={setGameAndOpenUpdateDialog}
+			/>
 			<CardHeader
 				floated={false}
 				shadow={false}

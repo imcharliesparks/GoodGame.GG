@@ -1,4 +1,5 @@
 import RemoveFromListDialog from '@/components/Dialogs/RemoveFromListDialog'
+import UpdateGameDialog from '@/components/Dialogs/UpdateGameDialog'
 import NewGameCard from '@/components/Games/NewGameCard'
 import firebase_app from '@/lib/firebase'
 import { APIMethods, APIStatuses, CollectionNames, StoredGame } from '@/shared/types'
@@ -22,10 +23,12 @@ const IndividualListPage = ({ games, listName, error }: IndividualListPageProps)
 	const router = useRouter()
 	const [currentlySelectedGame, setCurrentlySelectedGame] = React.useState<StoredGame>()
 	const [showRemoveFromListDialog, setShowRemoveFromListDialog] = React.useState<boolean>(false)
+	const [showUpdateGameDialog, setShowUpdateGameDialog] = React.useState<boolean>(false)
 	const [isLoading, setIsLoading] = React.useState<boolean>(false)
 
 	const toggleRemoveFromListDialog = (isOpen?: boolean) =>
 		setShowRemoveFromListDialog(isOpen ?? !showRemoveFromListDialog)
+	const toggleUpdateGameDialog = (isOpen?: boolean) => setShowUpdateGameDialog(isOpen ?? !showUpdateGameDialog)
 
 	const removeFromList = async (game_id: number, currentListName: string) => {
 		setIsLoading(true)
@@ -64,8 +67,8 @@ const IndividualListPage = ({ games, listName, error }: IndividualListPageProps)
 			<Typography variant="h3" className="mx-auto text-center my-4">
 				{listName}
 			</Typography>
-			<div className="flex justify-center md:hidden">
-				<div className="grid grid-cols-2 gap-4 max-w-screen-lg ">
+			<div className="flex justify-center sm:hidden">
+				<div className="grid grid-cols-1 gap-4 max-w-screen-lg">
 					{games.map(
 						(game: StoredGame) =>
 							typeof game !== 'string' && (
@@ -74,6 +77,24 @@ const IndividualListPage = ({ games, listName, error }: IndividualListPageProps)
 									game={game}
 									listName={listName}
 									toggleRemoveFromListDialog={toggleRemoveFromListDialog}
+									toggleUpdateGameDialog={toggleUpdateGameDialog}
+									setCurrentlySelectedGame={setCurrentlySelectedGame}
+								/>
+							)
+					)}
+				</div>
+			</div>
+			<div className="sm:flex justify-center md:hidden">
+				<div className="grid grid-cols-2 gap-4 max-w-screen-lg">
+					{games.map(
+						(game: StoredGame) =>
+							typeof game !== 'string' && (
+								<NewGameCard
+									key={game.game_id}
+									game={game}
+									listName={listName}
+									toggleRemoveFromListDialog={toggleRemoveFromListDialog}
+									toggleUpdateGameDialog={toggleUpdateGameDialog}
 									setCurrentlySelectedGame={setCurrentlySelectedGame}
 								/>
 							)
@@ -90,6 +111,7 @@ const IndividualListPage = ({ games, listName, error }: IndividualListPageProps)
 									game={game}
 									listName={listName}
 									toggleRemoveFromListDialog={toggleRemoveFromListDialog}
+									toggleUpdateGameDialog={toggleUpdateGameDialog}
 									setCurrentlySelectedGame={setCurrentlySelectedGame}
 									classes="flex-shrink-0"
 								/>
@@ -107,6 +129,7 @@ const IndividualListPage = ({ games, listName, error }: IndividualListPageProps)
 									game={game}
 									listName={listName}
 									toggleRemoveFromListDialog={toggleRemoveFromListDialog}
+									toggleUpdateGameDialog={toggleUpdateGameDialog}
 									setCurrentlySelectedGame={setCurrentlySelectedGame}
 									classes="flex-shrink-0"
 								/>
@@ -115,14 +138,24 @@ const IndividualListPage = ({ games, listName, error }: IndividualListPageProps)
 				</div>
 			</div>
 			{currentlySelectedGame && (
-				<RemoveFromListDialog
-					isOpen={showRemoveFromListDialog}
-					gameName={currentlySelectedGame.title}
-					listName={listName}
-					isDeleteButtonLoading={isLoading}
-					handler={toggleRemoveFromListDialog}
-					handleRemoveFromList={() => removeFromList(currentlySelectedGame.game_id, listName)}
-				/>
+				<>
+					<RemoveFromListDialog
+						isOpen={showRemoveFromListDialog}
+						gameName={currentlySelectedGame.title}
+						listName={listName}
+						isDeleteButtonLoading={isLoading}
+						handler={toggleRemoveFromListDialog}
+						handleRemoveFromList={() => removeFromList(currentlySelectedGame.game_id, listName)}
+					/>
+					<UpdateGameDialog
+						isOpen={showUpdateGameDialog}
+						gameName={currentlySelectedGame.title}
+						listName={listName}
+						isUpdateButtonLoading={isLoading}
+						handler={toggleUpdateGameDialog}
+						handleUpdate={() => console.log('update me', currentlySelectedGame)}
+					/>
+				</>
 			)}
 		</section>
 	)
@@ -156,6 +189,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 	props.listName = listName
 
 	try {
+		// garf add lists with ownership here
 		const db = getFirestore(firebase_app)
 		const userCollectionRef = collection(db, CollectionNames.USERS)
 		const q = query(userCollectionRef, where('clerkId', '==', userId))

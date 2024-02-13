@@ -50,7 +50,7 @@ const MobileNavDrawer = ({ open, closeDrawer }: MobileNavDrawerProps) => {
 			</div>
 			{isSignedIn ? (
 				<List>
-					<ListItem onClick={() => router.replace('/app/user/lists/collection')}>
+					<ListItem onClick={() => router.replace('/app/user/lists/Collection')}>
 						<ListItemPrefix>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
