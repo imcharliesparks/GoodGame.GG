@@ -1,17 +1,15 @@
-import { MobyGame, Platform, StoredGame } from '@/shared/types'
-import { convertMobyScore, truncateDescription } from '@/shared/utils'
-import Image from 'next/image'
+import { MobyGame } from '@/shared/types'
+import { truncateDescription } from '@/shared/utils'
 import React from 'react'
-import ReactStars from 'react-stars'
 
-type GameDetailsPageRightProps = {
+type UpdateGamePageRightProps = {
 	game: MobyGame
 	hasGame: boolean
 	platformList: string
 }
 
 // TODO: Add indicator for has game here
-const GameDetailsPageRight = ({ game, hasGame, platformList }: GameDetailsPageRightProps) => {
+const UpdateGamePageRight = ({ game, hasGame, platformList }: UpdateGamePageRightProps) => {
 	const [showFullDescription, setShowFullDescription] = React.useState<boolean>(false)
 
 	return (
@@ -25,7 +23,7 @@ const GameDetailsPageRight = ({ game, hasGame, platformList }: GameDetailsPageRi
 				</h1>
 			</div>
 			<div className="mx-auto my-2">
-				<span className="text-gray-700">{platformList}</span>
+				<span className="text-gray-700">Owned Platforms: {platformList}</span>
 			</div>
 			<div className="mx-auto max-w-[470px]">
 				{game.description ? (
@@ -60,4 +58,4 @@ const GameDetailsPageRight = ({ game, hasGame, platformList }: GameDetailsPageRi
 	)
 }
 
-export default GameDetailsPageRight
+export default UpdateGamePageRight

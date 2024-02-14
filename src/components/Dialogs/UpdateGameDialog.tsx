@@ -130,7 +130,7 @@ const UpdateGameDialog = ({
 		<Dialog id={styles.addToListDialog} size="xs" open={isOpen} handler={handleTeardown} className="h-[300px]">
 			<div className="h-full relative h-xl">
 				<div className="grid grid-cols-2 border-b-2 pb-2 mb-2">
-					<h4 className="text-left">What should we change?</h4>
+					<h4 className="text-left">Update Game on List</h4>
 					<div autoFocus onClick={setIsDialogOpen} className="cursor-pointer text-right">
 						<Icon icon={ic_close} size={24} />
 					</div>
@@ -176,7 +176,7 @@ const UpdateGameDialog = ({
 								d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"
 							/>
 						</svg>
-						<span className="tracking-wide font-normal">Add to List</span>
+						<span className="tracking-wide font-normal">Update</span>
 					</Button>
 				</div>
 			</div>

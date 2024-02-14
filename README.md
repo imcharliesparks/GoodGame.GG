@@ -59,6 +59,8 @@
 - [ ] Replace all icons with Hero Icons instead of icons kit
 - [ ] Add badge to add to list buttons (see checkmark example in material docs)
 - [ ] Rethink the hover on the collection page
+- [ ] Think of a better way to delineanate between delete and update in the bottom drawer
+- [ ] Make a better way to view what list the user is on when udpating or deleting a game
 
 ### Still To Do for M-ist MVP
 

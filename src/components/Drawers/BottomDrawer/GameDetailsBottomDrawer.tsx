@@ -12,6 +12,8 @@ import { IconButton } from '@material-tailwind/react'
 import { ic_bookmark_border } from 'react-icons-kit/md/ic_bookmark_border'
 import { ic_done } from 'react-icons-kit/md/ic_done'
 import UpdateGameDialog from '@/components/Dialogs/UpdateGameDialog'
+import RemoveGameFromListModal from '@/components/modal/RemoveGameFromListModal/RemoveGameFromListModal'
+import RemoveFromListDialog from '@/components/Dialogs/RemoveFromListDialog'
 
 type DrawerProps = {
 	game: MobyGame
@@ -70,7 +72,7 @@ const GameDetailsBottomDrawer = ({
 										isUpdate && list.hasGame
 											? handleOpenDialog(list.listName, i)
 											: list.hasGame
-											? handleDeleteGameFromList(game, list.listName, i, router, setListsWithOwnership)
+											? handleOpenDialog(list.listName, i, 'delete')
 											: handleOpenDialog(list.listName, i, 'add')
 									}
 									className="my-3 flex items-center justify-between"
@@ -105,6 +107,16 @@ const GameDetailsBottomDrawer = ({
 					game={game}
 					isOpen={isDialogOpen}
 					setIsDialogOpen={() => setIsDialogOpen(false)}
+					listName={currentlySelectedList}
+					index={currentListIndex}
+					setListsWithOwnership={setListsWithOwnership}
+				/>
+			) : openDialog && openDialog === 'delete' ? (
+				<RemoveFromListDialog
+					game={game}
+					isOpen={isDialogOpen}
+					handler={setIsDialogOpen}
+					closeDialog={() => setIsDialogOpen(false)}
 					listName={currentlySelectedList}
 					index={currentListIndex}
 					setListsWithOwnership={setListsWithOwnership}

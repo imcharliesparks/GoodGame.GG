@@ -2,7 +2,9 @@ import GameDetailsBottomDrawer from '@/components/Drawers/BottomDrawer/GameDetai
 import GameDetailsMobileTop from '@/components/general/GameDetailsPage/GameDetailsMobileTop'
 import GameDetailsPageLeft from '@/components/general/GameDetailsPage/GameDetailsPageLeft'
 import GameDetailsPageRight from '@/components/general/GameDetailsPage/GameDetailsPageRight'
+import UpdateGamePageLeft from '@/components/general/UpdateGamePage/UpdateGamePageLeft'
 import UpdateGamePageMobile from '@/components/general/UpdateGamePage/UpdateGamePageMobile'
+import UpdateGamePageRight from '@/components/general/UpdateGamePage/UpdateGamePageRight'
 import firebase_app from '@/lib/firebase'
 import { getGameByGameId } from '@/shared/serverMethods'
 import { CollectionNames, GGUser, ListWithOwnership, MobyGame, Platform, StoredGame } from '@/shared/types'
@@ -57,10 +59,10 @@ const GameUpdatePage = ({
 		<div>
 			<div className="md:grid hidden grid-cols-12 container p-12 mx-auto">
 				<div className=" col-span-5">
-					<GameDetailsPageLeft game={game} hasGame={hasGame ?? false} openDrawerBottom={openDrawerBottom} />
+					<UpdateGamePageLeft game={game} hasGame={hasGame ?? false} openDrawerBottom={openDrawerBottom} />
 				</div>
 				<div className="col-span-7">
-					<GameDetailsPageRight platformList={platformList} game={game} hasGame={hasGame ?? false} />
+					<UpdateGamePageRight platformList={platformList} game={game} hasGame={hasGame ?? false} />
 				</div>
 			</div>
 			<div className="block md:hidden">

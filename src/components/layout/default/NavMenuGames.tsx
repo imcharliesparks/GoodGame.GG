@@ -9,10 +9,10 @@ const NavMenuGames = () => {
 
 	return (
 		<NavMenu menuHandlerText="Games">
-			<MenuItem onClick={() => router.push('/app/user/lists/Collection')}>My Games</MenuItem>
+			<MenuItem onClick={() => router.replace('/app/user/lists/Collection')}>My Games</MenuItem>
 			<hr className="my-3" />
-			<MenuItem onClick={() => router.push('/app/games/discover')}>Discover</MenuItem>
-			<MenuItem onClick={() => router.push('/app/search/games')}>Find a Game</MenuItem>
+			<MenuItem onClick={() => router.replace('/app/games')}>Discover</MenuItem>
+			<MenuItem onClick={() => router.replace('/app/search/games')}>Find a Game</MenuItem>
 		</NavMenu>
 	)
 }

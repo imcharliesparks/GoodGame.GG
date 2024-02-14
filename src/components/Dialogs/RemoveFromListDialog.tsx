@@ -1,39 +1,42 @@
-import { XMarkIcon } from '@heroicons/react/24/solid'
-import {
-	Button,
-	Card,
-	CardBody,
-	CardFooter,
-	CardHeader,
-	Dialog,
-	IconButton,
-	Typography
-} from '@material-tailwind/react'
-import React from 'react'
+import { ListWithOwnership, MobyGame } from '@/shared/types'
+import { handleDeleteGameFromList } from '@/shared/utils'
+import { Button, Card, CardBody, CardFooter, Dialog, IconButton, Typography } from '@material-tailwind/react'
+import { useRouter } from 'next/router'
+import React, { Dispatch, SetStateAction } from 'react'
 
 type RemoteFromListDialogProps = {
 	isOpen: boolean
-	gameName: string
+	game: MobyGame
 	listName: string
-	isDeleteButtonLoading: boolean
-	handler: () => void
-	handleRemoveFromList: () => void
+	handler: Dispatch<SetStateAction<boolean>>
+	index: number
+	setListsWithOwnership: (lists: ListWithOwnership[]) => void
+	closeDialog: () => void
 }
 
 const RemoveFromListDialog = ({
 	isOpen,
-	gameName,
+	game,
 	listName,
-	isDeleteButtonLoading,
 	handler,
-	handleRemoveFromList
+	index,
+	setListsWithOwnership,
+	closeDialog
 }: RemoteFromListDialogProps) => {
+	const router = useRouter()
+	const [isDeleteButtonLoading, setIsDeleteButtonLoading] = React.useState<boolean>(false)
+	const handleRemoveFromList = async () => {
+		setIsDeleteButtonLoading(true)
+		await handleDeleteGameFromList(game, listName, index, router, setListsWithOwnership)
+		setIsDeleteButtonLoading(false)
+		closeDialog()
+	}
 	return (
 		<Dialog size="xs" open={isOpen} handler={handler} className="bg-transparent shadow-none">
 			<Card className="mx-auto w-full max-w-[24rem]">
 				<CardBody>
 					<div className="w-full flex justify-end">
-						<IconButton onClick={() => handler()} variant="outlined" className="rounded-full">
+						<IconButton onClick={() => handler(false)} variant="outlined" className="rounded-full">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								fill="none"
@@ -50,7 +53,7 @@ const RemoveFromListDialog = ({
 						Are you sure?
 					</Typography>
 					<Typography variant="paragraph" color="blue-gray">
-						This will <span className="font-bold">remove</span> {gameName} from your {listName} list.
+						This will <span className="font-bold">remove</span> {game.title} from your {listName} list.
 					</Typography>
 				</CardBody>
 				<CardFooter>

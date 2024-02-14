@@ -99,7 +99,7 @@ const AddToListDialog = ({
 		<Dialog id={styles.addToListDialog} size="xs" open={isOpen} handler={handleTeardown} className="h-[300px]">
 			<div className="h-full relative h-xl">
 				<div className="grid grid-cols-2 border-b-2 pb-2 mb-2">
-					<h4 className="text-left">One more thing...</h4>
+					<h4 className="text-left">Add Game to List</h4>
 					<div autoFocus onClick={setIsDialogOpen} className="cursor-pointer text-right">
 						<Icon icon={ic_close} size={24} />
 					</div>
