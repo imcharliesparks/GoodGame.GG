@@ -163,7 +163,8 @@ export const handleAddGameToList = async (
 	index: number,
 	playStatus: Record<any, any>,
 	router: NextRouter,
-	setListsWithOwnership: (lists: ListWithOwnership[]) => void
+	setListsWithOwnership: (lists: ListWithOwnership[]) => void,
+	isUpdate: boolean = false
 ) => {
 	let success: boolean = false
 
@@ -179,8 +180,6 @@ export const handleAddGameToList = async (
 			description: description ?? 'No Description Found'
 		}
 
-		console.log('payload', payload)
-
 		const request = await fetch(`/api/lists/${listName}/update`, {
 			method: APIMethods.PATCH,
 			headers: {
@@ -194,7 +193,11 @@ export const handleAddGameToList = async (
 		} else {
 			handleUpdateListsWithOwnership(index, true, setListsWithOwnership)
 			success = true
-			alert(`Success! We've added ${game!.title} to your ${listName} list.`)
+			if (isUpdate) {
+				alert(`Success! We've updated ${game!.title} on your ${listName} list.`)
+			} else {
+				alert(`Success! We've added ${game!.title} to your ${listName} list.`)
+			}
 			// handleShowSuccessToast(`Success! We've added ${currentlySelectedGame!.title} to your ${listName} list.`)
 			router.replace(router.asPath)
 		}

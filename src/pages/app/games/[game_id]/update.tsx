@@ -3,10 +3,9 @@ import GameDetailsMobileTop from '@/components/general/GameDetailsPage/GameDetai
 import GameDetailsPageLeft from '@/components/general/GameDetailsPage/GameDetailsPageLeft'
 import GameDetailsPageRight from '@/components/general/GameDetailsPage/GameDetailsPageRight'
 import UpdateGamePageMobile from '@/components/general/UpdateGamePage/UpdateGamePageMobile'
-import useScreenSize from '@/components/hooks/useScreenSize'
 import firebase_app from '@/lib/firebase'
 import { getGameByGameId } from '@/shared/serverMethods'
-import { CollectionNames, GGUser, ListWithOwnership, MobyGame, Platform } from '@/shared/types'
+import { CollectionNames, GGUser, ListWithOwnership, MobyGame, Platform, StoredGame } from '@/shared/types'
 import { getListsWithOwnership } from '@/shared/utils'
 import { getAuth } from '@clerk/nextjs/server'
 import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore'
@@ -15,14 +14,17 @@ import React from 'react'
 
 type GameUpdatePageProps = {
 	game?: MobyGame
+	storedGame?: StoredGame
 	hasGame: boolean
 	listsWithOwnership: ListWithOwnership[]
 	error?: string
 }
 
 // TODO: Replace alerts with toasts
+// TODO: Implement error here
 const GameUpdatePage = ({
 	game,
+	storedGame,
 	hasGame,
 	listsWithOwnership: initialListsWithOwnership,
 	error
@@ -62,12 +64,7 @@ const GameUpdatePage = ({
 				</div>
 			</div>
 			<div className="block md:hidden">
-				<UpdateGamePageMobile
-					openDrawerBottom={openDrawerBottom}
-					game={game}
-					hasGame={hasGame ?? false}
-					platformList={platformList}
-				/>
+				<UpdateGamePageMobile openDrawerBottom={openDrawerBottom} game={game} platformList={platformList} />
 			</div>
 
 			{/* garf start here make a modified version that opens the add dialog regardless of click */}
@@ -77,6 +74,8 @@ const GameUpdatePage = ({
 				close={closeDrawerBottom}
 				lists={listsWithOwnership}
 				setListsWithOwnership={setListsWithOwnership}
+				isUpdate
+				storedGame={storedGame}
 			/>
 		</div>
 	)
@@ -113,6 +112,16 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 			listsWithOwnership = lists as ListWithOwnership[]
 			props.hasGame = hasGame as boolean
 			props.listsWithOwnership = listsWithOwnership
+			if (hasGame) {
+				for (let userList in user.lists) {
+					if (user.lists[userList][game_id]) {
+						const foundStoredGame = user.lists[userList][game_id]
+						foundStoredGame.dateAdded = foundStoredGame.dateAdded ? foundStoredGame.dateAdded.toString() : ''
+						foundStoredGame.lastUpdated = foundStoredGame.lastUpdated ? foundStoredGame.lastUpdated.toString() : ''
+						props.storedGame = foundStoredGame
+					}
+				}
+			}
 		}
 
 		const foundGameDetails = await getGameByGameId(game_id)

@@ -3,33 +3,43 @@ import BaseBottomDrawer from './BaseBottomDrawer'
 import Icon from 'react-icons-kit'
 import { ic_close } from 'react-icons-kit/md/ic_close'
 import { ic_add } from 'react-icons-kit/md/ic_add'
-import { buttonCheck } from 'react-icons-kit/metrize/buttonCheck'
-import { blank } from 'react-icons-kit/metrize/blank'
-import { ListWithOwnership, MobyGame } from '@/shared/types'
+import { ListWithOwnership, MobyGame, StoredGame } from '@/shared/types'
 import AddToListDialog from '../../Dialogs/AddToListDialog'
 import { useRouter } from 'next/router'
 import { handleDeleteGameFromList } from '@/shared/utils'
 import { useSortedListNamesSecondary } from '@/components/hooks/useUserLists'
-import { Button, IconButton } from '@material-tailwind/react'
+import { IconButton } from '@material-tailwind/react'
 import { ic_bookmark_border } from 'react-icons-kit/md/ic_bookmark_border'
-import ButtonLoadingSpinner from '@/components/UI-Elements/LoadingSpinner'
 import { ic_done } from 'react-icons-kit/md/ic_done'
+import UpdateGameDialog from '@/components/Dialogs/UpdateGameDialog'
 
 type DrawerProps = {
 	game: MobyGame
+	storedGame?: StoredGame
 	open: boolean
 	close: () => void
 	lists: ListWithOwnership[]
 	setListsWithOwnership: (lists: ListWithOwnership[]) => void
+	isUpdate?: boolean
 }
 
-const GameDetailsBottomDrawer = ({ game, open, close, lists, setListsWithOwnership }: DrawerProps) => {
+const GameDetailsBottomDrawer = ({
+	game,
+	storedGame,
+	open,
+	close,
+	lists,
+	setListsWithOwnership,
+	isUpdate
+}: DrawerProps) => {
 	const router = useRouter()
 	const [isDialogOpen, setIsDialogOpen] = React.useState<boolean>(false)
 	const [currentlySelectedList, setCurrentlySelectedList] = React.useState<string>('')
 	const [currentListIndex, setCurrentListIndex] = React.useState<number>(0)
+	const [openDialog, setOpenDialog] = React.useState<string>('')
 	const sortedListNames = useSortedListNamesSecondary(lists)
-	const handleOpenDialog = (listName: string, index: number) => {
+	const handleOpenDialog = (listName: string, index: number, dialogType = 'update') => {
+		setOpenDialog(dialogType)
 		setCurrentlySelectedList(listName)
 		setCurrentListIndex(index)
 		setIsDialogOpen(!isDialogOpen)
@@ -42,7 +52,7 @@ const GameDetailsBottomDrawer = ({ game, open, close, lists, setListsWithOwnersh
 		<BaseBottomDrawer open={open} close={close}>
 			<div className="h-full w-full mx-auto p-4 overflow-y-scroll">
 				<div className="grid grid-cols-2 border-b-2 pb-2">
-					<h4 className="text-left">Save game to...</h4>
+					<h4 className="text-left">{isUpdate ? 'Update the game on...' : 'Save game to...'}</h4>
 					<div autoFocus onClick={close} className="cursor-pointer text-right">
 						<Icon icon={ic_close} size={24} />
 					</div>
@@ -57,39 +67,24 @@ const GameDetailsBottomDrawer = ({ game, open, close, lists, setListsWithOwnersh
 							<div key={`${list}_${i}`}>
 								<div
 									onClick={() =>
-										list.hasGame
+										isUpdate && list.hasGame
+											? handleOpenDialog(list.listName, i)
+											: list.hasGame
 											? handleDeleteGameFromList(game, list.listName, i, router, setListsWithOwnership)
-											: handleOpenDialog(list.listName, i)
+											: handleOpenDialog(list.listName, i, 'add')
 									}
 									className="my-3 flex items-center justify-between"
 								>
 									<div>
-										{/* <Icon
-											className={`${list.hasGame ? `text-green-600` : ''} mr-2`}
-											icon={list.hasGame ? buttonCheck : blank}
-											size={26}
-										/> */}
 										<p className="inline-block pl-[0.15rem]">{list.listName}</p>
 									</div>
-									{/* <button
-										onClick={() =>
-											list.hasGame
-												? handleDeleteGameFromList(game, list.listName, i, router, setListsWithOwnership)
-												: handleOpenDialog(list.listName, i)
-										}
-										className={`btn btn-link normal-case text-slate-600`}
-									>
-										{list.hasGame ? 'Remove' : 'Add'}
-									</button> */}
 									{list.hasGame ? (
 										<IconButton color="green" ripple variant="outlined" className="rounded-full">
 											<Icon color="green" size={24} icon={ic_done} />
-											{/* <ButtonLoadingSpinner /> */}
 										</IconButton>
 									) : (
 										<IconButton ripple variant="outlined" className="rounded-full">
 											<Icon size={24} icon={ic_bookmark_border} />
-											{/* <ButtonLoadingSpinner /> */}
 										</IconButton>
 									)}
 								</div>
@@ -104,14 +99,26 @@ const GameDetailsBottomDrawer = ({ game, open, close, lists, setListsWithOwnersh
 					</div>
 				</div>
 			</div>
-			<AddToListDialog
-				game={game}
-				isOpen={isDialogOpen}
-				setIsDialogOpen={() => setIsDialogOpen(false)}
-				listName={currentlySelectedList}
-				index={currentListIndex}
-				setListsWithOwnership={setListsWithOwnership}
-			/>
+			{openDialog && openDialog === 'update' ? (
+				<UpdateGameDialog
+					storedGame={storedGame!}
+					game={game}
+					isOpen={isDialogOpen}
+					setIsDialogOpen={() => setIsDialogOpen(false)}
+					listName={currentlySelectedList}
+					index={currentListIndex}
+					setListsWithOwnership={setListsWithOwnership}
+				/>
+			) : (
+				<AddToListDialog
+					game={game}
+					isOpen={isDialogOpen}
+					setIsDialogOpen={() => setIsDialogOpen(false)}
+					listName={currentlySelectedList}
+					index={currentListIndex}
+					setListsWithOwnership={setListsWithOwnership}
+				/>
+			)}
 		</BaseBottomDrawer>
 	)
 }

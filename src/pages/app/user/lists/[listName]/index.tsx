@@ -147,14 +147,6 @@ const IndividualListPage = ({ games, listName, error }: IndividualListPageProps)
 						handler={toggleRemoveFromListDialog}
 						handleRemoveFromList={() => removeFromList(currentlySelectedGame.game_id, listName)}
 					/>
-					<UpdateGameDialog
-						isOpen={showUpdateGameDialog}
-						gameName={currentlySelectedGame.title}
-						listName={listName}
-						isUpdateButtonLoading={isLoading}
-						handler={toggleUpdateGameDialog}
-						handleUpdate={() => console.log('update me', currentlySelectedGame)}
-					/>
 				</>
 			)}
 		</section>

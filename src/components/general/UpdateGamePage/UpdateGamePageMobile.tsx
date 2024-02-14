@@ -1,21 +1,17 @@
 import React from 'react'
 import Image from 'next/image'
-import { GamePlayStatus, ListWithOwnership, MobyGame, Platform } from '@/shared/types'
-import ReactStars from 'react-stars'
-import { handleAddGameToList, truncateDescription } from '@/shared/utils'
-import { Drawer, Button } from '@material-tailwind/react'
-import BaseBottomDrawer from '@/components/Drawers/BottomDrawer/BaseBottomDrawer'
-import GameDetailsBottomDrawer from '@/components/Drawers/BottomDrawer/GameDetailsBottomDrawer'
+import { MobyGame } from '@/shared/types'
+import { truncateDescription } from '@/shared/utils'
+import { Button } from '@material-tailwind/react'
 
 type UpdateGamePageMobileProps = {
 	game: MobyGame
 	platformList: string
-	hasGame: boolean
 	openDrawerBottom: () => void
 }
 
 // TODO: Add some sort of marker to indicate that the game is on a list
-const UpdateGamePageMobile = ({ game, platformList, hasGame, openDrawerBottom }: UpdateGamePageMobileProps) => {
+const UpdateGamePageMobile = ({ game, platformList, openDrawerBottom }: UpdateGamePageMobileProps) => {
 	const [showFullDescription, setShowFullDescription] = React.useState<boolean>(false)
 
 	return (
@@ -40,9 +36,6 @@ const UpdateGamePageMobile = ({ game, platformList, hasGame, openDrawerBottom }:
 			</div>
 			<div className="mx-auto mb-1">
 				<span className="text-gray-700">Owned Platforms: {platformList}</span>
-			</div>
-			<div className="flex flex-row justify-center w-full -mt-3">
-				<ReactStars count={5} edit={false} value={game.moby_score ?? 0} size={36} color2={'#ffd700'} />
 			</div>
 			<div className="mb-2 w-full max-w-[250px]">
 				<Button onClick={openDrawerBottom} fullWidth color="green" className="flex items-center justify-center gap-3">
