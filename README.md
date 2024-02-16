@@ -75,6 +75,7 @@
 - [ ] Consider removing Good Game text from mobile view (or place in the center)
 - [ ] Maybe add a dopeass carosel on the discover games page (or the home page)
 - [ ] Add auto adding to backlog and wishlist based on answers
+- [ ] Figure out an inbetween fix for doing router.replace instead of push
 
 ### Central State Management Changes
 

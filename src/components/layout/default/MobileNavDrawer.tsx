@@ -9,10 +9,14 @@ import {
 	ListItem,
 	ListItemPrefix,
 	ListItemSuffix,
-	Input
+	Input,
+	Menu,
+	MenuHandler
 } from '@material-tailwind/react'
 import { useRouter } from 'next/router'
 import React from 'react'
+import NavMenuLists from './NavMenuLists'
+import { ChevronDownIcon } from '@heroicons/react/24/solid'
 
 type MobileNavDrawerProps = {
 	open: boolean
@@ -69,25 +73,32 @@ const MobileNavDrawer = ({ open, closeDrawer }: MobileNavDrawerProps) => {
 						</ListItemPrefix>
 						My Collection
 					</ListItem>
-					<ListItem onClick={() => router.replace('/app/user/lists')}>
-						<ListItemPrefix>
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								fill="none"
-								viewBox="0 0 24 24"
-								strokeWidth={1.5}
-								stroke="currentColor"
-								className="w-6 h-6"
-							>
-								<path
-									strokeLinecap="round"
-									strokeLinejoin="round"
-									d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-								/>
-							</svg>
-						</ListItemPrefix>
-						My Lists
-					</ListItem>
+					<Menu open={true} handler={() => true}>
+						<MenuHandler>
+							<ListItem>
+								<ListItemPrefix className="flex flex-row items-center">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										fill="none"
+										viewBox="0 0 24 24"
+										strokeWidth={1.5}
+										stroke="currentColor"
+										className="w-6 h-6"
+									>
+										<path
+											strokeLinecap="round"
+											strokeLinejoin="round"
+											d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+										/>
+									</svg>
+									<Typography className="flex items-center gap-x-2 p-1 leading-tight font-light text-md ml-3">
+										My Lists
+										<ChevronDownIcon strokeWidth={2.5} className={`h-3 w-3 transition-transform ${true ? 'rotate-180' : ''}`} />
+									</Typography>
+								</ListItemPrefix>
+							</ListItem>
+						</MenuHandler>
+					</Menu>
 					<ListItem onClick={() => router.replace('/app/games')}>
 						<ListItemPrefix>
 							<svg

@@ -4,6 +4,7 @@ import NavMenu from './NavMenu'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
+// TODO?: Modify so this shows all lists
 const NavMenuLists = () => {
 	const router = useRouter()
 
