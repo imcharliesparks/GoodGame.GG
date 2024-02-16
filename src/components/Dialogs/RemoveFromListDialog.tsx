@@ -1,14 +1,14 @@
-import { ListWithOwnership, MobyGame } from '@/shared/types'
+import { ListWithOwnership, MobyGame, StoredGame } from '@/shared/types'
 import { handleDeleteGameFromList } from '@/shared/utils'
 import { Button, Card, CardBody, CardFooter, Dialog, IconButton, Typography } from '@material-tailwind/react'
 import { useRouter } from 'next/router'
 import React, { Dispatch, SetStateAction } from 'react'
+import { useCurrentlySelectedGame } from '../hooks/useStateHooks'
 
 type RemoteFromListDialogProps = {
 	isOpen: boolean
-	game: MobyGame
 	listName: string
-	handler: Dispatch<SetStateAction<boolean>>
+	handler: (isOpen?: boolean) => void
 	index: number
 	setListsWithOwnership: (lists: ListWithOwnership[]) => void
 	closeDialog: () => void
@@ -16,7 +16,6 @@ type RemoteFromListDialogProps = {
 
 const RemoveFromListDialog = ({
 	isOpen,
-	game,
 	listName,
 	handler,
 	index,
@@ -24,6 +23,7 @@ const RemoveFromListDialog = ({
 	closeDialog
 }: RemoteFromListDialogProps) => {
 	const router = useRouter()
+	const [game, setCurrentlySelectedGame] = useCurrentlySelectedGame()
 	const [isDeleteButtonLoading, setIsDeleteButtonLoading] = React.useState<boolean>(false)
 	const handleRemoveFromList = async () => {
 		setIsDeleteButtonLoading(true)

@@ -6,38 +6,29 @@ import { useRouter } from 'next/router'
 import GameCardIconMenu from './GameCardIconMenu'
 import Link from 'next/link'
 import Icon from 'react-icons-kit'
+import { useCurrentlySelectedGame } from '../hooks/useStateHooks'
 
 type NewGameCardProps = {
-	game: StoredGame
-	listName: string
 	toggleRemoveFromListDialog: (isOpen?: boolean) => void
-	toggleUpdateGameDialog: (isOpen?: boolean) => void
-	setCurrentlySelectedGame: (game: StoredGame) => void
 	classes?: string
 }
 
-export const NewGameCard = ({
-	game,
-	listName,
-	toggleRemoveFromListDialog,
-	toggleUpdateGameDialog,
-	setCurrentlySelectedGame,
-	classes
-}: NewGameCardProps) => {
+export const NewGameCard = ({ toggleRemoveFromListDialog, classes }: NewGameCardProps) => {
 	const router = useRouter()
+	const [currentlySelectedGame, setCurrentlySelectedGame] = useCurrentlySelectedGame()
 	const currentHeight = 640
 	const currentWidth = 443.5
 	const newHeight = 300
 	const newWidth = (currentWidth / currentHeight) * newHeight
-	const platformString = generatePlatformsString(game)
+	const platformString = generatePlatformsString(currentlySelectedGame)
 
 	const setGameAndOpenDeleteDialog = () => {
-		setCurrentlySelectedGame(game)
+		setCurrentlySelectedGame(currentlySelectedGame)
 		toggleRemoveFromListDialog(true)
 	}
 
 	const setGameAndOpenUpdateDialog = () => {
-		setCurrentlySelectedGame(game)
+		setCurrentlySelectedGame(currentlySelectedGame)
 		toggleRemoveFromListDialog(true)
 	}
 
@@ -51,7 +42,7 @@ export const NewGameCard = ({
 			className={`${classes ? classes : ''} relative grid items-end justify-center text-center min-w-[208px] group`}
 		>
 			<GameCardIconMenu
-				game={game}
+				game={currentlySelectedGame}
 				openRemoveFromListDialog={setGameAndOpenDeleteDialog}
 				setGameAndOpenUpdateDialog={setGameAndOpenUpdateDialog}
 			/>
@@ -60,7 +51,7 @@ export const NewGameCard = ({
 				shadow={false}
 				color="transparent"
 				style={{
-					backgroundImage: `url(${game.sample_cover.image})`,
+					backgroundImage: `url(${currentlySelectedGame.sample_cover.image})`,
 					backgroundSize: 'cover',
 					backgroundPosition: 'center'
 				}}
@@ -71,7 +62,7 @@ export const NewGameCard = ({
 
 				<ul className="list-none absolute right-0 left-0 -bottom-20 group-hover:bottom-5 transition-all duration-500 ease-in-out z-3">
 					<li className="inline mx-1">
-						<Button onClick={() => router.replace(`/app/games/${game.game_id}/details`)} variant="gradient">
+						<Button onClick={() => router.replace(`/app/games/${currentlySelectedGame.game_id}/details`)} variant="gradient">
 							Details
 						</Button>
 					</li>
@@ -84,7 +75,7 @@ export const NewGameCard = ({
 					color="white"
 					className="font-medium leading-[1.5]"
 				>
-					{game.title}
+					{currentlySelectedGame.title}
 				</Typography>
 				<Typography
 					style={{ wordBreak: 'break-word', overflowWrap: 'break-word', whiteSpace: 'break-spaces' }}

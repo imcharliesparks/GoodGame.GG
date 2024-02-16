@@ -221,7 +221,7 @@ export const handleAddGameToList = async (
 }
 
 export const handleDeleteGameFromList = async (
-	game: MobyGame,
+	game: MobyGame | StoredGame,
 	listName: string,
 	index: number,
 	router: NextRouter,
