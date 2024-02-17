@@ -17,7 +17,7 @@ import RemoveFromListDialog from '@/components/Dialogs/RemoveFromListDialog'
 import { useCurrentlySelectedGame, useListsWithOwnership } from '@/components/hooks/useStateHooks'
 
 type DrawerProps = {
-	storedGame?: StoredGame
+	storedGame: StoredGame
 	open: boolean
 	close: () => void
 	// lists: ListWithOwnership[]
@@ -31,9 +31,8 @@ const GameDetailsBottomDrawer = ({ storedGame, open, close, isUpdate }: DrawerPr
 	const [currentlySelectedList, setCurrentlySelectedList] = React.useState<string>('')
 	const [currentListIndex, setCurrentListIndex] = React.useState<number>(0)
 	const [openDialog, setOpenDialog] = React.useState<string>('')
-	const [game, setSelectedGame] = useCurrentlySelectedGame()
 	const getListsWithOwnership = useListsWithOwnership()
-	const lists = getListsWithOwnership(game.game_id)
+	const lists = getListsWithOwnership(storedGame.game_id)
 	const sortedListNames = useSortedListNamesSecondary(lists)
 	const handleOpenDialog = (listName: string, index: number, dialogType = 'update') => {
 		setOpenDialog(dialogType)

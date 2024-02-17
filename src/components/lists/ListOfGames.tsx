@@ -33,7 +33,7 @@ const ListOfGames = ({ list, listName }: ListOfGamesProps) => {
 					{games.map(
 						(game: StoredGame) =>
 							typeof game !== 'string' && (
-								<NewGameCard toggleRemoveFromListDialog={toggleRemoveFromListDialog} classes="mr-2" />
+								<NewGameCard gameFromList={game} toggleRemoveFromListDialog={toggleRemoveFromListDialog} classes="mr-2" />
 							)
 					)}
 				</HorizontalScroll>
@@ -41,7 +41,7 @@ const ListOfGames = ({ list, listName }: ListOfGamesProps) => {
 				// TODO: Do something better tbh
 				<h1 className="text-center mt-4">No games added to this list yet!</h1>
 			)}
-			<RemoveFromListDialog isOpen={showRemoveFromListDialog} setIsDialogOpen={toggleRemoveFromListDialog} />
+			{/* <RemoveFromListDialog isOpen={showRemoveFromListDialog} setIsDialogOpen={toggleRemoveFromListDialog} /> */}
 		</div>
 	)
 }

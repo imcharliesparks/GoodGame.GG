@@ -31,6 +31,7 @@ const GameUpdatePage = ({
 	listsWithOwnership: initialListsWithOwnership,
 	error
 }: GameUpdatePageProps) => {
+	console.log('storedGame', storedGame)
 	const [listsWithOwnership, setListsWithOwnership] = React.useState<ListWithOwnership[]>(initialListsWithOwnership)
 	const [ownedPlatforms, setOwnedPlatforms] = React.useState<Platform[]>([])
 	const [openBottom, setOpenBottom] = React.useState(false)

@@ -14,6 +14,10 @@ type GameCardIconMenuProps = {
 const GameCardIconMenu = ({ game, openRemoveFromListDialog, setGameAndOpenUpdateDialog }: GameCardIconMenuProps) => {
 	const router = useRouter()
 
+	const handleUpdateClick = () => {
+		// router.push(`/app/games/${game.game_id}/update`)
+	}
+
 	return (
 		<Menu placement="bottom-end">
 			<MenuHandler id={styles.menuHandler}>
@@ -43,7 +47,7 @@ const GameCardIconMenu = ({ game, openRemoveFromListDialog, setGameAndOpenUpdate
 			<MenuList>
 				{/* TODO: Consider making this a modal instead */}
 				{/* <MenuItem onClick={setGameAndOpenUpdateDialog}>Update</MenuItem> */}
-				<MenuItem onClick={() => router.replace(`/app/games/${game.game_id}/update`)}>Update</MenuItem>
+				<MenuItem onClick={handleUpdateClick}>Update</MenuItem>
 				<MenuItem onClick={openRemoveFromListDialog}>Remove from List</MenuItem>
 			</MenuList>
 		</Menu>

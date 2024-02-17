@@ -1,4 +1,5 @@
 import RemoveFromListDialog from '@/components/Dialogs/RemoveFromListDialog'
+import UpdateGameBottomDrawer from '@/components/Drawers/BottomDrawer/UpdateGameBottomDrawer'
 import NewGameCard from '@/components/Games/NewGameCard'
 import { useCurrentlySelectedGame } from '@/components/hooks/useStateHooks'
 import firebase_app from '@/lib/firebase'
@@ -72,17 +73,27 @@ const IndividualListPage = ({ games, listName, error }: IndividualListPageProps)
 					{games.map(
 						(game: StoredGame) =>
 							typeof game !== 'string' && (
-								<NewGameCard key={game.game_id} toggleRemoveFromListDialog={toggleRemoveFromListDialog} />
+								<NewGameCard
+									gameFromList={game}
+									key={game.game_id}
+									toggleRemoveFromListDialog={toggleRemoveFromListDialog}
+									toggleUpdateGameDialog={toggleUpdateGameDialog}
+								/>
 							)
 					)}
 				</div>
 			</div>
-			<div className="sm:flex justify-center md:hidden">
+			<div className="hidden sm:flex md:hidden justify-center">
 				<div className="grid grid-cols-2 gap-4 max-w-screen-lg">
 					{games.map(
 						(game: StoredGame) =>
 							typeof game !== 'string' && (
-								<NewGameCard key={game.game_id} toggleRemoveFromListDialog={toggleRemoveFromListDialog} />
+								<NewGameCard
+									gameFromList={game}
+									key={game.game_id}
+									toggleRemoveFromListDialog={toggleRemoveFromListDialog}
+									toggleUpdateGameDialog={toggleUpdateGameDialog}
+								/>
 							)
 					)}
 				</div>
@@ -93,8 +104,10 @@ const IndividualListPage = ({ games, listName, error }: IndividualListPageProps)
 						(game: StoredGame) =>
 							typeof game !== 'string' && (
 								<NewGameCard
+									gameFromList={game}
 									key={game.game_id}
 									toggleRemoveFromListDialog={toggleRemoveFromListDialog}
+									toggleUpdateGameDialog={toggleUpdateGameDialog}
 									classes="flex-shrink-0"
 								/>
 							)
@@ -107,8 +120,10 @@ const IndividualListPage = ({ games, listName, error }: IndividualListPageProps)
 						(game: StoredGame) =>
 							typeof game !== 'string' && (
 								<NewGameCard
+									gameFromList={game}
 									key={game.game_id}
 									toggleRemoveFromListDialog={toggleRemoveFromListDialog}
+									toggleUpdateGameDialog={toggleUpdateGameDialog}
 									classes="flex-shrink-0"
 								/>
 							)
@@ -118,6 +133,7 @@ const IndividualListPage = ({ games, listName, error }: IndividualListPageProps)
 			{currentlySelectedGame && (
 				<>
 					<RemoveFromListDialog isOpen={showRemoveFromListDialog} setIsDialogOpen={toggleRemoveFromListDialog} />
+					<UpdateGameBottomDrawer open={showUpdateGameDialog} close={toggleUpdateGameDialog} />
 				</>
 			)}
 		</section>

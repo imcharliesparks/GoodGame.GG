@@ -34,3 +34,6 @@ export const useAddGameToList = (): ((game: StoredGame, listName: string) => voi
 
 export const useRemoveGameFromList = (): ((game_id: string, listName: string) => void) =>
 	useUserListsStore(useShallow((state: UserListsState) => state.removeGameFromList))
+
+export const useUpdateGameOnList = (): ((game: StoredGame, listName: string) => void) =>
+	useUserListsStore(useShallow((state: UserListsState) => state.updateGameOnList))

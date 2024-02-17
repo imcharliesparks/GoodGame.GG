@@ -1,14 +1,12 @@
-// @ts-nocheck
-import { GamePlayStatus, ListWithOwnership, MobyGame, Platform, StoredGame } from '@/shared/types'
+import { GamePlayStatus, Platform, StoredGame } from '@/shared/types'
 import { Dialog } from '@material-tailwind/react'
 import React from 'react'
 import Icon from 'react-icons-kit'
 import Select from 'react-tailwindcss-select'
 import { ic_close } from 'react-icons-kit/md/ic_close'
 import styles from '../../styles/components/AddToListDialog.module.css'
-import { handleAddGameToList } from '@/shared/utils'
-import { useRouter } from 'next/router'
 import { Button } from '@material-tailwind/react'
+import { useCurrentlySelectedGame, useCurrentlySelectedList, useUpdateGameOnList } from '../hooks/useStateHooks'
 
 type UpdateGameDialogProps = {
 	isOpen: boolean
@@ -23,15 +21,13 @@ type PlatformLabelOptions = {
 }
 
 const UpdateGameDialog = ({ setIsDialogOpen, isOpen }: UpdateGameDialogProps) => {
-	const router = useRouter()
 	const [isLoading, setIsLoading] = React.useState<boolean>(false)
 	const [selectedPlatforms, setSelectedPlatforms] = React.useState<PlatformLabelOptions[]>([])
 	const [platformOptions, setPlatformOptions] = React.useState<Record<any, any>>([])
 	const [selectedGameplayStatus, setSelectedGameplayStatus] = React.useState<GamePlayStatus>()
-	const [selectedGameplayStatus, setSelectedGameplayStatus] = React.useState<GamePlayStatus>()
-	const [game] = useCurrentlySelectedGame()
-	const [_1, _2, addGameToList] = useUserListsState()
+	const game = useCurrentlySelectedGame()[0] as StoredGame
 	const [listName] = useCurrentlySelectedList()
+	const updateGameOnList = useUpdateGameOnList()
 
 	const gameplayStatusOptions = [
 		{
@@ -55,20 +51,20 @@ const UpdateGameDialog = ({ setIsDialogOpen, isOpen }: UpdateGameDialogProps) =>
 			label: platform.platform_name
 		}))
 		setPlatformOptions(mappedPlatformOptions)
-		const mappedPlatformResults = storedGame!.platforms.map((platform: Platform) => ({
+		const mappedPlatformResults = game!.platforms.map((platform: Platform) => ({
 			platformData: platform,
 			value: platform.platform_id,
 			label: platform.platform_name
 		}))
 		setSelectedPlatforms(mappedPlatformResults)
-	}, [storedGame.platforms])
+	}, [game.platforms])
 
 	React.useEffect(() => {
-		if (storedGame.playStatus) {
-			const foundGameplayStatus = gameplayStatusOptions.find((playStatus) => playStatus.value === storedGame.playStatus)
+		if (game.playStatus) {
+			const foundGameplayStatus = gameplayStatusOptions.find((playStatus) => playStatus.value === game.playStatus)
 			setSelectedGameplayStatus(foundGameplayStatus)
 		}
-	}, [storedGame.playStatus])
+	}, [game.playStatus])
 
 	const handlePlatformChange = (value: PlatformLabelOptions) => {
 		setSelectedPlatforms(value)
@@ -78,11 +74,11 @@ const UpdateGameDialog = ({ setIsDialogOpen, isOpen }: UpdateGameDialogProps) =>
 		setSelectedGameplayStatus(value)
 	}
 
-	const handleTeardown = (e: any) => {
+	const handleTeardown = () => {
 		setSelectedPlatforms([])
 		setPlatformOptions([])
 		setSelectedGameplayStatus()
-		setIsDialogOpen(e)
+		setIsDialogOpen()
 	}
 
 	const addGameToList = async () => {
@@ -95,25 +91,16 @@ const UpdateGameDialog = ({ setIsDialogOpen, isOpen }: UpdateGameDialogProps) =>
 			return [...prev, platform]
 		}, [])
 
-		const gamePayload = {
-			...storedGame,
-			platforms: finalPlatforms
-		}
-		const result = await handleAddGameToList(
-			gamePayload,
-			listName,
-			index,
-			selectedGameplayStatus ?? undefined,
-			router,
-			setListsWithOwnership,
-			true
-		)
-
-		setIsLoading(false)
-
-		if (result) {
+		try {
+			const payload: StoredGame = {
+				...game,
+				platforms: finalPlatforms,
+				playStatus: selectedGameplayStatus
+			}
+			updateGameOnList(payload, listName)
 			handleTeardown()
-			setIsDialogOpen(false)
+		} catch (error) {
+			console.log('shit didnt work')
 		}
 	}
 
