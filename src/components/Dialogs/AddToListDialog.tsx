@@ -1,22 +1,17 @@
-// @ts-nocheck
-import { GamePlayStatus, ListWithOwnership, MobyGame, Platform } from '@/shared/types'
+import { GamePlayStatus, Platform, StoredGame } from '@/shared/types'
 import { Dialog } from '@material-tailwind/react'
 import React from 'react'
 import Icon from 'react-icons-kit'
 import Select from 'react-tailwindcss-select'
 import { ic_close } from 'react-icons-kit/md/ic_close'
 import styles from '../../styles/components/AddToListDialog.module.css'
-import { handleAddGameToList } from '@/shared/utils'
-import { useRouter } from 'next/router'
 import { Button } from '@material-tailwind/react'
+import { useAddGameToList, useCurrentlySelectedGame, useCurrentlySelectedList } from '../hooks/useStateHooks'
+import { Option, SelectValue } from 'react-tailwindcss-select/dist/components/type'
 
 type AddToListDialogProps = {
 	isOpen: boolean
 	setIsDialogOpen: () => void
-	listName: string
-	index: number
-	game: MobyGame
-	setListsWithOwnership: (list: ListWithOwnership[]) => void
 }
 
 type PlatformLabelOptions = {
@@ -26,77 +21,79 @@ type PlatformLabelOptions = {
 	platformData: Platform
 }
 
-const AddToListDialog = ({
-	game,
-	setIsDialogOpen,
-	listName,
-	index,
-	isOpen,
-	setListsWithOwnership
-}: AddToListDialogProps) => {
-	const router = useRouter()
+const AddToListDialog = ({ setIsDialogOpen, isOpen }: AddToListDialogProps) => {
 	const [isLoading, setIsLoading] = React.useState<boolean>(false)
-	const [selectedPlatforms, setSelectedPlatforms] = React.useState<PlatformLabelOptions[]>([])
-	const [platformOptions, setPlatformOptions] = React.useState<Record<any, any>>([])
-	const [selectedGameplayStatus, setSelectedGameplayStatus] = React.useState<GamePlayStatus>()
+	const [selectedPlatforms, setSelectedPlatforms] = React.useState<SelectValue>([])
+	const [platformOptions, setPlatformOptions] = React.useState<Option[]>([])
+	const [selectedGameplayStatus, setSelectedGameplayStatus] = React.useState<SelectValue>()
+	const [game] = useCurrentlySelectedGame()
+	const addGameToList = useAddGameToList()
+	const [listName] = useCurrentlySelectedList()
 
 	React.useEffect(() => {
-		const mappedPlatformOptions = game!.platforms.map((platform: Platform) => ({
-			platformData: platform,
-			value: platform.platform_id,
-			label: platform.platform_name
-		}))
-		setPlatformOptions(mappedPlatformOptions)
-	}, [game.platforms])
+		if (game) {
+			const mappedPlatformOptions = game!.platforms.map((platform: Platform) => ({
+				platformData: platform,
+				value: platform.platform_id,
+				label: platform.platform_name
+			}))
+			// @ts-ignore
+			setPlatformOptions(mappedPlatformOptions)
+		}
+	}, [game])
 
-	const handlePlatformChange = (value: PlatformLabelOptions) => {
+	const handlePlatformChange = (value: SelectValue) => {
 		setSelectedPlatforms(value)
 	}
 
-	const handleGameplayStatusChange = (value: Record<string, any>) => {
+	const handleGameplayStatusChange = (value: SelectValue) => {
 		setSelectedGameplayStatus(value)
 	}
 
-	const handleTeardown = (e: any) => {
+	const handleTeardown = () => {
 		setSelectedPlatforms([])
 		setPlatformOptions([])
-		setSelectedGameplayStatus()
-		setIsDialogOpen(e)
+		setSelectedGameplayStatus(undefined)
+		setIsDialogOpen()
 	}
 
-	const addGameToList = async () => {
+	const handleAddGameToList = async () => {
 		setIsLoading(true)
-		const finalPlatforms = selectedPlatforms.reduce((prev: Platform[], curr: PlatformLabelOptions) => {
+		// @ts-ignore
+		const finalPlatforms = selectedPlatforms.reduce((prev: Platform[], curr: SelectValue) => {
 			const platform: Platform = {
+				// @ts-ignore
 				...curr.platformData
 			}
 
 			return [...prev, platform]
 		}, [])
 
-		const gamePayload = {
-			...game,
-			platforms: finalPlatforms
+		const { game_id, moby_score, sample_cover, title, description } = game!
+		const payload: Omit<StoredGame, 'dateAdded'> = {
+			game_id,
+			moby_score,
+			sample_cover,
+			title,
+			platforms: finalPlatforms,
+			// @ts-ignore
+			playStatus: selectedGameplayStatus.value ?? GamePlayStatus.NOT_PLAYED,
+			description: description ?? 'No Description Found'
 		}
-		const result = await handleAddGameToList(
-			gamePayload,
-			listName,
-			index,
-			selectedGameplayStatus ?? undefined,
-			router,
-			setListsWithOwnership
-		)
 
-		setIsLoading(false)
-
-		if (result) {
+		// TODO: Toast here
+		try {
+			addGameToList(payload, listName)
 			handleTeardown()
-			setIsDialogOpen(false)
+		} catch (error) {
+			console.log('shit didnt work')
+		} finally {
+			setIsLoading(false)
 		}
 	}
 
 	return (
-		<Dialog id={styles.addToListDialog} size="xs" open={isOpen} handler={handleTeardown} className="h-[300px]">
+		<Dialog id={styles.addToListDialog} size="xs" open={isOpen} handler={() => setIsDialogOpen()} className="h-[300px]">
 			<div className="h-full relative h-xl">
 				<div className="grid grid-cols-2 border-b-2 pb-2 mb-2">
 					<h4 className="text-left">Add Game to List</h4>
@@ -118,7 +115,7 @@ const AddToListDialog = ({
 					<h4 className="text-md mb-2">Have you already played it?</h4>
 					<Select
 						primaryColor="white"
-						value={selectedGameplayStatus}
+						value={selectedGameplayStatus!}
 						onChange={handleGameplayStatusChange}
 						options={[
 							{
@@ -141,7 +138,7 @@ const AddToListDialog = ({
 				<div className="absolute bottom-3 w-full">
 					<Button
 						loading={isLoading}
-						onClick={addGameToList}
+						onClick={handleAddGameToList}
 						fullWidth
 						color="green"
 						className="flex items-center justify-center gap-3 btn-sm"

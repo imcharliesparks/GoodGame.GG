@@ -13,11 +13,6 @@ import { Button } from '@material-tailwind/react'
 type UpdateGameDialogProps = {
 	isOpen: boolean
 	setIsDialogOpen: () => void
-	listName: string
-	index: number
-	storedGame: StoredGame
-	game: MobyGame
-	setListsWithOwnership: (list: ListWithOwnership[]) => void
 }
 
 type PlatformLabelOptions = {
@@ -27,20 +22,16 @@ type PlatformLabelOptions = {
 	platformData: Platform
 }
 
-const UpdateGameDialog = ({
-	storedGame,
-	game,
-	setIsDialogOpen,
-	listName,
-	index,
-	isOpen,
-	setListsWithOwnership
-}: UpdateGameDialogProps) => {
+const UpdateGameDialog = ({ setIsDialogOpen, isOpen }: UpdateGameDialogProps) => {
 	const router = useRouter()
 	const [isLoading, setIsLoading] = React.useState<boolean>(false)
 	const [selectedPlatforms, setSelectedPlatforms] = React.useState<PlatformLabelOptions[]>([])
 	const [platformOptions, setPlatformOptions] = React.useState<Record<any, any>>([])
 	const [selectedGameplayStatus, setSelectedGameplayStatus] = React.useState<GamePlayStatus>()
+	const [selectedGameplayStatus, setSelectedGameplayStatus] = React.useState<GamePlayStatus>()
+	const [game] = useCurrentlySelectedGame()
+	const [_1, _2, addGameToList] = useUserListsState()
+	const [listName] = useCurrentlySelectedList()
 
 	const gameplayStatusOptions = [
 		{

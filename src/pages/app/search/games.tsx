@@ -13,25 +13,34 @@ import { convertFirebaseTimestamps } from '@/shared/utils'
 import { useRouter } from 'next/router'
 import GameDetailsBottomDrawer from '@/components/Drawers/BottomDrawer/GameDetailsBottomDrawer'
 import { Button, Input } from '@material-tailwind/react'
+import { UserListsState, useUserListsStore } from '@/state/userListsState'
+import { useShallow } from 'zustand/react/shallow'
+import { useCurrentlySelectedGame, useListsWithOwnership, useUserListsState } from '@/components/hooks/useStateHooks'
+import SearchPageBottomDrawer from '@/components/Drawers/BottomDrawer/SearchPageBottomDrawer'
 
 type SearchGamePageProps = {
 	searchQuery?: string
 	// TODO: If this is made public factor that in here
 	lists?: GGLists
-	userIsAuthd: boolean
 	foundGames?: MobyGame[]
 }
 
 // TODO: Add initial loading when hydrating from SSR
-const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: SearchGamePageProps) => {
+const SearchGamesPage = ({ searchQuery, lists, foundGames }: SearchGamePageProps) => {
 	const [searchTerm, setSearchTerm] = React.useState<string>('')
 	const [searchError, setSearchError] = React.useState<string | null>(null)
 	const [addSuccessText, setAddSuccessText] = React.useState<string | null>(null)
 	const [games, setGames] = React.useState<MobyGame[]>()
 	const [isLoading, setIsLoading] = React.useState<boolean>(false)
 	const [listsWithOwnership, setListsWithOwnership] = React.useState<ListWithOwnership[]>([])
-	const [selectedGame, setSelectedGame] = React.useState<MobyGame>()
+	const getListsWithOwnership = useListsWithOwnership()
 	const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(false)
+	const [_userLists, setUserLists] = useUserListsState()
+	const [_selectedGame, setSelectedGame] = useCurrentlySelectedGame()
+
+	React.useEffect(() => {
+		if (lists && Object.keys(lists).length) setUserLists(lists)
+	}, [lists])
 
 	const openDrawer = () => setIsDrawerOpen(true)
 	const closeDrawer = () => setIsDrawerOpen(false)
@@ -98,9 +107,8 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 	}
 
 	const handleOpenDrawer = (game: MobyGame) => {
-		const foundListsWithOwnership = useUserHasGameInCollection(game.game_id, lists!)
-		setListsWithOwnership(foundListsWithOwnership)
 		setSelectedGame(game)
+		getListsWithOwnership(game.game_id)
 		openDrawer()
 	}
 
@@ -114,15 +122,6 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 						handleSearch()
 					}}
 				>
-					{/* <input
-						ref={inputRef}
-						type="text"
-						placeholder="Search for a game..."
-						className="input input-primary w-full max-w-xs text-black"
-					/>
-					<button type="submit" className="btn  btn-primary ml-0 mt-3 md:ml-2 md:mt-0">
-						{isLoading ? <LoadingSpinner /> : 'Search'}
-					</button> */}{' '}
 					<div className="relative w-full md:max-w-[425px]">
 						<Input
 							value={searchTerm}
@@ -172,13 +171,12 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 					</div>
 				</div>
 			)}
-			{selectedGame && (
-				<GameDetailsBottomDrawer
-					game={selectedGame!}
+			{isDrawerOpen && (
+				<SearchPageBottomDrawer
 					open={isDrawerOpen}
 					close={closeDrawer}
-					lists={listsWithOwnership}
-					setListsWithOwnership={setListsWithOwnership}
+					// lists={listsWithOwnership}
+					// setListsWithOwnership={setListsWithOwnership}
 				/>
 			)}
 		</div>
@@ -188,9 +186,7 @@ const SearchGamesPage = ({ searchQuery, lists, userIsAuthd, foundGames }: Search
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 	const { userId } = getAuth(ctx.req)
 	const searchTerm = ctx.query.search
-	const props: SearchGamePageProps = {
-		userIsAuthd: userId ? true : false
-	}
+	const props: SearchGamePageProps = {}
 
 	try {
 		const db = getFirestore(firebase_app)

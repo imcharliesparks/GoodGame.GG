@@ -1,42 +1,36 @@
-import { ListWithOwnership, MobyGame, StoredGame } from '@/shared/types'
-import { handleDeleteGameFromList } from '@/shared/utils'
 import { Button, Card, CardBody, CardFooter, Dialog, IconButton, Typography } from '@material-tailwind/react'
-import { useRouter } from 'next/router'
-import React, { Dispatch, SetStateAction } from 'react'
-import { useCurrentlySelectedGame } from '../hooks/useStateHooks'
+import React from 'react'
+import { useCurrentlySelectedGame, useCurrentlySelectedList, useRemoveGameFromList } from '../hooks/useStateHooks'
 
 type RemoteFromListDialogProps = {
 	isOpen: boolean
-	listName: string
-	handler: (isOpen?: boolean) => void
-	index: number
-	setListsWithOwnership: (lists: ListWithOwnership[]) => void
-	closeDialog: () => void
+	setIsDialogOpen: () => void
 }
 
-const RemoveFromListDialog = ({
-	isOpen,
-	listName,
-	handler,
-	index,
-	setListsWithOwnership,
-	closeDialog
-}: RemoteFromListDialogProps) => {
-	const router = useRouter()
-	const [game, setCurrentlySelectedGame] = useCurrentlySelectedGame()
+const RemoveFromListDialog = ({ isOpen, setIsDialogOpen }: RemoteFromListDialogProps) => {
+	const [game] = useCurrentlySelectedGame()
+	const [listName] = useCurrentlySelectedList()
+	const removeFromList = useRemoveGameFromList()
 	const [isDeleteButtonLoading, setIsDeleteButtonLoading] = React.useState<boolean>(false)
 	const handleRemoveFromList = async () => {
 		setIsDeleteButtonLoading(true)
-		await handleDeleteGameFromList(game, listName, index, router, setListsWithOwnership)
-		setIsDeleteButtonLoading(false)
-		closeDialog()
+
+		// TODO: Toast
+		try {
+			removeFromList(game.game_id, listName)
+			setIsDialogOpen()
+		} catch (error) {
+			console.log('shit didnt work')
+		} finally {
+			setIsDeleteButtonLoading(false)
+		}
 	}
 	return (
-		<Dialog size="xs" open={isOpen} handler={handler} className="bg-transparent shadow-none">
+		<Dialog size="xs" open={isOpen} handler={setIsDialogOpen} className="bg-transparent shadow-none">
 			<Card className="mx-auto w-full max-w-[24rem]">
 				<CardBody>
 					<div className="w-full flex justify-end">
-						<IconButton onClick={() => handler(false)} variant="outlined" className="rounded-full">
+						<IconButton onClick={() => setIsDialogOpen()} variant="outlined" className="rounded-full">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								fill="none"

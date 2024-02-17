@@ -124,7 +124,7 @@ export type ListWithOwnership = {
 
 // TODO: Update as needed
 export type StoredGame = {
-	game_id: number
+	game_id: string
 	moby_score?: number
 	platforms: Platform[]
 	sample_cover: SampleCover
@@ -325,7 +325,7 @@ export type MobyAPIGameSearchParameters = {
 export type MobyGame = {
 	alternate_titles: AlternateTitle[]
 	description: string
-	game_id: number
+	game_id: string
 	genres: Genre[]
 	moby_score: number
 	moby_url: string

@@ -14,31 +14,26 @@ import { ic_done } from 'react-icons-kit/md/ic_done'
 import UpdateGameDialog from '@/components/Dialogs/UpdateGameDialog'
 import RemoveGameFromListModal from '@/components/modal/RemoveGameFromListModal/RemoveGameFromListModal'
 import RemoveFromListDialog from '@/components/Dialogs/RemoveFromListDialog'
+import { useCurrentlySelectedGame, useListsWithOwnership } from '@/components/hooks/useStateHooks'
 
 type DrawerProps = {
-	game: MobyGame
 	storedGame?: StoredGame
 	open: boolean
 	close: () => void
-	lists: ListWithOwnership[]
-	setListsWithOwnership: (lists: ListWithOwnership[]) => void
+	// lists: ListWithOwnership[]
+	// setListsWithOwnership: (lists: ListWithOwnership[]) => void
 	isUpdate?: boolean
 }
 
-const GameDetailsBottomDrawer = ({
-	game,
-	storedGame,
-	open,
-	close,
-	lists,
-	setListsWithOwnership,
-	isUpdate
-}: DrawerProps) => {
+const GameDetailsBottomDrawer = ({ storedGame, open, close, isUpdate }: DrawerProps) => {
 	const router = useRouter()
 	const [isDialogOpen, setIsDialogOpen] = React.useState<boolean>(false)
 	const [currentlySelectedList, setCurrentlySelectedList] = React.useState<string>('')
 	const [currentListIndex, setCurrentListIndex] = React.useState<number>(0)
 	const [openDialog, setOpenDialog] = React.useState<string>('')
+	const [game, setSelectedGame] = useCurrentlySelectedGame()
+	const getListsWithOwnership = useListsWithOwnership()
+	const lists = getListsWithOwnership(game.game_id)
 	const sortedListNames = useSortedListNamesSecondary(lists)
 	const handleOpenDialog = (listName: string, index: number, dialogType = 'update') => {
 		setOpenDialog(dialogType)
@@ -101,7 +96,7 @@ const GameDetailsBottomDrawer = ({
 					</div>
 				</div>
 			</div>
-			{openDialog && openDialog === 'update' ? (
+			{/* {openDialog && openDialog === 'update' ? (
 				<UpdateGameDialog
 					storedGame={storedGame!}
 					game={game}
@@ -130,7 +125,7 @@ const GameDetailsBottomDrawer = ({
 					index={currentListIndex}
 					setListsWithOwnership={setListsWithOwnership}
 				/>
-			)}
+			)} */}
 		</BaseBottomDrawer>
 	)
 }

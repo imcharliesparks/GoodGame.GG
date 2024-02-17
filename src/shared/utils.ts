@@ -194,7 +194,7 @@ export const handleAddGameToList = async (
 			handleUpdateListsWithOwnership(index, true, setListsWithOwnership)
 			success = true
 			if (isUpdate) {
-				alert(`Success! We've updated ${game!.title} on your ${listName} list.`)
+				alert(`Success! W e've updated ${game!.title} on your ${listName} list.`)
 			} else {
 				alert(`Success! We've added ${game!.title} to your ${listName} list.`)
 			}
