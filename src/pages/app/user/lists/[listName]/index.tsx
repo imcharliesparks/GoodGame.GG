@@ -1,5 +1,4 @@
 import RemoveFromListDialog from '@/components/Dialogs/RemoveFromListDialog'
-import UpdateGameDialog from '@/components/Dialogs/UpdateGameDialog'
 import NewGameCard from '@/components/Games/NewGameCard'
 import firebase_app from '@/lib/firebase'
 import { APIMethods, APIStatuses, CollectionNames, StoredGame } from '@/shared/types'
@@ -8,7 +7,7 @@ import { getAuth } from '@clerk/nextjs/server'
 import { Typography } from '@material-tailwind/react'
 import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore'
 import { GetServerSidePropsContext } from 'next'
-import router, { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import React from 'react'
 
 type IndividualListPageProps = {
@@ -72,14 +71,7 @@ const IndividualListPage = ({ games, listName, error }: IndividualListPageProps)
 					{games.map(
 						(game: StoredGame) =>
 							typeof game !== 'string' && (
-								<NewGameCard
-									key={game.game_id}
-									game={game}
-									listName={listName}
-									toggleRemoveFromListDialog={toggleRemoveFromListDialog}
-									toggleUpdateGameDialog={toggleUpdateGameDialog}
-									setCurrentlySelectedGame={setCurrentlySelectedGame}
-								/>
+								<NewGameCard key={game.game_id} toggleRemoveFromListDialog={toggleRemoveFromListDialog} />
 							)
 					)}
 				</div>
@@ -89,14 +81,7 @@ const IndividualListPage = ({ games, listName, error }: IndividualListPageProps)
 					{games.map(
 						(game: StoredGame) =>
 							typeof game !== 'string' && (
-								<NewGameCard
-									key={game.game_id}
-									game={game}
-									listName={listName}
-									toggleRemoveFromListDialog={toggleRemoveFromListDialog}
-									toggleUpdateGameDialog={toggleUpdateGameDialog}
-									setCurrentlySelectedGame={setCurrentlySelectedGame}
-								/>
+								<NewGameCard key={game.game_id} toggleRemoveFromListDialog={toggleRemoveFromListDialog} />
 							)
 					)}
 				</div>
@@ -108,11 +93,7 @@ const IndividualListPage = ({ games, listName, error }: IndividualListPageProps)
 							typeof game !== 'string' && (
 								<NewGameCard
 									key={game.game_id}
-									game={game}
-									listName={listName}
 									toggleRemoveFromListDialog={toggleRemoveFromListDialog}
-									toggleUpdateGameDialog={toggleUpdateGameDialog}
-									setCurrentlySelectedGame={setCurrentlySelectedGame}
 									classes="flex-shrink-0"
 								/>
 							)
@@ -126,11 +107,7 @@ const IndividualListPage = ({ games, listName, error }: IndividualListPageProps)
 							typeof game !== 'string' && (
 								<NewGameCard
 									key={game.game_id}
-									game={game}
-									listName={listName}
 									toggleRemoveFromListDialog={toggleRemoveFromListDialog}
-									toggleUpdateGameDialog={toggleUpdateGameDialog}
-									setCurrentlySelectedGame={setCurrentlySelectedGame}
 									classes="flex-shrink-0"
 								/>
 							)
@@ -139,14 +116,7 @@ const IndividualListPage = ({ games, listName, error }: IndividualListPageProps)
 			</div>
 			{currentlySelectedGame && (
 				<>
-					<RemoveFromListDialog
-						isOpen={showRemoveFromListDialog}
-						gameName={currentlySelectedGame.title}
-						listName={listName}
-						isDeleteButtonLoading={isLoading}
-						handler={toggleRemoveFromListDialog}
-						handleRemoveFromList={() => removeFromList(currentlySelectedGame.game_id, listName)}
-					/>
+					<RemoveFromListDialog isOpen={showRemoveFromListDialog} setIsDialogOpen={toggleRemoveFromListDialog} />
 				</>
 			)}
 		</section>

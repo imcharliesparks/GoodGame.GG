@@ -60,13 +60,7 @@ const GameDetailsPage = ({
 				/>
 			</div>
 
-			<GameDetailsBottomDrawer
-				game={game}
-				open={openBottom}
-				close={closeDrawerBottom}
-				lists={listsWithOwnership}
-				setListsWithOwnership={setListsWithOwnership}
-			/>
+			<GameDetailsBottomDrawer open={openBottom} close={closeDrawerBottom} />
 		</div>
 	)
 }

@@ -70,15 +70,7 @@ const GameUpdatePage = ({
 			</div>
 
 			{/* garf start here make a modified version that opens the add dialog regardless of click */}
-			<GameDetailsBottomDrawer
-				game={game}
-				open={openBottom}
-				close={closeDrawerBottom}
-				lists={listsWithOwnership}
-				setListsWithOwnership={setListsWithOwnership}
-				isUpdate
-				storedGame={storedGame}
-			/>
+			<GameDetailsBottomDrawer open={openBottom} close={closeDrawerBottom} storedGame={storedGame} />
 		</div>
 	)
 }

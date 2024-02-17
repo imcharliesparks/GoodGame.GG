@@ -7,7 +7,8 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
-		"static": "next build && next export"
+		"static": "next build && next export",
+		"types:check": "tsc --noEmit"
 	},
 	"dependencies": {
 		"@clerk/nextjs": "^4.29.5",

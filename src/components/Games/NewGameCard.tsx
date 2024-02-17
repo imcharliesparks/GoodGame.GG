@@ -4,8 +4,6 @@ import { APIMethods, APIStatuses, MobyGame, StoredGame } from '@/shared/types'
 import { generatePlatformsString } from '@/shared/utils'
 import { useRouter } from 'next/router'
 import GameCardIconMenu from './GameCardIconMenu'
-import Link from 'next/link'
-import Icon from 'react-icons-kit'
 import { useCurrentlySelectedGame } from '../hooks/useStateHooks'
 
 type NewGameCardProps = {

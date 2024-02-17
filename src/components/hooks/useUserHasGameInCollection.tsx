@@ -8,12 +8,14 @@ export const useUserHasGameInCollection = (gameId: number, lists: GGLists): List
 		.reduce((acc: ListWithOwnership[], curr: string) => {
 			const listWithOwnership: ListWithOwnership = {
 				listName: curr,
-				hasGame: false
+				hasGame: false,
+				platforms: []
 			}
 			const currentCollection: GGList = lists[curr]
 			const currentCollectionsGameIds = new Set<string>(Object.keys(currentCollection))
 			if (currentCollectionsGameIds.has(formattedGameId)) {
 				listWithOwnership.hasGame = true
+				listWithOwnership.platforms = currentCollection[formattedGameId].platforms
 			}
 			return [...acc, listWithOwnership]
 		}, [])

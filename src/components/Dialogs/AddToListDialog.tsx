@@ -14,6 +14,7 @@ type AddToListDialogProps = {
 	setIsDialogOpen: () => void
 }
 
+// TODO: Clean this up a bit and use this type again tbh
 type PlatformLabelOptions = {
 	label: string
 	disabled?: boolean
@@ -133,7 +134,6 @@ const AddToListDialog = ({ setIsDialogOpen, isOpen }: AddToListDialogProps) => {
 						]}
 					/>
 				</div>
-				{/* garf fix */}
 				{/* TODO: Reconsider the decision to disable here */}
 				<div className="absolute bottom-3 w-full">
 					<Button

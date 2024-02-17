@@ -34,7 +34,7 @@ const ListCard = ({ game, setError, listName }: ListCardProps) => {
 		}
 	}
 
-	const removeFromList = async (game_id: number, listName: string) => {
+	const removeFromList = async (game_id: string, listName: string) => {
 		setIsLoading(true)
 		try {
 			const request = await fetch(`/api/lists/${listName}/${game_id}/remove`, {

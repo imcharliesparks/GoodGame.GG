@@ -41,12 +41,7 @@ const ListOfGames = ({ list, listName }: ListOfGamesProps) => {
 				// TODO: Do something better tbh
 				<h1 className="text-center mt-4">No games added to this list yet!</h1>
 			)}
-			<RemoveFromListDialog
-				isOpen={showRemoveFromListDialog}
-				listName={listName}
-				handler={toggleRemoveFromListDialog}
-				closeDialog={() => setShowRemoveFromListDialog(false)}
-			/>
+			<RemoveFromListDialog isOpen={showRemoveFromListDialog} setIsDialogOpen={toggleRemoveFromListDialog} />
 		</div>
 	)
 }

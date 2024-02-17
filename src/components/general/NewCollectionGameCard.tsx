@@ -19,7 +19,7 @@ const GameCard = ({ game, setError }: GameCardProps) => {
 	const [isLoading, setIsLoading] = React.useState<boolean>(false)
 	const coverArt = game.sample_cover && game.sample_cover.thumbnail_image ? game.sample_cover : null
 
-	const removeFromCollection = async (gameId: number) => {
+	const removeFromCollection = async (gameId: string) => {
 		setIsLoading(true)
 		try {
 			const request = await fetch(`/api/collection/${gameId}/remove`, {

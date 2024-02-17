@@ -3,10 +3,10 @@ import React from 'react'
 import styles from '../../styles/components/NewGameCard.module.css'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import { StoredGame } from '@/shared/types'
+import { MobyGame, StoredGame } from '@/shared/types'
 
 type GameCardIconMenuProps = {
-	game: StoredGame
+	game: StoredGame | MobyGame
 	openRemoveFromListDialog: () => void
 	setGameAndOpenUpdateDialog: () => void
 }
