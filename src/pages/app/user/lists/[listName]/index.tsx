@@ -1,5 +1,6 @@
 import RemoveFromListDialog from '@/components/Dialogs/RemoveFromListDialog'
 import NewGameCard from '@/components/Games/NewGameCard'
+import { useCurrentlySelectedGame } from '@/components/hooks/useStateHooks'
 import firebase_app from '@/lib/firebase'
 import { APIMethods, APIStatuses, CollectionNames, StoredGame } from '@/shared/types'
 import { convertFirebaseTimestamps } from '@/shared/utils'
@@ -20,7 +21,7 @@ type IndividualListPageProps = {
 // TODO: Add sorting
 const IndividualListPage = ({ games, listName, error }: IndividualListPageProps) => {
 	const router = useRouter()
-	const [currentlySelectedGame, setCurrentlySelectedGame] = React.useState<StoredGame>()
+	const [currentlySelectedGame] = useCurrentlySelectedGame()
 	const [showRemoveFromListDialog, setShowRemoveFromListDialog] = React.useState<boolean>(false)
 	const [showUpdateGameDialog, setShowUpdateGameDialog] = React.useState<boolean>(false)
 	const [isLoading, setIsLoading] = React.useState<boolean>(false)

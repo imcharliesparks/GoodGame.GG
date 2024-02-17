@@ -1,4 +1,5 @@
 import { APIMethods, APIStatuses, GGList, GGLists, ListWithOwnership, MobyGame, StoredGame } from '@/shared/types'
+import { sortListNames } from '@/shared/utils'
 import { create } from 'zustand'
 
 export interface UserListsState {
@@ -43,7 +44,7 @@ export const useUserListsStore = create<UserListsState>((set, get) => ({
 			}
 		}
 
-		return listsWithOwnership
+		return sortListNames(listsWithOwnership)
 	},
 	addGameToList: async (game: StoredGame, listName: string) => {
 		const mutatedLists = get().lists
@@ -82,19 +83,25 @@ export const useUserListsStore = create<UserListsState>((set, get) => ({
 		} else {
 			set({ lists: mutatedLists })
 		}
+	},
+	updateGameOnList: async (game: StoredGame, listName: string) => {
+		const mutatedLists = get().lists
+		mutatedLists[listName][game.game_id] = game
+
+		const request = await fetch(`/api/lists/${listName}/update`, {
+			method: APIMethods.PATCH,
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(game)
+		})
+		const response = await request.json()
+
+		if (response.status === APIStatuses.ERROR) {
+			console.error(`We couldn't add ${game.title} to your ${listName} list`)
+			throw new Error(response.data.error)
+		} else {
+			set({ lists: mutatedLists })
+		}
 	}
-
-	// updateListsWithOwnership: (listName: string, ownershipStatus: boolean) => {
-	// 	set((state: UserListsState) => {
-	// 		const updatedList = state.listsWithOwnership.reduce((prev: ListWithOwnership[], curr: ListWithOwnership) => {
-	// 			if (curr.listName === listName) {
-	// 				curr.hasGame = ownershipStatus
-	// 			}
-
-	// 			return [...prev, curr]
-	// 		}, [])
-
-	// 		return { listsWithOwnership: updatedList }
-	// 	})
-	// }
 }))

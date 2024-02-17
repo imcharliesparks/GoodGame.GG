@@ -8,7 +8,6 @@ import AddToListDialog from '../../Dialogs/AddToListDialog'
 import { IconButton, dialog } from '@material-tailwind/react'
 import { ic_bookmark_border } from 'react-icons-kit/md/ic_bookmark_border'
 import { ic_done } from 'react-icons-kit/md/ic_done'
-import UpdateGameDialog from '@/components/Dialogs/UpdateGameDialog'
 import {
 	useCurrentlySelectedGame,
 	useCurrentlySelectedList,
@@ -28,18 +27,14 @@ enum SearchPageBottomDrawerDialogTypes {
 
 const SearchPageBottomDrawer = ({ open, close }: DrawerProps) => {
 	const [isDialogOpen, setIsDialogOpen] = React.useState<boolean>(false)
-	const [currentlySelectedList, setCurrentlySelectedList] = useCurrentlySelectedList()
-	const [currentListIndex, setCurrentListIndex] = React.useState<number>(0)
+	const [_, setCurrentlySelectedList] = useCurrentlySelectedList()
 	const [dialogType, setDialogType] = React.useState<SearchPageBottomDrawerDialogTypes>()
 	const [selectedGame] = useCurrentlySelectedGame()
 	const lists = useListsWithOwnership()(selectedGame?.game_id)
-	// const sortedListNames = useSortedListNamesSecondary(lists)
 	const handleOpenDialog = (listName: string, dialogType: SearchPageBottomDrawerDialogTypes) => {
-		console.log('listName', listName)
 		setIsDialogOpen(true)
 		setDialogType(dialogType)
 		setCurrentlySelectedList(listName)
-		// setIsDialogOpen(!isDialogOpen)
 	}
 
 	// TODO: Allow truncating of lists names if they're too long

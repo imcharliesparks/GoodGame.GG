@@ -267,3 +267,22 @@ export const generatePlatformsString = (game: MobyGame | StoredGame): string => 
 			: game.platforms.map((platform: Platform) => platform.platform_name).join(', ')
 		: 'No platforms found'
 }
+
+export const sortListNames = (lists: ListWithOwnership[]) => {
+	const order = ['Collection', 'Backlog', 'Wishlist']
+
+	return lists.sort((a, b) => {
+		const indexA = order.indexOf(a.listName)
+		const indexB = order.indexOf(b.listName)
+
+		if (indexA !== -1 && indexB !== -1) {
+			return indexA - indexB
+		} else if (indexA !== -1) {
+			return -1
+		} else if (indexB !== -1) {
+			return 1
+		}
+
+		return a.listName.localeCompare(b.listName)
+	})
+}
