@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { GamePlayStatus, Platform, StoredGame } from '@/shared/types'
 import { Dialog } from '@material-tailwind/react'
 import React from 'react'

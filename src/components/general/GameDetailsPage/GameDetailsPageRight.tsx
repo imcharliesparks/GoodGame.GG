@@ -25,7 +25,7 @@ const GameDetailsPageRight = ({ game, hasGame, platformList }: GameDetailsPageRi
 				</h1>
 			</div>
 			<div className="mx-auto my-2">
-				<span className="text-gray-700">{platformList}</span>
+				<p className="text-gray-700 text-center">{platformList}</p>
 			</div>
 			<div className="mx-auto max-w-[470px]">
 				{game.description ? (
