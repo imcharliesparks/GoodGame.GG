@@ -1,8 +1,3 @@
-import CollectionGameCard from '@/components/general/CollectionGameCard'
-import HorizontalScroll from '@/components/general/HorizontalScroll'
-import ListCard from '@/components/general/ListCard'
-import NewCollectionGameCard from '@/components/general/NewCollectionGameCard'
-import NewSearchGameCard from '@/components/general/NewSearchGameCard'
 import { useSortedListNames } from '@/components/hooks/useUserLists'
 import ListOfGames from '@/components/lists/ListOfGames'
 import firebase_app from '@/lib/firebase'
