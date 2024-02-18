@@ -1,11 +1,7 @@
 import React from 'react'
 import HorizontalScroll from '../general/HorizontalScroll'
-import { APIMethods, APIStatuses, GGList, StoredGame } from '@/shared/types'
-import ListCard from '../general/ListCard'
+import { GGList, StoredGame } from '@/shared/types'
 import NewGameCard from '../Games/NewGameCard'
-import { useRouter } from 'next/router'
-import RemoveFromListDialog from '../Dialogs/RemoveFromListDialog'
-import { useCurrentlySelectedGame } from '../hooks/useStateHooks'
 
 type ListOfGamesProps = {
 	list: GGList
@@ -16,9 +12,12 @@ type ListOfGamesProps = {
 const ListOfGames = ({ list, listName }: ListOfGamesProps) => {
 	const [games, setGames] = React.useState<StoredGame[]>([])
 	const [showRemoveFromListDialog, setShowRemoveFromListDialog] = React.useState<boolean>(false)
+	const [showUpdateGameDialog, setShowUpdateGameDialog] = React.useState<boolean>(false)
 
 	const toggleRemoveFromListDialog = (isOpen?: boolean) =>
 		setShowRemoveFromListDialog(isOpen ?? !showRemoveFromListDialog)
+
+	const toggleUpdateGameDialog = (isOpen?: boolean) => setShowUpdateGameDialog(isOpen ?? !showUpdateGameDialog)
 
 	React.useEffect(() => {
 		const gameIds = Object.keys(list)
@@ -31,9 +30,15 @@ const ListOfGames = ({ list, listName }: ListOfGamesProps) => {
 			{games.length ? (
 				<HorizontalScroll>
 					{games.map(
-						(game: StoredGame) =>
+						(game: StoredGame, i: number) =>
 							typeof game !== 'string' && (
-								<NewGameCard gameFromList={game} toggleRemoveFromListDialog={toggleRemoveFromListDialog} classes="mr-2" />
+								<NewGameCard
+									key={`${game.game_id}_${i}`}
+									gameFromList={game}
+									toggleRemoveFromListDialog={toggleRemoveFromListDialog}
+									toggleUpdateGameDialog={toggleUpdateGameDialog}
+									classes="mr-2"
+								/>
 							)
 					)}
 				</HorizontalScroll>

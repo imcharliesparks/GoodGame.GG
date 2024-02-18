@@ -1,67 +1,48 @@
 import RemoveFromListDialog from '@/components/Dialogs/RemoveFromListDialog'
 import UpdateGameBottomDrawer from '@/components/Drawers/BottomDrawer/UpdateGameBottomDrawer'
 import NewGameCard from '@/components/Games/NewGameCard'
-import { useCurrentlySelectedGame } from '@/components/hooks/useStateHooks'
+import {
+	useCurrentlySelectedGame,
+	useCurrentlySelectedList,
+	useGamesOnCurrentList,
+	useUserListsState
+} from '@/components/hooks/useStateHooks'
 import firebase_app from '@/lib/firebase'
-import { APIMethods, APIStatuses, CollectionNames, StoredGame } from '@/shared/types'
+import { CollectionNames, GGLists, StoredGame } from '@/shared/types'
 import { convertFirebaseTimestamps } from '@/shared/utils'
 import { getAuth } from '@clerk/nextjs/server'
 import { Typography } from '@material-tailwind/react'
 import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore'
 import { GetServerSidePropsContext } from 'next'
-import { useRouter } from 'next/router'
 import React from 'react'
 
 type IndividualListPageProps = {
-	games: StoredGame[]
+	foundGames: StoredGame[]
+	lists: GGLists
 	listName: string
 	error?: string
 }
 
-// TODO Add toasts for errors here
 // TODO: Add sorting
-const IndividualListPage = ({ games, listName, error }: IndividualListPageProps) => {
-	const router = useRouter()
+const IndividualListPage = ({ foundGames, lists, listName, error }: IndividualListPageProps) => {
 	const [currentlySelectedGame] = useCurrentlySelectedGame()
 	const [showRemoveFromListDialog, setShowRemoveFromListDialog] = React.useState<boolean>(false)
 	const [showUpdateGameDialog, setShowUpdateGameDialog] = React.useState<boolean>(false)
-	const [isLoading, setIsLoading] = React.useState<boolean>(false)
+	// const [isLoading, setIsLoading] = React.useState<boolean>(false)
+	// TODO: Think of a better way to not have to re set this in multiple places (we should probably pull it super early and then persist it)
+	const [_userLists, setUserLists] = useUserListsState()
+	const [_, setCurrentlySelectedList] = useCurrentlySelectedList()
+	const games = useGamesOnCurrentList()()
+
+	React.useEffect(() => {
+		setCurrentlySelectedList(listName)
+		setUserLists(lists)
+	}, [])
 
 	const toggleRemoveFromListDialog = (isOpen?: boolean) =>
 		setShowRemoveFromListDialog(isOpen ?? !showRemoveFromListDialog)
-	const toggleUpdateGameDialog = (isOpen?: boolean) => setShowUpdateGameDialog(isOpen ?? !showUpdateGameDialog)
 
-	const removeFromList = async (game_id: number, currentListName: string) => {
-		setIsLoading(true)
-		try {
-			const request = await fetch(`/api/lists/${currentListName}/${game_id}/remove`, {
-				method: APIMethods.DELETE,
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			})
-			const response = await request.json()
-			if (response.status === APIStatuses.ERROR) {
-				throw new Error(response.data.error)
-			} else {
-				// TODO: Update with alert from material
-				alert(`Success! We removed the game.`)
-				toggleRemoveFromListDialog()
-				// CS NOTE: This is the pattern for refreshing GSSP data 😬
-				router.replace(router.asPath)
-			}
-		} catch (error) {
-			console.error(`Could not delete game with gameId ${game_id}`, error)
-			// TODO: Update with alert from material
-			alert(`We couldn't remove that game! Please try again.`)
-			// setError(`We couldn't remove that game! Please try again.`)
-			// setTimeout(() => {
-			// 	setError('')
-			// }, 6000)
-		} finally {
-			setIsLoading(false)
-		}
-	}
+	const toggleUpdateGameDialog = (isOpen?: boolean) => setShowUpdateGameDialog(isOpen ?? !showUpdateGameDialog)
 
 	return (
 		<section className="w-full">
@@ -145,8 +126,9 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 	const { userId } = getAuth(ctx.req)
 	const listName = urlParameter.listName as string
 	const props: IndividualListPageProps = {
-		games: [],
-		listName: ''
+		foundGames: [],
+		listName: '',
+		lists: {}
 	}
 
 	if (!listName) {
@@ -178,15 +160,19 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 		} else {
 			const { lists } = Object.assign(querySnapshot.docs[0].data(), {})
 
-			if (lists[listName]) {
+			for (const listName in lists) {
 				convertFirebaseTimestamps(lists[listName])
+			}
+
+			if (lists[listName]) {
 				const foundGames: StoredGame[] = []
 
 				for (let game_id in lists[listName]) {
 					foundGames.push(lists[listName][game_id])
 				}
 
-				props.games = foundGames
+				props.foundGames = foundGames
+				props.lists = lists
 			} else {
 				props.error = `The user does not have a list called ${listName}`
 			}

@@ -37,3 +37,6 @@ export const useRemoveGameFromList = (): ((game_id: string, listName: string) =>
 
 export const useUpdateGameOnList = (): ((game: StoredGame, listName: string) => void) =>
 	useUserListsStore(useShallow((state: UserListsState) => state.updateGameOnList))
+
+export const useGamesOnCurrentList = (): (() => StoredGame[]) =>
+	useGamesStore(useShallow((state: GamesState) => state.getGamesFromCurrentList))

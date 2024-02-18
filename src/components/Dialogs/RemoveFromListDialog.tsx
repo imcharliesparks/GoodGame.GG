@@ -1,6 +1,7 @@
 import { Button, Card, CardBody, CardFooter, Dialog, IconButton, Typography } from '@material-tailwind/react'
 import React from 'react'
 import { useCurrentlySelectedGame, useCurrentlySelectedList, useRemoveGameFromList } from '../hooks/useStateHooks'
+import { useRouter } from 'next/router'
 
 type RemoteFromListDialogProps = {
 	isOpen: boolean
@@ -8,6 +9,7 @@ type RemoteFromListDialogProps = {
 }
 
 const RemoveFromListDialog = ({ isOpen, setIsDialogOpen }: RemoteFromListDialogProps) => {
+	const router = useRouter()
 	const [game] = useCurrentlySelectedGame()
 	const [listName] = useCurrentlySelectedList()
 	const removeFromList = useRemoveGameFromList()
@@ -19,6 +21,7 @@ const RemoveFromListDialog = ({ isOpen, setIsDialogOpen }: RemoteFromListDialogP
 		try {
 			removeFromList(game.game_id, listName)
 			setIsDialogOpen()
+			// router.replace(router.asPath) // TODO: Make sure this works everywhere
 		} catch (error) {
 			console.log('shit didnt work')
 		} finally {

@@ -29,12 +29,12 @@ export const NewGameCard = ({
 	const platformString = generatePlatformsString(gameFromList)
 
 	const setGameAndOpenDeleteDialog = () => {
-		setCurrentlySelectedGame(currentlySelectedGame)
+		setCurrentlySelectedGame(gameFromList)
 		toggleRemoveFromListDialog(true)
 	}
 
 	const setGameAndOpenUpdateDialog = () => {
-		setCurrentlySelectedGame(currentlySelectedGame)
+		setCurrentlySelectedGame(gameFromList)
 		toggleUpdateGameDialog(true)
 	}
 
