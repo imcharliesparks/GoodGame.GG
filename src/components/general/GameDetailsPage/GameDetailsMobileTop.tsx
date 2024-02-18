@@ -38,8 +38,8 @@ const GameDetailsMobileTop = ({ game, platformList, hasGame, openDrawerBottom }:
 					{game.title}
 				</h1>
 			</div>
-			<div className="mx-auto mb-1">
-				<span className="text-gray-700">{platformList}</span>
+			<div className="mx-auto mb-1 px-2">
+				<p className="text-gray-700 text-center">{platformList}</p>
 			</div>
 			<div className="flex flex-row justify-center w-full -mt-3">
 				<ReactStars count={5} edit={false} value={game.moby_score ?? 0} size={36} color2={'#ffd700'} />
