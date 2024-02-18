@@ -33,23 +33,14 @@ const GameUpdatePage = ({
 }: GameUpdatePageProps) => {
 	console.log('storedGame', storedGame)
 	const [listsWithOwnership, setListsWithOwnership] = React.useState<ListWithOwnership[]>(initialListsWithOwnership)
-	const [ownedPlatforms, setOwnedPlatforms] = React.useState<Platform[]>([])
 	const [openBottom, setOpenBottom] = React.useState(false)
-
-	React.useEffect(() => {
-		let currentOwnedPlatforms: Platform[] = []
-		initialListsWithOwnership.forEach((list: ListWithOwnership) => {
-			if (list.hasGame) currentOwnedPlatforms = [...currentOwnedPlatforms, ...list.platforms]
-		})
-		setOwnedPlatforms(currentOwnedPlatforms)
-	}, [])
 
 	const openDrawerBottom = () => setOpenBottom(true)
 	const closeDrawerBottom = () => setOpenBottom(false)
 
 	const platformList =
-		ownedPlatforms.reduce((platforms, platform, index) => {
-			const separator = index < ownedPlatforms.length - 1 ? ' | ' : ''
+		storedGame?.ownedPlatforms.reduce((platforms, platform, index) => {
+			const separator = index < storedGame?.ownedPlatforms.length - 1 ? ' | ' : ''
 			return `${platforms}${index > 0 ? ' ' : ''}${platform.platform_name}${separator}`
 		}, '') ?? ''
 
@@ -71,7 +62,7 @@ const GameUpdatePage = ({
 			</div>
 
 			{/* garf start here make a modified version that opens the add dialog regardless of click */}
-			<GameDetailsBottomDrawer open={openBottom} close={closeDrawerBottom} storedGame={storedGame} />
+			<GameDetailsBottomDrawer open={openBottom} close={closeDrawerBottom} />
 		</div>
 	)
 }

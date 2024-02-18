@@ -41,6 +41,7 @@
 - [ ] Make sure all error instances are properly handled (just text search error)
 - [ ] Fix all usages of `container` so they actually are enforcing max width
 - [ ] Figure out why drawer is slow to come up
+- [ ] Make use of owned platforms state
 
 ##### Final Design Changes
 
