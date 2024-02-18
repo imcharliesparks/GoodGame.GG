@@ -58,6 +58,7 @@ const handler = async (req: TypedRequest<Omit<StoredGame, 'dateAdded'>>, res: Ne
 			}
 
 			const addedGame: StoredGame = Object.assign({ dateAdded: Timestamp.now() }, body)
+			console.log('addedGame', addedGame)
 			const updatedUser: GGUser = Object.assign({}, querySnapshot.docs[0].data()) as GGUser
 			const foundList = updatedUser.lists[listName]
 

@@ -1,8 +1,6 @@
 import { IconButton, Menu, MenuHandler, MenuItem, MenuList } from '@material-tailwind/react'
 import React from 'react'
 import styles from '../../styles/components/NewGameCard.module.css'
-import { useRouter } from 'next/router'
-import Link from 'next/link'
 import { MobyGame, StoredGame } from '@/shared/types'
 
 type GameCardIconMenuProps = {
@@ -12,10 +10,8 @@ type GameCardIconMenuProps = {
 }
 
 const GameCardIconMenu = ({ game, openRemoveFromListDialog, setGameAndOpenUpdateDialog }: GameCardIconMenuProps) => {
-	const router = useRouter()
-
 	const handleUpdateClick = () => {
-		// router.push(`/app/games/${game.game_id}/update`)
+		setGameAndOpenUpdateDialog()
 	}
 
 	return (

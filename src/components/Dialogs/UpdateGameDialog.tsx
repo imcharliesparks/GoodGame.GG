@@ -52,12 +52,12 @@ const UpdateGameDialog = ({ setIsDialogOpen, isOpen }: UpdateGameDialogProps) =>
 			label: platform.platform_name
 		}))
 		setPlatformOptions(mappedPlatformOptions)
-		const mappedPlatformResults = game!.platforms.map((platform: Platform) => ({
+		const mappedPlatformResults = game.ownedPlatforms?.map((platform: Platform) => ({
 			platformData: platform,
 			value: platform.platform_id,
 			label: platform.platform_name
 		}))
-		setSelectedPlatforms(mappedPlatformResults)
+		setSelectedPlatforms(mappedPlatformResults ?? [])
 	}, [game.platforms])
 
 	React.useEffect(() => {
@@ -82,9 +82,9 @@ const UpdateGameDialog = ({ setIsDialogOpen, isOpen }: UpdateGameDialogProps) =>
 		setIsDialogOpen()
 	}
 
-	const addGameToList = async () => {
+	const handleUpdateGame = async () => {
 		setIsLoading(true)
-		const finalPlatforms = selectedPlatforms.reduce((prev: Platform[], curr: PlatformLabelOptions) => {
+		const ownedPlatforms = selectedPlatforms.reduce((prev: Platform[], curr: PlatformLabelOptions) => {
 			const platform: Platform = {
 				...curr.platformData
 			}
@@ -95,7 +95,7 @@ const UpdateGameDialog = ({ setIsDialogOpen, isOpen }: UpdateGameDialogProps) =>
 		try {
 			const payload: StoredGame = {
 				...game,
-				platforms: finalPlatforms,
+				ownedPlatforms,
 				playStatus: selectedGameplayStatus
 			}
 			updateGameOnList(payload, listName)
@@ -136,7 +136,7 @@ const UpdateGameDialog = ({ setIsDialogOpen, isOpen }: UpdateGameDialogProps) =>
 				<div className="absolute bottom-3 w-full">
 					<Button
 						loading={isLoading}
-						onClick={addGameToList}
+						onClick={handleUpdateGame}
 						fullWidth
 						color="green"
 						className="flex items-center justify-center gap-3 btn-sm"

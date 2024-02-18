@@ -10,7 +10,8 @@ export const MobyGamesSearchSchema = Joi.object({
 export const GameToAddToCollectionSchema = Joi.object<StoredGame>({
 	game_id: Joi.number().required(),
 	moby_score: Joi.number().optional(),
-	platforms: Joi.array().optional(),
+	ownedPlatforms: Joi.array().required(),
+	platforms: Joi.array().required(),
 	sample_cover: Joi.object().optional(), // TODO: Flesh this out
 	title: Joi.string().required(),
 	description: Joi.string().optional(),

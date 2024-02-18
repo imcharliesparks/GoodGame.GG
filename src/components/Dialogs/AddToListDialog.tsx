@@ -61,7 +61,7 @@ const AddToListDialog = ({ setIsDialogOpen, isOpen }: AddToListDialogProps) => {
 	const handleAddGameToList = async () => {
 		setIsLoading(true)
 		// @ts-ignore
-		const finalPlatforms = selectedPlatforms.reduce((prev: Platform[], curr: SelectValue) => {
+		const ownedPlatforms = selectedPlatforms.reduce((prev: Platform[], curr: SelectValue) => {
 			const platform: Platform = {
 				// @ts-ignore
 				...curr.platformData
@@ -76,7 +76,8 @@ const AddToListDialog = ({ setIsDialogOpen, isOpen }: AddToListDialogProps) => {
 			moby_score,
 			sample_cover,
 			title,
-			platforms: finalPlatforms,
+			ownedPlatforms,
+			platforms: game.platforms,
 			// @ts-ignore
 			playStatus: selectedGameplayStatus.value ?? GamePlayStatus.NOT_PLAYED,
 			description: description ?? 'No Description Found'
