@@ -41,7 +41,5 @@ export const useGamesStore = create<GamesState>((set, get) => ({
 	}
 }))
 
-// Set Lists With Ownership
-// current list name (could be combined with the above as active list or something)
 // Dialog closing and opening?
 // Loading?

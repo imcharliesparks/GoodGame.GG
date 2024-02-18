@@ -25,7 +25,7 @@ const MobileNavDrawer = ({ open, closeDrawer }: MobileNavDrawerProps) => {
 	const { isSignedIn } = useUser()
 
 	const handleSearch = () => {
-		router.replace(`/app/search/games?search=${searchTerm}`)
+		router.push(`/app/search/games?search=${searchTerm}`)
 		setSearchTerm('')
 	}
 
@@ -50,7 +50,7 @@ const MobileNavDrawer = ({ open, closeDrawer }: MobileNavDrawerProps) => {
 			</div>
 			{isSignedIn ? (
 				<List>
-					<ListItem onClick={() => router.replace('/app/user/lists/Collection')}>
+					<ListItem onClick={() => router.push('/app/user/lists/Collection')}>
 						<ListItemPrefix>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
@@ -69,7 +69,7 @@ const MobileNavDrawer = ({ open, closeDrawer }: MobileNavDrawerProps) => {
 						</ListItemPrefix>
 						My Collection
 					</ListItem>
-					<ListItem onClick={() => router.replace('/app/user/lists')}>
+					<ListItem onClick={() => router.push('/app/user/lists')}>
 						<ListItemPrefix>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
@@ -88,7 +88,7 @@ const MobileNavDrawer = ({ open, closeDrawer }: MobileNavDrawerProps) => {
 						</ListItemPrefix>
 						My Lists
 					</ListItem>
-					<ListItem onClick={() => router.replace('/app/games')}>
+					<ListItem onClick={() => router.push('/app/games')}>
 						<ListItemPrefix>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
@@ -107,7 +107,7 @@ const MobileNavDrawer = ({ open, closeDrawer }: MobileNavDrawerProps) => {
 						</ListItemPrefix>
 						Games
 					</ListItem>
-					<ListItem onClick={() => router.replace('/app/user/friends')}>
+					<ListItem onClick={() => router.push('/app/user/friends')}>
 						<ListItemPrefix>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
@@ -130,7 +130,7 @@ const MobileNavDrawer = ({ open, closeDrawer }: MobileNavDrawerProps) => {
 							<Chip value="5" size="sm" color="green" className="rounded-full" />
 						</ListItemSuffix>
 					</ListItem>
-					<ListItem onClick={() => router.replace('/app/user/self/profile')}>
+					<ListItem onClick={() => router.push('/app/user/self/profile')}>
 						<ListItemPrefix>
 							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
 								<path
@@ -145,7 +145,7 @@ const MobileNavDrawer = ({ open, closeDrawer }: MobileNavDrawerProps) => {
 				</List>
 			) : (
 				<List>
-					<ListItem onClick={() => router.replace('/sign-up')}>
+					<ListItem onClick={() => router.push('/sign-up')}>
 						<ListItemPrefix>
 							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
 								<path
@@ -157,7 +157,7 @@ const MobileNavDrawer = ({ open, closeDrawer }: MobileNavDrawerProps) => {
 						</ListItemPrefix>
 						Sign Up
 					</ListItem>
-					<ListItem onClick={() => router.replace('/sign-in')}>
+					<ListItem onClick={() => router.push('/sign-in')}>
 						<ListItemPrefix>
 							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
 								<path
@@ -169,7 +169,7 @@ const MobileNavDrawer = ({ open, closeDrawer }: MobileNavDrawerProps) => {
 						</ListItemPrefix>
 						Sign In
 					</ListItem>
-					<ListItem onClick={() => router.replace('/app/user/lists')}>
+					<ListItem onClick={() => router.push('/app/user/lists')}>
 						<ListItemPrefix>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"

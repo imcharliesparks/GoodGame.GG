@@ -10,12 +10,12 @@ const NavMenuLists = () => {
 
 	return (
 		<NavMenu menuHandlerText="Lists">
-			<MenuItem onClick={() => router.replace('/app/user/lists')}>My Lists</MenuItem>
+			<MenuItem onClick={() => router.push('/app/user/lists')}>My Lists</MenuItem>
 			<hr className="my-3" />
-			<MenuItem onClick={() => router.replace('/app/user/lists/Collection')}>Collection</MenuItem>
-			<MenuItem onClick={() => router.replace('/app/user/lists/Wishlist')}>Wishlist</MenuItem>
-			<MenuItem onClick={() => router.replace('/app/user/lists/Backlog')}>Backlog</MenuItem>
-			<MenuItem onClick={() => router.replace('/app/user/lists/Shared')}>Shared</MenuItem>
+			<MenuItem onClick={() => router.push('/app/user/lists/Collection')}>Collection</MenuItem>
+			<MenuItem onClick={() => router.push('/app/user/lists/Wishlist')}>Wishlist</MenuItem>
+			<MenuItem onClick={() => router.push('/app/user/lists/Backlog')}>Backlog</MenuItem>
+			<MenuItem onClick={() => router.push('/app/user/lists/Shared')}>Shared</MenuItem>
 		</NavMenu>
 	)
 }

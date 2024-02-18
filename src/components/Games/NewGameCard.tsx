@@ -68,7 +68,7 @@ export const NewGameCard = ({
 
 				<ul className="list-none absolute right-0 left-0 -bottom-20 group-hover:bottom-5 transition-all duration-500 ease-in-out z-3">
 					<li className="inline mx-1">
-						<Button onClick={() => router.replace(`/app/games/${gameFromList.game_id}/details`)} variant="gradient">
+						<Button onClick={() => router.push(`/app/games/${gameFromList.game_id}/details`)} variant="gradient">
 							Details
 						</Button>
 					</li>
