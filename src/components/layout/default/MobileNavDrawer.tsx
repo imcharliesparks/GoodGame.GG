@@ -1,4 +1,4 @@
-import { SignInButton, useUser } from '@clerk/nextjs'
+import { SignedIn, useUser } from '@clerk/nextjs'
 import {
 	Drawer,
 	Typography,
@@ -169,7 +169,8 @@ const MobileNavDrawer = ({ open, closeDrawer }: MobileNavDrawerProps) => {
 						</ListItemPrefix>
 						Sign In
 					</ListItem>
-					<ListItem onClick={() => router.push('/app/user/lists')}>
+					{/* TODO: Reinstate this */}
+					{/* <ListItem onClick={() => router.push('/app/user/lists')}>
 						<ListItemPrefix>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
@@ -187,28 +188,30 @@ const MobileNavDrawer = ({ open, closeDrawer }: MobileNavDrawerProps) => {
 							</svg>
 						</ListItemPrefix>
 						Discover Games
-					</ListItem>
+					</ListItem> */}
 				</List>
 			)}
-			<div className="relative mt-4">
-				<Input
-					value={searchTerm}
-					onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
-					label="Search Games"
-					type="text"
-					placeholder="Search..."
-					className="w-[200px]"
-				/>
-				<Button
-					type="submit"
-					size="sm"
-					color={'blue-gray'}
-					className="!absolute right-1 top-1 rounded"
-					onClick={handleSearch}
-				>
-					Search
-				</Button>
-			</div>
+			<SignedIn>
+				<div className="relative mt-4">
+					<Input
+						value={searchTerm}
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
+						label="Search Games"
+						type="text"
+						placeholder="Search..."
+						className="w-[200px]"
+					/>
+					<Button
+						type="submit"
+						size="sm"
+						color={'blue-gray'}
+						className="!absolute right-1 top-1 rounded"
+						onClick={handleSearch}
+					>
+						Search
+					</Button>
+				</div>
+			</SignedIn>
 		</Drawer>
 	)
 }

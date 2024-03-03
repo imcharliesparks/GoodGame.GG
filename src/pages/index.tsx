@@ -37,7 +37,7 @@ export default function Home() {
 				<div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white lg:static lg:h-auto lg:w-auto lg:bg-none">
 					<Link
 						className="flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-						href="https://sparksfullstack.io"
+						href="https://sparks-full-stack-website.vercel.app/"
 						target="_blank"
 						rel="noopener noreferrer"
 					>
@@ -47,7 +47,7 @@ export default function Home() {
 				</div>
 			</div>
 
-			<Link href="https://sparksfullstack.io" target="_blank" rel="noopener noreferrer">
+			<Link href="https://sparks-full-stack-website.vercel.app/" target="_blank" rel="noopener noreferrer">
 				<div>
 					<Image src="/resources/sfs-icon.svg" alt="The Sparks Full-Stack logo" width={180} height={37} priority />
 				</div>

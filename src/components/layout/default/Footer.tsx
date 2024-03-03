@@ -18,7 +18,12 @@ const Footer = () => {
 				</svg>
 				<p>
 					Copyright ©2023 - Made with ❤️ by the devs at{' '}
-					<Link className="text-blue-400" href="https://sparksfullstack.io" target="_blank" rel="noopener noreferrer">
+					<Link
+						className="text-blue-400"
+						href="https://sparks-full-stack-website.vercel.app/"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
 						Sparks Full-Stack
 					</Link>
 				</p>

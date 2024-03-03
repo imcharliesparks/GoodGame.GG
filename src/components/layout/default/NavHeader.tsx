@@ -49,13 +49,17 @@ const NavHeader = () => {
 							</Link>
 						</div>
 						<div className="hidden lg:block align-middle justify-self-center">
-							<NavList />
+							<SignedIn>
+								<NavList />
+							</SignedIn>
 						</div>
 						<div className="flex flex-row gap-2 items-center justify-self-end">
 							<div className="lg:block hidden mr-2">
-								<Button color="blue" variant="gradient" size="sm" className="hidden lg:inline-block">
-									<Link href="/app/search/games">Find a Game</Link>
-								</Button>
+								<SignedIn>
+									<Button color="blue" variant="gradient" size="sm" className="hidden lg:inline-block">
+										<Link href="/app/search/games">Find a Game</Link>
+									</Button>
+								</SignedIn>
 							</div>
 							<div>
 								<SignedIn>

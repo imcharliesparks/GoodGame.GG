@@ -5,7 +5,7 @@ import { getFirestore, collection, where, getDocs, query, Timestamp, doc, update
 import { NextApiRequest, NextApiResponse } from 'next'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-	const { method, body } = req
+	const { method } = req
 	const { userId } = getAuth(req)
 	const listName = req.query.listName as string
 	const game_id = req.query.game_id as string

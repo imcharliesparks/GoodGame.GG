@@ -1,12 +1,15 @@
 import { APIMethods, APIStatuses, GGList, GGLists, ListWithOwnership, MobyGame, StoredGame } from '@/shared/types'
-import { sortListNames } from '@/shared/utils'
+import { mountStoreDevtool } from 'simple-zustand-devtools'
+import { formatGamesFromList, sortListNames } from '@/shared/utils'
 import { create } from 'zustand'
 
 export interface UserListsState {
 	lists: GGLists
 	setLists: (newLists: GGLists) => void
+	fetchAndSetLists: () => void
 	currentlySelectedList: string
 	setCurrentlySelectedList: (listName: string) => void
+	getGamesFromList: (listName: string) => StoredGame[]
 	getListsWithOwnership: (game_id: string) => ListWithOwnership[]
 	addGameToList: (game: StoredGame, listName: string) => void
 	removeGameFromList: (game_id: string, listName: string) => void
@@ -18,9 +21,26 @@ export const useUserListsStore = create<UserListsState>((set, get) => ({
 	setLists: (newLists: GGLists) => {
 		return set({ lists: newLists })
 	},
+	fetchAndSetLists: async () => {
+		try {
+			const response = await fetch('/api/lists/fetch-all')
+			const { data } = await response.json()
+			return set({ lists: data })
+		} catch (error) {
+			console.error('shit didnt work', error)
+		}
+	},
 	currentlySelectedList: '',
 	setCurrentlySelectedList: (listName: string) => {
 		return set({ currentlySelectedList: listName })
+	},
+	getGamesFromList: (listName: string): StoredGame[] => {
+		const { lists } = get()
+		if (lists[listName]) {
+			return formatGamesFromList(lists[listName])
+		} else {
+			return []
+		}
 	},
 	// TODO: Find a way to memo these results
 	getListsWithOwnership: (game_id: string) => {
@@ -105,3 +125,7 @@ export const useUserListsStore = create<UserListsState>((set, get) => ({
 		}
 	}
 }))
+
+if (process.env.NODE_ENV === 'development') {
+	mountStoreDevtool('ListsStore', useUserListsStore)
+}

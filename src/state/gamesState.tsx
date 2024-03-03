@@ -1,6 +1,7 @@
 import { MobyGame, StoredGame } from '@/shared/types'
 import { create } from 'zustand'
 import { useUserListsStore } from './userListsState'
+import { mountStoreDevtool } from 'simple-zustand-devtools'
 
 export interface GamesState {
 	currentlySelectedGame?: StoredGame | MobyGame
@@ -43,3 +44,6 @@ export const useGamesStore = create<GamesState>((set, get) => ({
 
 // Dialog closing and opening?
 // Loading?
+if (process.env.NODE_ENV === 'development') {
+	mountStoreDevtool('GamesStore', useGamesStore)
+}

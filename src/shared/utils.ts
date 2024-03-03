@@ -182,3 +182,13 @@ export const sortListNames = (lists: ListWithOwnership[]) => {
 		return a.listName.localeCompare(b.listName)
 	})
 }
+
+export const formatGamesFromList = (list: GGList): StoredGame[] => {
+	const result: StoredGame[] = []
+
+	for (let game_id in list) {
+		result.push(list[game_id])
+	}
+
+	return result
+}
