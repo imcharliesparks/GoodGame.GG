@@ -18,7 +18,7 @@ import UpdateGameDialog from '@/components/Dialogs/UpdateGameDialog'
 
 type DrawerProps = {
 	open: boolean
-	close: () => void
+	close: (isOpen?: boolean) => void
 }
 
 enum UpdateGameBottomDrawerDialogTypes {
@@ -32,10 +32,11 @@ const UpdateGameBottomDrawer = ({ open, close }: DrawerProps) => {
 	const [dialogType, setDialogType] = React.useState<UpdateGameBottomDrawerDialogTypes>()
 	const [selectedGame] = useCurrentlySelectedGame()
 	const lists = useListsWithOwnership()(selectedGame?.game_id)
+	const [temporarilySelectedList, setTemporarilySelectedList] = React.useState<string>()
 	const handleOpenDialog = (listName: string, dialogType: UpdateGameBottomDrawerDialogTypes) => {
 		setIsDialogOpen(true)
 		setDialogType(dialogType)
-		setCurrentlySelectedList(listName)
+		setTemporarilySelectedList(listName)
 	}
 
 	// TODO: Allow truncating of lists names if they're too long
@@ -46,7 +47,7 @@ const UpdateGameBottomDrawer = ({ open, close }: DrawerProps) => {
 			<div className="h-full w-full mx-auto p-4 overflow-y-scroll">
 				<div className="grid grid-cols-2 border-b-2 pb-2">
 					<h4 className="text-left">Update the game on...</h4>
-					<div autoFocus onClick={close} className="cursor-pointer text-right">
+					<div autoFocus onClick={() => close(false)} className="cursor-pointer text-right">
 						<Icon icon={ic_close} size={24} />
 					</div>
 				</div>

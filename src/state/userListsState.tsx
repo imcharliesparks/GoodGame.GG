@@ -27,6 +27,7 @@ export const useUserListsStore = create<UserListsState>((set, get) => ({
 			const { data } = await response.json()
 			return set({ lists: data })
 		} catch (error) {
+			// TODO: Add proper error toasting here
 			console.error('shit didnt work', error)
 		}
 	},

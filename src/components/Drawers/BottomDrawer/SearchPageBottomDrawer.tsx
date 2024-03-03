@@ -44,7 +44,7 @@ const SearchPageBottomDrawer = ({ open, close }: DrawerProps) => {
 		<BaseBottomDrawer open={open} close={close}>
 			<div className="h-full w-full mx-auto p-4 overflow-y-scroll">
 				<div className="grid grid-cols-2 border-b-2 pb-2">
-					<h4 className="text-left">Update the game on...</h4>
+					<h4 className="text-left">Add game to...</h4>
 					<div autoFocus onClick={close} className="cursor-pointer text-right">
 						<Icon icon={ic_close} size={24} />
 					</div>

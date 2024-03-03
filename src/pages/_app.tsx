@@ -4,11 +4,14 @@ import App, { AppProps } from 'next/app'
 import { ReactElement, ReactNode } from 'react'
 import cookie from 'cookie'
 import { APIMethods, TypeOfPerson } from '@/shared/types'
-import { ClerkProvider } from '@clerk/nextjs'
+import { ClerkProvider, useAuth } from '@clerk/nextjs'
 import ErrorBoundary from '@/components/ErrorBoundary'
 // import Layout from '@/components/layout/desktop'
 import Layout from '@/components/layout/default'
 import { ThemeProvider } from '@material-tailwind/react'
+import React from 'react'
+import { useUserListsStore } from '@/state/userListsState'
+import useInitApplication from '@/components/hooks/useInitApplication'
 
 export type NextPageWithLayout<P = Record<string, any>, IP = P> = NextPage<P, IP> & {
 	getLayout?: (page: ReactElement) => ReactNode
@@ -22,6 +25,12 @@ type AppPropsWithLayout = AppProps & {
 // TODO: Also fix this bullshit
 function MyApp({ Component, pageProps: { ...pageProps } }: AppPropsWithLayout) {
 	const renderWithLayout = Component.getLayout || ((page: ReactNode) => <Layout>{page}</Layout>)
+	const fetchAndSetLists = useUserListsStore((state) => state.fetchAndSetLists)
+
+	React.useEffect(() => {
+		fetchAndSetLists()
+	}, [])
+
 	return (
 		<ErrorBoundary>
 			<ClerkProvider

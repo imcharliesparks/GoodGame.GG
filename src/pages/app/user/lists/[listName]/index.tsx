@@ -4,12 +4,12 @@ import NewGameCard from '@/components/Games/NewGameCard'
 import {
 	useCurrentlySelectedGame,
 	useCurrentlySelectedList,
-	useGamesOnCurrentList,
 	useUserListsState
 } from '@/components/hooks/useStateHooks'
 import firebase_app from '@/lib/firebase'
 import { CollectionNames, GGLists, StoredGame } from '@/shared/types'
 import { convertFirebaseTimestamps } from '@/shared/utils'
+import { useUserListsStore } from '@/state/userListsState'
 import { getAuth } from '@clerk/nextjs/server'
 import { Typography } from '@material-tailwind/react'
 import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore'
@@ -32,7 +32,7 @@ const IndividualListPage = ({ foundGames, lists, listName, error }: IndividualLi
 	// TODO: Think of a better way to not have to re set this in multiple places (we should probably pull it super early and then persist it)
 	const [_userLists, setUserLists] = useUserListsState()
 	const [_, setCurrentlySelectedList] = useCurrentlySelectedList()
-	const games = useGamesOnCurrentList()()
+	const games = useUserListsStore((state) => state.getGamesFromList(listName)) ?? foundGames
 
 	React.useEffect(() => {
 		setCurrentlySelectedList(listName)

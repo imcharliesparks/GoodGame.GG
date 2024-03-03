@@ -96,12 +96,15 @@ const UpdateGameDialog = ({ setIsDialogOpen, isOpen }: UpdateGameDialogProps) =>
 			const payload: StoredGame = {
 				...game,
 				ownedPlatforms,
-				playStatus: selectedGameplayStatus
+				playStatus: selectedGameplayStatus.value
 			}
 			updateGameOnList(payload, listName)
-			handleTeardown()
+			setIsDialogOpen()
+			// handleTeardown()
 		} catch (error) {
 			console.log('shit didnt work')
+		} finally {
+			setIsLoading(false)
 		}
 	}
 

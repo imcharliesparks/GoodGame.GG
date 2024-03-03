@@ -2,6 +2,8 @@
 
 - [ ] General/UI
   - [ ] There are adequate loading indicators between pages and requests
+  - [ ] All error cases should show a red toast
+  - [ ] Adding, updating, or removing a game should trigger a green toast
 - [ ] Accounts
   - [ ] Can Sign Up for an account and have base collections created
   - [ ] Can sign in and pull collection data by user id
@@ -15,3 +17,5 @@
   - [ ] You can create a new list
 - [ ] Make sure everything is secure and functional
   - [ ] Make sure all API routes return
+- [ ] Navigation
+  - [ ] You should be able to navigate back and forth through every page of the app
