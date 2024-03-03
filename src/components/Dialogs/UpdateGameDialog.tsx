@@ -58,14 +58,14 @@ const UpdateGameDialog = ({ setIsDialogOpen, isOpen }: UpdateGameDialogProps) =>
 			label: platform.platform_name
 		}))
 		setSelectedPlatforms(mappedPlatformResults ?? [])
-	}, [game.platforms])
+	}, [game, game.platforms])
 
 	React.useEffect(() => {
 		if (game.playStatus) {
 			const foundGameplayStatus = gameplayStatusOptions.find((playStatus) => playStatus.value === game.playStatus)
 			setSelectedGameplayStatus(foundGameplayStatus)
 		}
-	}, [game.playStatus])
+	}, [game, game.playStatus])
 
 	const handlePlatformChange = (value: PlatformLabelOptions) => {
 		setSelectedPlatforms(value)

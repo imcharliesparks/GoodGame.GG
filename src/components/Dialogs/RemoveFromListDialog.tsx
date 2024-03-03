@@ -15,7 +15,6 @@ const RemoveFromListDialog = ({ isOpen, setIsDialogOpen }: RemoteFromListDialogP
 	const handleRemoveFromList = async () => {
 		setIsDeleteButtonLoading(true)
 
-		// TODO: Toast
 		try {
 			removeFromList(game.game_id, listName)
 			setIsDialogOpen()
@@ -25,6 +24,7 @@ const RemoveFromListDialog = ({ isOpen, setIsDialogOpen }: RemoteFromListDialogP
 			setIsDeleteButtonLoading(false)
 		}
 	}
+
 	return (
 		<Dialog size="xs" open={isOpen} handler={setIsDialogOpen} className="bg-transparent shadow-none">
 			<Card className="mx-auto w-full max-w-[24rem]">

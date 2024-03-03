@@ -1,11 +1,7 @@
 import RemoveFromListDialog from '@/components/Dialogs/RemoveFromListDialog'
 import UpdateGameBottomDrawer from '@/components/Drawers/BottomDrawer/UpdateGameBottomDrawer'
 import NewGameCard from '@/components/Games/NewGameCard'
-import {
-	useCurrentlySelectedGame,
-	useCurrentlySelectedList,
-	useUserListsState
-} from '@/components/hooks/useStateHooks'
+import { useCurrentlySelectedGame, useCurrentlySelectedList, useUserListsState } from '@/components/hooks/useStateHooks'
 import firebase_app from '@/lib/firebase'
 import { CollectionNames, GGLists, StoredGame } from '@/shared/types'
 import { convertFirebaseTimestamps } from '@/shared/utils'
@@ -55,6 +51,7 @@ const IndividualListPage = ({ foundGames, lists, listName, error }: IndividualLi
 						(game: StoredGame) =>
 							typeof game !== 'string' && (
 								<NewGameCard
+									listName={listName}
 									gameFromList={game}
 									key={game.game_id}
 									toggleRemoveFromListDialog={toggleRemoveFromListDialog}
@@ -70,6 +67,7 @@ const IndividualListPage = ({ foundGames, lists, listName, error }: IndividualLi
 						(game: StoredGame) =>
 							typeof game !== 'string' && (
 								<NewGameCard
+									listName={listName}
 									gameFromList={game}
 									key={game.game_id}
 									toggleRemoveFromListDialog={toggleRemoveFromListDialog}
@@ -85,6 +83,7 @@ const IndividualListPage = ({ foundGames, lists, listName, error }: IndividualLi
 						(game: StoredGame) =>
 							typeof game !== 'string' && (
 								<NewGameCard
+									listName={listName}
 									gameFromList={game}
 									key={game.game_id}
 									toggleRemoveFromListDialog={toggleRemoveFromListDialog}
@@ -101,6 +100,7 @@ const IndividualListPage = ({ foundGames, lists, listName, error }: IndividualLi
 						(game: StoredGame) =>
 							typeof game !== 'string' && (
 								<NewGameCard
+									listName={listName}
 									gameFromList={game}
 									key={game.game_id}
 									toggleRemoveFromListDialog={toggleRemoveFromListDialog}

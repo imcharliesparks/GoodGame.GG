@@ -4,13 +4,14 @@ import { APIMethods, APIStatuses, MobyGame, StoredGame } from '@/shared/types'
 import { generatePlatformsString } from '@/shared/utils'
 import { useRouter } from 'next/router'
 import GameCardIconMenu from './GameCardIconMenu'
-import { useCurrentlySelectedGame } from '../hooks/useStateHooks'
+import { useCurrentlySelectedGame, useCurrentlySelectedList } from '../hooks/useStateHooks'
 import UpdateGameBottomDrawer from '../Drawers/BottomDrawer/UpdateGameBottomDrawer'
 
 type NewGameCardProps = {
 	toggleRemoveFromListDialog: (isOpen?: boolean) => void
 	toggleUpdateGameDialog: (isOpen?: boolean) => void
 	gameFromList: StoredGame | MobyGame
+	listName: string
 	classes?: string
 }
 
@@ -18,10 +19,11 @@ export const NewGameCard = ({
 	toggleRemoveFromListDialog,
 	toggleUpdateGameDialog,
 	gameFromList,
+	listName,
 	classes
 }: NewGameCardProps) => {
 	const router = useRouter()
-	const [currentlySelectedGame, setCurrentlySelectedGame] = useCurrentlySelectedGame()
+	const [_, setCurrentlySelectedGame] = useCurrentlySelectedGame()
 	const currentHeight = 640
 	const currentWidth = 443.5
 	const newHeight = 300
@@ -48,6 +50,7 @@ export const NewGameCard = ({
 			className={`${classes ? classes : ''} relative grid items-end justify-center text-center min-w-[208px] group`}
 		>
 			<GameCardIconMenu
+				listName={listName}
 				game={gameFromList}
 				openRemoveFromListDialog={setGameAndOpenDeleteDialog}
 				setGameAndOpenUpdateDialog={setGameAndOpenUpdateDialog}
