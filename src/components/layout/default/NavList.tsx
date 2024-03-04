@@ -9,7 +9,8 @@ const NavList = () => {
 		<ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
 			<NavMenuLists />
 			<NavMenuGames />
-			<Typography as="li" variant="small" color="blue-gray" className="flex items-center gap-x-2 p-1 font-medium">
+			{/* TODO: Reinstate in next update */}
+			{/* <Typography as="li" variant="small" color="blue-gray" className="flex items-center gap-x-2 p-1 font-medium">
 				<svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<path
 						fillRule="evenodd"
@@ -21,7 +22,7 @@ const NavList = () => {
 				<Link href="/app/user/friends" className="flex items-center">
 					Friends
 				</Link>
-			</Typography>
+			</Typography> */}
 		</ul>
 	)
 }

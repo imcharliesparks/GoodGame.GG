@@ -21,3 +21,4 @@
 - [ ] BIG TODO: Add pagination to search for speed
 - [x] Update game to collection and wishlist to include extra datapoints or just pull them live tbh
 - [ ] Refactor all of the data structures to use references instead of just using owner ID
+- [ ] Make links look nice on /app/user/lists page

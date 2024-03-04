@@ -11,7 +11,8 @@ const NavMenuGames = () => {
 		<NavMenu menuHandlerText="Games">
 			<MenuItem onClick={() => router.push('/app/user/lists/Collection')}>My Games</MenuItem>
 			<hr className="my-3" />
-			<MenuItem onClick={() => router.push('/app/games')}>Discover</MenuItem>
+			{/* TODO: Reinstate in next update */}
+			{/* <MenuItem onClick={() => router.push('/app/games')}>Discover</MenuItem> */}
 			<MenuItem onClick={() => router.push('/app/search/games')}>Find a Game</MenuItem>
 		</NavMenu>
 	)

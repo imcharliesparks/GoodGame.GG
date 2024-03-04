@@ -21,17 +21,10 @@ type GameDetailsPageProps = {
 }
 
 // TODO: Replace alerts with toasts
+// TODO: Use lists with ownership for owned platforms here
 const GameDetailsPage = ({ game, hasGame, lists, error }: GameDetailsPageProps) => {
-	const listsWithOwnership = useListsWithOwnership()
-	const [userLists, setUserLists] = useUserListsState()
 	const [selectedGame, setSelectedGame] = useCurrentlySelectedGame()
 	const [openBottom, setOpenBottom] = React.useState(false)
-
-	React.useEffect(() => {
-		if (lists) {
-			setUserLists(lists)
-		}
-	}, [lists])
 
 	React.useEffect(() => {
 		if (game) {
@@ -44,9 +37,11 @@ const GameDetailsPage = ({ game, hasGame, lists, error }: GameDetailsPageProps) 
 	const screenSize = useScreenSize()
 
 	const platformList =
-		selectedGame?.platforms.reduce((platforms: string, platform: Platform, index: number) => {
-			return index === 0 ? `${platform.platform_name} | ` : `${platforms} ${platform.platform_name}`
-		}, '') ?? ''
+		selectedGame?.platforms.length === 1
+			? selectedGame.platforms[0].platform_name
+			: selectedGame?.platforms.reduce((platforms: string, platform: Platform, index: number) => {
+					return index === 0 ? `${platform.platform_name} | ` : `${platforms} ${platform.platform_name}`
+			  }, '') ?? ''
 
 	// TODO: Do something better here
 	if (!selectedGame) return <h1>No game found!</h1>

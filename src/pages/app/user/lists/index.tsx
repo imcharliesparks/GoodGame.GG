@@ -17,7 +17,6 @@ type UserListsPageProps = {
 // TODO: Handle error page
 const UserListsPage = ({ dataFetchingError, lists }: UserListsPageProps) => {
 	const listNames = useSortedListNames(lists)
-
 	return (
 		<>
 			{listNames.map((listName: string) => (

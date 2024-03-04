@@ -187,7 +187,9 @@ export const formatGamesFromList = (list: GGList): StoredGame[] => {
 	const result: StoredGame[] = []
 
 	for (let game_id in list) {
-		result.push(list[game_id])
+		if (typeof list[game_id] !== 'string') {
+			result.push(list[game_id])
+		}
 	}
 
 	return result
