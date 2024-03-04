@@ -90,7 +90,6 @@ export const useUserListsStore = create<UserListsState>((set, get) => ({
 	removeGameFromList: async (game_id: string, listName: string) => {
 		const mutatedLists = get().lists
 		delete mutatedLists[listName][game_id]
-		debugger
 
 		const request = await fetch(`/api/lists/${listName}/${game_id}/remove`, {
 			method: APIMethods.DELETE,
