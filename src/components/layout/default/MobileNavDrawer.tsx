@@ -88,7 +88,8 @@ const MobileNavDrawer = ({ open, closeDrawer }: MobileNavDrawerProps) => {
 						</ListItemPrefix>
 						My Lists
 					</ListItem>
-					<ListItem onClick={() => router.push('/app/games')}>
+					{/* TODO: Reinstate on next update */}
+					{/* <ListItem onClick={() => router.push('/app/games')}>
 						<ListItemPrefix>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
@@ -106,7 +107,7 @@ const MobileNavDrawer = ({ open, closeDrawer }: MobileNavDrawerProps) => {
 							</svg>
 						</ListItemPrefix>
 						Games
-					</ListItem>
+					</ListItem> */}
 					{/* TODO: Reinstate in next update */}
 					{/* <ListItem onClick={() => router.push('/app/user/friends')}>
 						<ListItemPrefix>
