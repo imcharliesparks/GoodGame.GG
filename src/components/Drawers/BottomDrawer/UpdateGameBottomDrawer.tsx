@@ -32,11 +32,10 @@ const UpdateGameBottomDrawer = ({ open, close }: DrawerProps) => {
 	const [dialogType, setDialogType] = React.useState<UpdateGameBottomDrawerDialogTypes>()
 	const [selectedGame] = useCurrentlySelectedGame()
 	const lists = useListsWithOwnership()(selectedGame?.game_id)
-	const [temporarilySelectedList, setTemporarilySelectedList] = React.useState<string>()
 	const handleOpenDialog = (listName: string, dialogType: UpdateGameBottomDrawerDialogTypes) => {
 		setIsDialogOpen(true)
 		setDialogType(dialogType)
-		setTemporarilySelectedList(listName)
+		setCurrentlySelectedList(listName)
 	}
 
 	// TODO: Allow truncating of lists names if they're too long

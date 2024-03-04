@@ -38,3 +38,4 @@ next-env.d.ts
 # Lockfiles
 *.lock
 pnpm-lock.yaml
+bun.lockb
