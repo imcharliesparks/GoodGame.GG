@@ -113,7 +113,7 @@ const UpdateGameDialog = ({ setIsDialogOpen, isOpen }: UpdateGameDialogProps) =>
 			<div className="h-full relative h-xl">
 				<div className="grid grid-cols-2 border-b-2 pb-2 mb-2">
 					<h4 className="text-left">Update Game on List</h4>
-					<div autoFocus onClick={setIsDialogOpen} className="cursor-pointer text-right">
+					<div autoFocus onClick={() => setIsDialogOpen(false)} className="cursor-pointer text-right">
 						<Icon icon={ic_close} size={24} />
 					</div>
 				</div>
