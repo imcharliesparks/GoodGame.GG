@@ -1,6 +1,5 @@
 // @ts-nocheck
 import React from 'react'
-import StepWizard from 'react-step-wizard'
 import LandingStep from '@/components/forms/user-intake/LandingStep'
 import FirstNameStep from '@/components/forms/user-intake/FirstNameStep'
 import ThirdStep from '@/components/forms/user-intake/ThirdStep'
@@ -34,13 +33,14 @@ const UserIntakePage = () => {
 
 	return (
 		<section className="md:pb-24 py-16 overflow-x-hidden xs:text-center md:text-left h-[100%] flex content-center flex-col">
+			<h1>todo: replace this with the stepper from Material</h1>
 			{/* <Stepper /> */}
-			<StepWizard className="container flex flex-col justify-center mx-auto">
+			{/* <StepWizard className="container flex flex-col justify-center mx-auto">
 				<LandingStep />
 				<FirstNameStep />
 				<LastNameStep />
 				<ThirdStep />
-			</StepWizard>
+			</StepWizard> */}
 		</section>
 	)
 }
