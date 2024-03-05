@@ -36,8 +36,6 @@
 		"react": "18.2.0",
 		"react-dom": "18.2.0",
 		"react-icons-kit": "^2.0.0",
-		"react-stars": "^2.2.5",
-		"react-step-wizard": "^5.3.11",
 		"react-tailwindcss-select": "^1.8.5",
 		"sharp": "^0.32.6",
 		"simple-zustand-devtools": "^1.1.0",
