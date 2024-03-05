@@ -50,7 +50,7 @@ const GameDetailsBottomDrawer = ({ open, close }: DrawerProps) => {
 						<Icon icon={ic_close} size={24} />
 					</div>
 				</div>
-				<div>
+				<div className="max-h-[250px] overflow-scroll px-4">
 					{/* TODO: When you rewrite this, do it in a component that can be shared */}
 					{/* TODO: Add back in loading states and better icons */}
 					{!lists.length ? (
