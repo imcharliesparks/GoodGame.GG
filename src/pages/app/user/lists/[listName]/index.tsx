@@ -1,6 +1,7 @@
 import RemoveFromListDialog from '@/components/Dialogs/RemoveFromListDialog'
 import UpdateGameBottomDrawer from '@/components/Drawers/BottomDrawer/UpdateGameBottomDrawer'
 import GameCard from '@/components/Games/GameCard'
+import ListContextMenu from '@/components/general/ListContextMenu'
 import { useCurrentlySelectedGame, useCurrentlySelectedList, useUserListsState } from '@/components/hooks/useStateHooks'
 import firebase_app from '@/lib/firebase'
 import { CollectionNames, GGLists, StoredGame } from '@/shared/types'
@@ -39,7 +40,8 @@ const IndividualListPage = ({ foundGames, lists, listName, error }: IndividualLi
 	const toggleUpdateGameDialog = (isOpen?: boolean) => setShowUpdateGameDialog(isOpen ?? !showUpdateGameDialog)
 
 	return (
-		<section className="w-full">
+		<section className="w-full relative">
+			<ListContextMenu />
 			<Typography variant="h3" className="mx-auto text-center my-4">
 				{listName}
 			</Typography>
