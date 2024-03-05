@@ -9,7 +9,10 @@ type DrawerProps = {
 	children: React.ReactNode
 }
 
-const BaseBottomDrawer: React.FC<DrawerProps> = ({ open, close, children }: DrawerProps) => {
+const BaseBottomDrawer = ({ open, close, children }: DrawerProps) => {
+	// TODO: See if we can remove this once we move drawers to store
+	if (!open) return <></>
+
 	useScrollLock()
 	return (
 		<Drawer id={styles.bottomDrawer} placement="bottom" open={open} onClose={close}>

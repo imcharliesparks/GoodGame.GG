@@ -27,6 +27,7 @@ const GameDetailsPage = ({ game, hasGame, lists, error }: GameDetailsPageProps) 
 	const [openBottom, setOpenBottom] = React.useState(false)
 
 	React.useEffect(() => {
+		console.log('openBottom', openBottom)
 		if (game) {
 			setSelectedGame(game)
 		}
