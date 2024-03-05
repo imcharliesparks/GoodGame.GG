@@ -3,7 +3,7 @@ import BaseBottomDrawer from './BaseBottomDrawer'
 import Icon from 'react-icons-kit'
 import { ic_close } from 'react-icons-kit/md/ic_close'
 import { ic_add } from 'react-icons-kit/md/ic_add'
-import { ListWithOwnership, MobyGame, StoredGame, UserLists } from '@/shared/types'
+import { DialogNames, ListWithOwnership, MobyGame, StoredGame, UserLists } from '@/shared/types'
 import AddToListDialog from '../../Dialogs/AddToListDialog'
 import { IconButton, dialog } from '@material-tailwind/react'
 import { ic_bookmark_border } from 'react-icons-kit/md/ic_bookmark_border'
@@ -15,6 +15,7 @@ import {
 } from '@/components/hooks/useStateHooks'
 import RemoveFromListDialog from '@/components/Dialogs/RemoveFromListDialog'
 import CreateListDialog from '@/components/Dialogs/CreateListDialog'
+import { useSetActiveDialog } from '@/components/hooks/useUIEventsState'
 
 type DrawerProps = {
 	open: boolean
@@ -28,6 +29,7 @@ enum SearchPageBottomDrawerDialogTypes {
 
 const SearchPageBottomDrawer = ({ open, close }: DrawerProps) => {
 	const [isDialogOpen, setIsDialogOpen] = React.useState<boolean>(false)
+	const setActiveDialog = useSetActiveDialog()
 	const [_, setCurrentlySelectedList] = useCurrentlySelectedList()
 	const [dialogType, setDialogType] = React.useState<SearchPageBottomDrawerDialogTypes>()
 	const [selectedGame] = useCurrentlySelectedGame()
@@ -50,7 +52,7 @@ const SearchPageBottomDrawer = ({ open, close }: DrawerProps) => {
 						<Icon icon={ic_close} size={24} />
 					</div>
 				</div>
-				<div>
+				<div className="max-h-[250px] overflow-scroll px-4">
 					{/* TODO: When you rewrite this, do it in a component that can be shared */}
 					{/* TODO: Add back in loading states and better icons */}
 					{!lists.length ? (
@@ -86,11 +88,14 @@ const SearchPageBottomDrawer = ({ open, close }: DrawerProps) => {
 						)
 					)}
 				</div>
-				<div onClick={() => console.log('create list')} className="grid grid-cols-2 border-t-2 pt-2 cursor-pointer">
+				<div
+					onClick={() => setActiveDialog(DialogNames.CREATE_LIST)}
+					className="grid grid-cols-2 border-t-2 pt-2 cursor-pointer"
+				>
 					<h4 className="text-left">Create new list</h4>
 					<div className="cursor-pointer text-right">
 						<Icon icon={ic_add} size={20} />
-					</div>-
+					</div>
 				</div>
 			</div>
 			{dialogType === SearchPageBottomDrawerDialogTypes.ADD ? (

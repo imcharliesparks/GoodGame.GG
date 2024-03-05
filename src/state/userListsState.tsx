@@ -17,6 +17,8 @@ export interface UserListsState {
 	createNewList: (listName: string) => void
 }
 
+// TODO: Add proper toasing here and make sure all other network actions like these in other stores are try/catch'd
+// TODO: Subdivide these into properties, getters, setters, and actions
 export const useUserListsStore = create<UserListsState>((set, get) => ({
 	lists: {},
 	setLists: (newLists: GGLists) => {
@@ -69,65 +71,97 @@ export const useUserListsStore = create<UserListsState>((set, get) => ({
 		return sortListNames(listsWithOwnership)
 	},
 	addGameToList: async (game: StoredGame, listName: string) => {
-		const mutatedLists = get().lists
-		mutatedLists[listName][game.game_id] = game
+		try {
+			const mutatedLists = get().lists
+			mutatedLists[listName][game.game_id] = game
 
-		const request = await fetch(`/api/lists/${listName}/update`, {
-			method: APIMethods.PATCH,
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(game)
-		})
-		const response = await request.json()
+			const request = await fetch(`/api/lists/${listName}/update`, {
+				method: APIMethods.PATCH,
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(game)
+			})
+			const response = await request.json()
 
-		if (response.status === APIStatuses.ERROR) {
-			console.error(`We couldn't add ${game.title} to your ${listName} list`)
-			throw new Error(response.data.error)
-		} else {
-			set({ lists: mutatedLists })
+			if (response.status === APIStatuses.ERROR) {
+				console.error(`We couldn't add ${game.title} to your ${listName} list`)
+				throw new Error(response.data.error)
+			} else {
+				set({ lists: mutatedLists })
+			}
+		} catch (error) {
+			console.error(`We couldn't add the game to the ${listName} list`)
+			alert('There was an error adding this game')
 		}
 	},
 	removeGameFromList: async (game_id: string, listName: string) => {
-		const mutatedLists = get().lists
-		delete mutatedLists[listName][game_id]
+		try {
+			const mutatedLists = get().lists
+			delete mutatedLists[listName][game_id]
 
-		const request = await fetch(`/api/lists/${listName}/${game_id}/remove`, {
-			method: APIMethods.DELETE,
-			headers: {
-				'Content-Type': 'application/json'
+			const request = await fetch(`/api/lists/${listName}/${game_id}/remove`, {
+				method: APIMethods.DELETE,
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+			const response = await request.json()
+			if (response.status === APIStatuses.ERROR) {
+				console.error(`We couldn't remove game id #${game_id} from your ${listName} list`)
+				throw new Error(response.data.error)
+			} else {
+				set({ lists: mutatedLists })
 			}
-		})
-		const response = await request.json()
-		if (response.status === APIStatuses.ERROR) {
-			console.error(`We couldn't remove game id #${game_id} from your ${listName} list`)
-			throw new Error(response.data.error)
-		} else {
-			set({ lists: mutatedLists })
+		} catch (error) {
+			console.error(`We couldn't remove the game from the ${listName} list`)
+			alert('There was an error removing this game')
 		}
 	},
 	updateGameOnList: async (game: StoredGame, listName: string) => {
-		const mutatedLists = get().lists
-		mutatedLists[listName][game.game_id] = game
+		try {
+			const mutatedLists = get().lists
+			mutatedLists[listName][game.game_id] = game
 
-		const request = await fetch(`/api/lists/${listName}/update`, {
-			method: APIMethods.PATCH,
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(game)
-		})
-		const response = await request.json()
+			const request = await fetch(`/api/lists/${listName}/update`, {
+				method: APIMethods.PATCH,
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(game)
+			})
+			const response = await request.json()
 
-		if (response.status === APIStatuses.ERROR) {
-			console.error(`We couldn't add ${game.title} to your ${listName} list`)
-			throw new Error(response.data.error)
-		} else {
-			set({ lists: mutatedLists })
+			if (response.status === APIStatuses.ERROR) {
+				console.error(`We couldn't add ${game.title} to your ${listName} list`)
+				throw new Error(response.data.error)
+			} else {
+				set({ lists: mutatedLists })
+			}
+		} catch (error) {
+			console.error(`We couldn't update the game on the ${listName} list`)
+			alert('There was an error updating this game')
 		}
 	},
 	createNewList: async (listName: string) => {
-		debugger
+		try {
+			const request = await fetch(`/api/lists/${listName}/create`, {
+				method: APIMethods.POST,
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+			const response = await request.json()
+
+			if (response.status === APIStatuses.ERROR) {
+				throw new Error('Error creating new list')
+			} else {
+				set({ lists: response.data.updatedLists })
+			}
+		} catch (error) {
+			console.error(`We couldn't add create a new ${listName} list`)
+			alert('There was an error creating this list')
+		}
 	}
 }))
 

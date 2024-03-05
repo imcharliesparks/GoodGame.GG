@@ -9,7 +9,7 @@ const CreateListDialog = () => {
 	const isDialogActive = useIsDialogActive(DialogNames.CREATE_LIST)
 	const createNewList = useCreateNewList()
 	const removeActiveDialog = useRemoveActiveDialog()
-	const [listName, setListName] = React.useState<string>()
+	const [listName, setListName] = React.useState<string>('')
 	const [isLoading, setIsLoading] = React.useState<boolean>(false)
 	const [inputRendered, setInputRendered] = React.useState<boolean>(false)
 

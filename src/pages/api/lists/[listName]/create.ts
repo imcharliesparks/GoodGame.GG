@@ -7,7 +7,7 @@ import {
 	GGUser,
 	GeneralAPIResponses
 } from '@/shared/types'
-import { getAuth } from '@clerk/nextjs/dist/types/server-helpers.server'
+import { getAuth } from '@clerk/nextjs/server'
 import { Timestamp, collection, doc, getDocs, getFirestore, query, updateDoc, where } from 'firebase/firestore'
 import { NextApiRequest, NextApiResponse } from 'next'
 
@@ -49,8 +49,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 					lastUpdated: Timestamp.now()
 				}
 
-				debugger
-
 				const userDocumentPath = querySnapshot.docs[0].ref.path
 				const userDocumentRef = doc(db, userDocumentPath)
 				await updateDoc(userDocumentRef, updatedUser)
@@ -58,7 +56,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 				return res.status(200).json({
 					status: APIStatuses.SUCCESS,
 					type: DocumentResponses.DATA_UPDATED,
-					data: { updatedList: updatedUser.lists }
+					data: { updatedLists: updatedUser.lists }
 				})
 			}
 		} catch (error) {

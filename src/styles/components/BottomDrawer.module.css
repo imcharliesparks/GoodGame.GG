@@ -6,4 +6,5 @@
 	max-width: 400px !important;
 	width: 100%; /* Added to ensure it takes up the full width when max-width is not reached */
 	height: auto !important;
+	max-height: 400px !important;
 }
