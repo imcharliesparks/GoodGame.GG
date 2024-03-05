@@ -11,10 +11,6 @@ import { getAuth } from '@clerk/nextjs/dist/types/server-helpers.server'
 import { Timestamp, collection, doc, getDocs, getFirestore, query, updateDoc, where } from 'firebase/firestore'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-type CreateListAPIRequestBody = {
-	listName: string
-}
-
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	const { method, query: urlQuery } = req
 	const { userId } = getAuth(req)

@@ -1,6 +1,6 @@
 import React from 'react'
 import { APIMethods, APIStatuses, CollectionNames, GGLists, ListWithOwnership, MobyGame } from '@/shared/types'
-import SearchGameCard from '@/components/general/NewSearchGameCard'
+import SearchGameCard from '@/components/general/SearchGameCard'
 import { getAuth } from '@clerk/nextjs/server'
 import { GetServerSidePropsContext } from 'next'
 import firebase_app from '@/lib/firebase'

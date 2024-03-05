@@ -371,3 +371,7 @@ export type SampleScreenshot = {
 	thumbnail_image: string
 	width: number
 }
+
+export enum DialogNames {
+	CREATE_LIST
+}

@@ -2,7 +2,6 @@ import { APIMethods, APIStatuses, MobyGame, GamePlayStatus, GamePlatform, Platfo
 import React from 'react'
 import Image from 'next/image'
 import { truncateDescription, calculateStarRating, convertMobyScore, generatePlatformsString } from '@/shared/utils'
-import ReactStars from 'react-stars'
 import LoadingSpinner from './LoadingSpinner'
 import HeartIcon from './HeartIcon'
 import { Button } from '@material-tailwind/react'
@@ -44,7 +43,7 @@ const SearchGameCard = ({ game, lastCard, handleOpenDrawer }: SearchGameCardProp
 							)}
 							<h3 className="text-lg font-bold">{game.title}</h3>
 							<p className="text-slate-600 text-sm">{generatePlatformsString(game)}</p>
-							{game.moby_score && <ReactStars count={5} edit={false} value={Math.round(7.2 / 2)} size={12} />}
+							{/* TODO: Add stars with text from material tailwind */}
 						</div>
 						<div>
 							<Button
