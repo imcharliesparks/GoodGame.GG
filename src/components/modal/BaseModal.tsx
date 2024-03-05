@@ -1,5 +1,6 @@
 import { useEffect, useRef, type ComponentPropsWithoutRef } from 'react'
 import { twMerge } from 'tailwind-merge'
+import { useScrollLock } from '../hooks/useScrollLock'
 
 export type ModalProps = ComponentPropsWithoutRef<'dialog'> & {
 	onClose: () => void
@@ -7,6 +8,7 @@ export type ModalProps = ComponentPropsWithoutRef<'dialog'> & {
 
 export default function BaseModal({ children, open, onClose, className, ...rest }: ModalProps) {
 	const ref = useRef<HTMLDialogElement>(null)
+	useScrollLock()
 
 	useEffect(() => {
 		const dialog = ref.current!

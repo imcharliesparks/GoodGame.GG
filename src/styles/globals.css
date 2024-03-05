@@ -30,6 +30,12 @@ body {
 	position: relative;
 }
 
+.no-scroll {
+	overflow: hidden;
+	height: 100%;
+	width: 100%;
+}
+
 /* Styles for Tablet & Larger  */
 /* TODO: Add fallbacks for browsers that don't support these */
 @media (min-width: 768px) {
