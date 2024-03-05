@@ -7,7 +7,7 @@ import ErrorBoundary from '@/components/ErrorBoundary'
 import { ThemeProvider } from '@material-tailwind/react'
 import React from 'react'
 import AppInitDataFetcher from './AppInitDataFetcher'
-import Layout from '../components/layout/Default'
+import Layout from '@/components/layout/Default/Layout'
 
 export type NextPageWithLayout<P = Record<string, any>, IP = P> = NextPage<P, IP> & {
 	getLayout?: (page: ReactElement) => ReactNode
