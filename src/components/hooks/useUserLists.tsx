@@ -5,7 +5,7 @@ export const useSortedListNames = (lists: GGLists) => {
 	const [listNames, setListNames] = React.useState<string[]>([])
 
 	React.useEffect(() => {
-		const order = ['Collection', 'Backlog', 'Wishlist']
+		const order = ['Collection', 'Wishlist', 'Backlog']
 
 		const sortedNames = Object.keys(lists).sort((a, b) => {
 			const indexA = order.indexOf(a)

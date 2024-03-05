@@ -3,7 +3,7 @@ import BaseBottomDrawer from './BaseBottomDrawer'
 import Icon from 'react-icons-kit'
 import { ic_close } from 'react-icons-kit/md/ic_close'
 import { ic_add } from 'react-icons-kit/md/ic_add'
-import { ListWithOwnership, MobyGame, StoredGame } from '@/shared/types'
+import { ListWithOwnership, MobyGame, StoredGame, UserLists } from '@/shared/types'
 import AddToListDialog from '../../Dialogs/AddToListDialog'
 import { IconButton, dialog } from '@material-tailwind/react'
 import { ic_bookmark_border } from 'react-icons-kit/md/ic_bookmark_border'
@@ -56,31 +56,34 @@ const UpdateGameBottomDrawer = ({ open, close }: DrawerProps) => {
 					{!lists.length ? (
 						<h1>Loading...</h1>
 					) : (
-						lists.map((list: ListWithOwnership, i: number) => (
-							<div key={`${list}_${i}`}>
-								<div
-									onClick={() =>
-										list.hasGame
-											? handleOpenDialog(list.listName, UpdateGameBottomDrawerDialogTypes.UPDATE)
-											: handleOpenDialog(list.listName, UpdateGameBottomDrawerDialogTypes.ADD)
-									}
-									className="my-3 flex items-center justify-between"
-								>
-									<div>
-										<p className="inline-block pl-[0.15rem]">{list.listName}</p>
+						lists.map(
+							(list: ListWithOwnership, i: number) =>
+								list.listName !== UserLists.BACKLOG && (
+									<div key={`${list}_${i}`}>
+										<div
+											onClick={() =>
+												list.hasGame
+													? handleOpenDialog(list.listName, UpdateGameBottomDrawerDialogTypes.UPDATE)
+													: handleOpenDialog(list.listName, UpdateGameBottomDrawerDialogTypes.ADD)
+											}
+											className="my-3 flex items-center justify-between"
+										>
+											<div>
+												<p className="inline-block pl-[0.15rem]">{list.listName}</p>
+											</div>
+											{list.hasGame ? (
+												<IconButton color="green" ripple variant="outlined" className="rounded-full">
+													<Icon color="green" size={24} icon={ic_done} />
+												</IconButton>
+											) : (
+												<IconButton ripple variant="outlined" className="rounded-full">
+													<Icon size={24} icon={ic_bookmark_border} />
+												</IconButton>
+											)}
+										</div>
 									</div>
-									{list.hasGame ? (
-										<IconButton color="green" ripple variant="outlined" className="rounded-full">
-											<Icon color="green" size={24} icon={ic_done} />
-										</IconButton>
-									) : (
-										<IconButton ripple variant="outlined" className="rounded-full">
-											<Icon size={24} icon={ic_bookmark_border} />
-										</IconButton>
-									)}
-								</div>
-							</div>
-						))
+								)
+						)
 					)}
 				</div>
 				<div onClick={() => console.log('create list')} className="grid grid-cols-2 border-t-2 pt-2 cursor-pointer">
