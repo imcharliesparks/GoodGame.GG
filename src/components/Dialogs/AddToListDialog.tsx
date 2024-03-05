@@ -4,7 +4,7 @@ import React from 'react'
 import Icon from 'react-icons-kit'
 import Select from 'react-tailwindcss-select'
 import { ic_close } from 'react-icons-kit/md/ic_close'
-import styles from '../../styles/components/AddToListDialog.module.css'
+import styles from '../../styles/components/DialogBase.module.css'
 import { Button } from '@material-tailwind/react'
 import { useAddGameToList, useCurrentlySelectedGame, useCurrentlySelectedList } from '../hooks/useStateHooks'
 import { Option, SelectValue } from 'react-tailwindcss-select/dist/components/type'
@@ -95,7 +95,7 @@ const AddToListDialog = ({ setIsDialogOpen, isOpen }: AddToListDialogProps) => {
 	}
 
 	return (
-		<Dialog id={styles.addToListDialog} size="xs" open={isOpen} handler={() => setIsDialogOpen()} className="max-h-full">
+		<Dialog id={styles.dialogBase} size="xs" open={isOpen} handler={() => setIsDialogOpen()} className="max-h-full">
 			<div className="flex flex-col">
 				<div className="grid grid-cols-2 border-b-2 pb-2 mb-2">
 					<h4 className="text-left">Add Game to List</h4>

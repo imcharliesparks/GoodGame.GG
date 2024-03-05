@@ -373,5 +373,5 @@ export type SampleScreenshot = {
 }
 
 export enum DialogNames {
-	CREATE_LIST
+	CREATE_LIST = 'CREATE_LIST'
 }

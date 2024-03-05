@@ -14,6 +14,7 @@ import {
 	useListsWithOwnership
 } from '@/components/hooks/useStateHooks'
 import RemoveFromListDialog from '@/components/Dialogs/RemoveFromListDialog'
+import CreateListDialog from '@/components/Dialogs/CreateListDialog'
 
 type DrawerProps = {
 	open: boolean
@@ -97,6 +98,7 @@ const GameDetailsBottomDrawer = ({ open, close }: DrawerProps) => {
 			) : (
 				<RemoveFromListDialog isOpen={isDialogOpen} setIsDialogOpen={() => setIsDialogOpen(false)} />
 			)}
+			<CreateListDialog />
 		</BaseBottomDrawer>
 	)
 }

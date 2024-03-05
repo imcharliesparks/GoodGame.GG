@@ -14,6 +14,7 @@ import {
 	useListsWithOwnership
 } from '@/components/hooks/useStateHooks'
 import RemoveFromListDialog from '@/components/Dialogs/RemoveFromListDialog'
+import CreateListDialog from '@/components/Dialogs/CreateListDialog'
 
 type DrawerProps = {
 	open: boolean
@@ -89,7 +90,7 @@ const SearchPageBottomDrawer = ({ open, close }: DrawerProps) => {
 					<h4 className="text-left">Create new list</h4>
 					<div className="cursor-pointer text-right">
 						<Icon icon={ic_add} size={20} />
-					</div>
+					</div>-
 				</div>
 			</div>
 			{dialogType === SearchPageBottomDrawerDialogTypes.ADD ? (
@@ -97,6 +98,7 @@ const SearchPageBottomDrawer = ({ open, close }: DrawerProps) => {
 			) : (
 				<RemoveFromListDialog isOpen={isDialogOpen} setIsDialogOpen={() => setIsDialogOpen(false)} />
 			)}
+			<CreateListDialog />
 		</BaseBottomDrawer>
 	)
 }
