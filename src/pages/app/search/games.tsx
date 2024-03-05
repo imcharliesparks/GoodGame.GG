@@ -1,6 +1,6 @@
 import React from 'react'
 import { APIMethods, APIStatuses, CollectionNames, GGLists, ListWithOwnership, MobyGame } from '@/shared/types'
-import NewSearchGameCard from '@/components/general/NewSearchGameCard'
+import SearchGameCard from '@/components/general/NewSearchGameCard'
 import { getAuth } from '@clerk/nextjs/server'
 import { GetServerSidePropsContext } from 'next'
 import firebase_app from '@/lib/firebase'
@@ -137,7 +137,7 @@ const SearchGamesPage = ({ searchQuery, lists, foundGames }: SearchGamePageProps
 				</form>
 				<div className="container w-full flex flex-col mt-4">
 					{games?.map((game, i: number) => (
-						<NewSearchGameCard
+						<SearchGameCard
 							lastCard={i === games.length - 1}
 							key={game.game_id}
 							game={game}

@@ -8,13 +8,13 @@ import HeartIcon from './HeartIcon'
 import { Button } from '@material-tailwind/react'
 import { useRouter } from 'next/router'
 
-type NewSearchGameCardProps = {
+type SearchGameCardProps = {
 	game: MobyGame
 	lastCard: boolean
 	handleOpenDrawer: () => void
 }
 
-const NewSearchGameCard = ({ game, lastCard, handleOpenDrawer }: NewSearchGameCardProps) => {
+const SearchGameCard = ({ game, lastCard, handleOpenDrawer }: SearchGameCardProps) => {
 	const router = useRouter()
 
 	// TODO: Handle when title and platform list are hella long
@@ -95,4 +95,4 @@ const NewSearchGameCard = ({ game, lastCard, handleOpenDrawer }: NewSearchGameCa
 	)
 }
 
-export default NewSearchGameCard
+export default SearchGameCard

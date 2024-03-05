@@ -7,6 +7,7 @@ import UpdateGameDialog from '../Dialogs/UpdateGameDialog'
 import { useCurrentlySelectedGame } from '../hooks/useStateHooks'
 import { useUserListsStore } from '@/state/userListsState'
 import Link from 'next/link'
+import { Button } from '@material-tailwind/react'
 
 type ListOfGamesProps = {
 	list: GGList
@@ -32,7 +33,7 @@ const ListOfGames = ({ listName }: ListOfGamesProps) => {
 			</Link>
 			{games.length ? (
 				<>
-					<HorizontalScroll>
+					<HorizontalScroll classes="mb-4">
 						{games.map((game: StoredGame, i: number) => {
 							if (i <= 10) {
 								return (
@@ -52,8 +53,10 @@ const ListOfGames = ({ listName }: ListOfGamesProps) => {
 							}
 						})}
 					</HorizontalScroll>
-					<Link className="text-blue-600 underline hover:text-blue-800 mt-8" href={`/app/user/lists/${listName}`}>
-						View All
+					<Link className="text-blue-600 underline hover:text-blue-800" href={`/app/user/lists/${listName}`}>
+						<Button size="sm" color="blue">
+							View All
+						</Button>
 					</Link>
 				</>
 			) : (
