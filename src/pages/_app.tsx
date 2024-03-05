@@ -1,17 +1,13 @@
 import '@/styles/globals.css'
 import { NextPage, NextPageContext } from 'next'
-import App, { AppProps } from 'next/app'
+import { AppProps } from 'next/app'
 import { ReactElement, ReactNode } from 'react'
-import cookie from 'cookie'
-import { APIMethods, TypeOfPerson } from '@/shared/types'
 import { ClerkProvider, useAuth } from '@clerk/nextjs'
 import ErrorBoundary from '@/components/ErrorBoundary'
-// import Layout from '@/components/layout/desktop'
 import Layout from '@/components/layout/default'
 import { ThemeProvider } from '@material-tailwind/react'
 import React from 'react'
-import { useUserListsStore } from '@/state/userListsState'
-import useInitApplication from '@/components/hooks/useInitApplication'
+import AppInitDataFetcher from './appInitDataFetcher'
 
 export type NextPageWithLayout<P = Record<string, any>, IP = P> = NextPage<P, IP> & {
 	getLayout?: (page: ReactElement) => ReactNode
@@ -22,15 +18,9 @@ type AppPropsWithLayout = AppProps & {
 	ctx: NextPageContext
 }
 
-// TODO: Also fix this bullshit
+// TODO: Reinstate user ingestion stuffs
 function MyApp({ Component, pageProps: { ...pageProps } }: AppPropsWithLayout) {
 	const renderWithLayout = Component.getLayout || ((page: ReactNode) => <Layout>{page}</Layout>)
-	const fetchAndSetLists = useUserListsStore((state) => state.fetchAndSetLists)
-
-	React.useEffect(() => {
-		fetchAndSetLists()
-	}, [])
-
 	return (
 		<ErrorBoundary>
 			<ClerkProvider
@@ -39,7 +29,9 @@ function MyApp({ Component, pageProps: { ...pageProps } }: AppPropsWithLayout) {
 				signUpUrl="/sign-up"
 				{...pageProps}
 			>
-				<ThemeProvider>{renderWithLayout(<Component {...pageProps} />)}</ThemeProvider>
+				<AppInitDataFetcher>
+					<ThemeProvider>{renderWithLayout(<Component {...pageProps} />)}</ThemeProvider>
+				</AppInitDataFetcher>
 			</ClerkProvider>
 		</ErrorBoundary>
 	)

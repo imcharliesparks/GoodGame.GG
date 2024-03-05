@@ -26,10 +26,5 @@ module.exports = withMT({
 				// SETUP TODO: Add colors for app here
 			}
 		}
-	},
-	plugins: [require('daisyui')],
-	daisyui: {
-		// SETUP TODO: Set true if you want dark mode support
-		themes: false
 	}
 })
