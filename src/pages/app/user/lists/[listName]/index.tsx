@@ -24,10 +24,8 @@ const IndividualListPage = ({ foundGames, lists, listName, error }: IndividualLi
 	const [currentlySelectedGame] = useCurrentlySelectedGame()
 	const [showRemoveFromListDialog, setShowRemoveFromListDialog] = React.useState<boolean>(false)
 	const [showUpdateGameDialog, setShowUpdateGameDialog] = React.useState<boolean>(false)
-	// const [isLoading, setIsLoading] = React.useState<boolean>(false)
-	// TODO: Think of a better way to not have to re set this in multiple places (we should probably pull it super early and then persist it)
 	const [_userLists, setUserLists] = useUserListsState()
-	const [_, setCurrentlySelectedList] = useCurrentlySelectedList()
+	const [_currentlySelectedList, setCurrentlySelectedList] = useCurrentlySelectedList()
 	const games = useUserListsStore((state) => state.getGamesFromList(listName)) ?? foundGames
 
 	React.useEffect(() => {

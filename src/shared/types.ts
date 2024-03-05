@@ -232,7 +232,7 @@ export enum UserStatus {
 }
 
 export enum GamePlayStatus {
-	PLAYED = 'Played',
+	STARTED = 'Started',
 	COMPLETED = 'Completed',
 	NOT_PLAYED = 'Not Played'
 }

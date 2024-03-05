@@ -3,8 +3,8 @@ import React from 'react'
 
 const Footer = () => {
 	return (
-		<footer className="footer footer-center p-4 bg-neutral text-neutral-content absolute bottom-0 ">
-			<div className="flex flex-row">
+		<footer className="p-4 border-t border-gray-400 text-neutral-content absolute bottom-0 w-full flex flex-row justify-center items-center">
+			<div className="flex flex-row justify-center items-center gap-2">
 				<svg
 					width="36"
 					height="36"

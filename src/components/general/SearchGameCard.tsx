@@ -140,9 +140,7 @@ const SearchGameCard = ({ game, handleAddSuccessTest, handleShowError }: GameCar
 								</span>
 							</li>
 							<li className="transition-all ease-in-out">
-								<span onClick={() => handleAddToCollection({ ...game, playStatus: GamePlayStatus.PLAYED })}>
-									Already Played
-								</span>
+								<span onClick={() => handleAddToCollection({ ...game, playStatus: GamePlayStatus.STARTED })}>Started</span>
 							</li>
 							<li className="transition-all ease-in-out">
 								<span onClick={() => handleAddToCollection({ ...game, playStatus: GamePlayStatus.COMPLETED })}>Completed</span>
@@ -163,7 +161,7 @@ const SearchGameCard = ({ game, handleAddSuccessTest, handleShowError }: GameCar
 								</span>
 							</li>
 							<li className="transition-all ease-in-out">
-								<span onClick={() => handleAddToWishlist({ ...game, playStatus: GamePlayStatus.PLAYED })}>Already Played</span>
+								<span onClick={() => handleAddToWishlist({ ...game, playStatus: GamePlayStatus.STARTED })}>Started</span>
 							</li>
 							<li className="transition-all ease-in-out">
 								<span onClick={() => handleAddToWishlist({ ...game, playStatus: GamePlayStatus.COMPLETED })}>Completed</span>

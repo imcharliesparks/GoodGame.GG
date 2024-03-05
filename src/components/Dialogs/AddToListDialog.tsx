@@ -95,15 +95,15 @@ const AddToListDialog = ({ setIsDialogOpen, isOpen }: AddToListDialogProps) => {
 	}
 
 	return (
-		<Dialog id={styles.addToListDialog} size="xs" open={isOpen} handler={() => setIsDialogOpen()} className="h-[300px]">
-			<div className="h-full relative h-xl">
+		<Dialog id={styles.addToListDialog} size="xs" open={isOpen} handler={() => setIsDialogOpen()} className="max-h-full">
+			<div className="flex flex-col">
 				<div className="grid grid-cols-2 border-b-2 pb-2 mb-2">
 					<h4 className="text-left">Add Game to List</h4>
 					<div autoFocus onClick={setIsDialogOpen} className="cursor-pointer text-right">
 						<Icon icon={ic_close} size={24} />
 					</div>
 				</div>
-				<div className="mb-3">
+				<div className="mb-3 flex-grow">
 					<h4 className="text-md mb-2">What platform(s)?</h4>
 					<Select
 						isMultiple
@@ -125,8 +125,8 @@ const AddToListDialog = ({ setIsDialogOpen, isOpen }: AddToListDialogProps) => {
 								value: GamePlayStatus.NOT_PLAYED
 							},
 							{
-								label: GamePlayStatus.PLAYED,
-								value: GamePlayStatus.PLAYED
+								label: GamePlayStatus.STARTED,
+								value: GamePlayStatus.STARTED
 							},
 							{
 								label: GamePlayStatus.COMPLETED,
@@ -136,7 +136,7 @@ const AddToListDialog = ({ setIsDialogOpen, isOpen }: AddToListDialogProps) => {
 					/>
 				</div>
 				{/* TODO: Reconsider the decision to disable here */}
-				<div className="absolute bottom-3 w-full">
+				<div className="mt-auto">
 					<Button
 						loading={isLoading}
 						onClick={handleAddGameToList}

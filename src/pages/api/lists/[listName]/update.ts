@@ -7,6 +7,7 @@ import {
 	DocumentResponses,
 	GGList,
 	GGUser,
+	GamePlayStatus,
 	GeneralAPIResponses,
 	StoredGame,
 	TypedRequest
@@ -64,13 +65,16 @@ const handler = async (req: TypedRequest<Omit<StoredGame, 'dateAdded'>>, res: Ne
 			if (foundList) {
 				updatedUser.lists[listName][addedGame.game_id.toString()] = addedGame
 				updatedUser.lists[listName].lastUpdated = Timestamp.now()
-			} else {
-				// @ts-ignore
-				updatedUser.lists[listName] = {
-					[addedGame.game_id.toString()]: addedGame,
-					dateAdded: Timestamp.now(),
-					lastUpdated: Timestamp.now()
+				if (addedGame.playStatus === GamePlayStatus.NOT_PLAYED) {
+					updatedUser.lists['Backlog'][addedGame.game_id.toString()] = addedGame
+				} else if (
+					updatedUser.lists['Backlog'][addedGame.game_id.toString()] &&
+					addedGame.playStatus === GamePlayStatus.COMPLETED
+				) {
+					delete updatedUser.lists['Backlog'][addedGame.game_id.toString()]
 				}
+			} else {
+				throw new Error(`List with the name ${listName} not found`)
 			}
 
 			const userDocumentPath = querySnapshot.docs[0].ref.path

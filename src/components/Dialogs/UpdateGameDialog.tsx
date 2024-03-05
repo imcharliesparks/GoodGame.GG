@@ -36,8 +36,8 @@ const UpdateGameDialog = ({ setIsDialogOpen, isOpen }: UpdateGameDialogProps) =>
 			value: GamePlayStatus.NOT_PLAYED
 		},
 		{
-			label: GamePlayStatus.PLAYED,
-			value: GamePlayStatus.PLAYED
+			label: GamePlayStatus.STARTED,
+			value: GamePlayStatus.STARTED
 		},
 		{
 			label: GamePlayStatus.COMPLETED,

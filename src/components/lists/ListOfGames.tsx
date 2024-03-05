@@ -28,7 +28,7 @@ const ListOfGames = ({ listName }: ListOfGamesProps) => {
 	return (
 		<div>
 			<Link href={`/app/user/lists/${listName}`}>
-				<h3 className="text-3xl text-center">{listName}</h3>
+				<h3 className="text-3xl text-center hover:text-blue-800 transition-all ease-in-out">{listName}</h3>
 			</Link>
 			{games.length ? (
 				<>
@@ -52,7 +52,7 @@ const ListOfGames = ({ listName }: ListOfGamesProps) => {
 							}
 						})}
 					</HorizontalScroll>
-					<Link className="mt-2" href={`/app/user/lists/${listName}`}>
+					<Link className="text-blue-600 underline hover:text-blue-800 mt-8" href={`/app/user/lists/${listName}`}>
 						View All
 					</Link>
 				</>
