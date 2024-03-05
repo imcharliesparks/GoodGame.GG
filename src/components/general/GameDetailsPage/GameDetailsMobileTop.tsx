@@ -1,11 +1,8 @@
 import React from 'react'
 import Image from 'next/image'
-import { GamePlayStatus, ListWithOwnership, MobyGame, Platform } from '@/shared/types'
-import ReactStars from 'react-stars'
+import { MobyGame } from '@/shared/types'
 import { truncateDescription } from '@/shared/utils'
-import { Drawer, Button } from '@material-tailwind/react'
-import BaseBottomDrawer from '@/components/Drawers/BottomDrawer/BaseBottomDrawer'
-import GameDetailsBottomDrawer from '@/components/Drawers/BottomDrawer/GameDetailsBottomDrawer'
+import { Button } from '@material-tailwind/react'
 
 type GameDetailsMobileTopProps = {
 	game: MobyGame
@@ -41,9 +38,10 @@ const GameDetailsMobileTop = ({ game, platformList, hasGame, openDrawerBottom }:
 			<div className="mx-auto mb-1 px-2">
 				<p className="text-gray-700 text-center">{platformList}</p>
 			</div>
-			<div className="flex flex-row justify-center w-full -mt-3">
+			{/* TODO: Consider adding stars from material tailwind here for ratings */}
+			{/* <div className="flex flex-row justify-center w-full -mt-3">
 				<ReactStars count={5} edit={false} value={game.moby_score ?? 0} size={36} color2={'#ffd700'} />
-			</div>
+			</div> */}
 			<div className="mb-2 w-full max-w-[250px]">
 				<Button onClick={openDrawerBottom} fullWidth color="green" className="flex items-center justify-center gap-3">
 					<svg

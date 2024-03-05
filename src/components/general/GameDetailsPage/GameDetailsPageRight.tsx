@@ -1,8 +1,6 @@
-import { MobyGame, Platform, StoredGame } from '@/shared/types'
-import { convertMobyScore, truncateDescription } from '@/shared/utils'
-import Image from 'next/image'
+import { MobyGame } from '@/shared/types'
+import { truncateDescription } from '@/shared/utils'
 import React from 'react'
-import ReactStars from 'react-stars'
 
 type GameDetailsPageRightProps = {
 	game: MobyGame

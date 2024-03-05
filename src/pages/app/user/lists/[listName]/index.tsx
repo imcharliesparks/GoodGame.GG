@@ -1,6 +1,6 @@
 import RemoveFromListDialog from '@/components/Dialogs/RemoveFromListDialog'
 import UpdateGameBottomDrawer from '@/components/Drawers/BottomDrawer/UpdateGameBottomDrawer'
-import NewGameCard from '@/components/Games/NewGameCard'
+import GameCard from '@/components/Games/GameCard'
 import { useCurrentlySelectedGame, useCurrentlySelectedList, useUserListsState } from '@/components/hooks/useStateHooks'
 import firebase_app from '@/lib/firebase'
 import { CollectionNames, GGLists, StoredGame } from '@/shared/types'
@@ -48,7 +48,7 @@ const IndividualListPage = ({ foundGames, lists, listName, error }: IndividualLi
 					{games.map(
 						(game: StoredGame) =>
 							typeof game !== 'string' && (
-								<NewGameCard
+								<GameCard
 									listName={listName}
 									gameFromList={game}
 									key={game.game_id}
@@ -64,7 +64,7 @@ const IndividualListPage = ({ foundGames, lists, listName, error }: IndividualLi
 					{games.map(
 						(game: StoredGame) =>
 							typeof game !== 'string' && (
-								<NewGameCard
+								<GameCard
 									listName={listName}
 									gameFromList={game}
 									key={game.game_id}
@@ -80,7 +80,7 @@ const IndividualListPage = ({ foundGames, lists, listName, error }: IndividualLi
 					{games.map(
 						(game: StoredGame) =>
 							typeof game !== 'string' && (
-								<NewGameCard
+								<GameCard
 									listName={listName}
 									gameFromList={game}
 									key={game.game_id}
@@ -97,7 +97,7 @@ const IndividualListPage = ({ foundGames, lists, listName, error }: IndividualLi
 					{games.map(
 						(game: StoredGame) =>
 							typeof game !== 'string' && (
-								<NewGameCard
+								<GameCard
 									listName={listName}
 									gameFromList={game}
 									key={game.game_id}

@@ -1,9 +1,7 @@
-import { MobyGame, StoredGame } from '@/shared/types'
-import { convertMobyScore } from '@/shared/utils'
+import { MobyGame } from '@/shared/types'
 import { Button } from '@material-tailwind/react'
 import Image from 'next/image'
 import React from 'react'
-import ReactStars from 'react-stars'
 
 type UpdateGamePageLeftProps = {
 	game: MobyGame

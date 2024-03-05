@@ -1,6 +1,5 @@
 import React from 'react'
 import { APIMethods, APIStatuses, GGGame, GamePlayStatus } from '@/shared/types'
-import SearchGameCard from '@/components/general/SearchGameCard'
 import LoadingSpinner from '@/components/general/LoadingSpinner'
 import { User } from '@clerk/nextjs/server'
 import SearchUserCard from '@/components/general/SearchUserCard'

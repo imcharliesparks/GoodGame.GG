@@ -7,7 +7,7 @@ import GameCardIconMenu from './GameCardIconMenu'
 import { useCurrentlySelectedGame, useCurrentlySelectedList } from '../hooks/useStateHooks'
 import UpdateGameBottomDrawer from '../Drawers/BottomDrawer/UpdateGameBottomDrawer'
 
-type NewGameCardProps = {
+type GameCard = {
 	toggleRemoveFromListDialog: (isOpen?: boolean) => void
 	toggleUpdateGameDialog: (isOpen?: boolean) => void
 	gameFromList: StoredGame | MobyGame
@@ -15,13 +15,13 @@ type NewGameCardProps = {
 	classes?: string
 }
 
-export const NewGameCard = ({
+export const GameCard = ({
 	toggleRemoveFromListDialog,
 	toggleUpdateGameDialog,
 	gameFromList,
 	listName,
 	classes
-}: NewGameCardProps) => {
+}: GameCard) => {
 	const router = useRouter()
 	const [_, setCurrentlySelectedGame] = useCurrentlySelectedGame()
 	const currentHeight = 640
@@ -98,4 +98,4 @@ export const NewGameCard = ({
 	)
 }
 
-export default NewGameCard
+export default GameCard

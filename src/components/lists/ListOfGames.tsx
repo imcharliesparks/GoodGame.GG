@@ -1,7 +1,7 @@
 import React from 'react'
 import HorizontalScroll from '../general/HorizontalScroll'
 import { GGList, StoredGame } from '@/shared/types'
-import NewGameCard from '../Games/NewGameCard'
+import GameCard from '../Games/GameCard'
 import RemoveFromListDialog from '../Dialogs/RemoveFromListDialog'
 import UpdateGameDialog from '../Dialogs/UpdateGameDialog'
 import { useCurrentlySelectedGame } from '../hooks/useStateHooks'
@@ -37,7 +37,7 @@ const ListOfGames = ({ listName }: ListOfGamesProps) => {
 							if (i <= 10) {
 								return (
 									typeof game !== 'string' && (
-										<NewGameCard
+										<GameCard
 											key={`${game.game_id}_${i}`}
 											gameFromList={game}
 											toggleRemoveFromListDialog={toggleRemoveFromListDialog}

@@ -1,20 +1,14 @@
 import React from 'react'
 import { APIMethods, APIStatuses, CollectionNames, GGLists, ListWithOwnership, MobyGame } from '@/shared/types'
-import LoadingSpinner from '@/components/general/LoadingSpinner'
 import NewSearchGameCard from '@/components/general/NewSearchGameCard'
 import { getAuth } from '@clerk/nextjs/server'
 import { GetServerSidePropsContext } from 'next'
 import firebase_app from '@/lib/firebase'
 import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore'
-import { useUserHasGameInCollection } from '@/components/hooks/useUserHasGameInCollection'
 import { SubstandardGenres } from '@/shared/constants'
 import { convert } from 'html-to-text'
 import { convertFirebaseTimestamps } from '@/shared/utils'
-import { useRouter } from 'next/router'
-import GameDetailsBottomDrawer from '@/components/Drawers/BottomDrawer/GameDetailsBottomDrawer'
 import { Button, Input } from '@material-tailwind/react'
-import { UserListsState, useUserListsStore } from '@/state/userListsState'
-import { useShallow } from 'zustand/react/shallow'
 import { useCurrentlySelectedGame, useListsWithOwnership, useUserListsState } from '@/components/hooks/useStateHooks'
 import SearchPageBottomDrawer from '@/components/Drawers/BottomDrawer/SearchPageBottomDrawer'
 
@@ -32,7 +26,6 @@ const SearchGamesPage = ({ searchQuery, lists, foundGames }: SearchGamePageProps
 	const [addSuccessText, setAddSuccessText] = React.useState<string | null>(null)
 	const [games, setGames] = React.useState<MobyGame[]>()
 	const [isLoading, setIsLoading] = React.useState<boolean>(false)
-	const [listsWithOwnership, setListsWithOwnership] = React.useState<ListWithOwnership[]>([])
 	const getListsWithOwnership = useListsWithOwnership()
 	const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(false)
 	const [_userLists, setUserLists] = useUserListsState()
