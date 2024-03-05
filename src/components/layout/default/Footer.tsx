@@ -4,7 +4,7 @@ import React from 'react'
 const Footer = () => {
 	return (
 		<footer className="p-4 border-t border-gray-400 text-neutral-content absolute bottom-0 w-full flex flex-row justify-center items-center">
-			<div className="flex flex-row justify-center items-center gap-2">
+			<div className="flex flex-col md:flex-row justify-center text-center md:text-left items-center gap-2">
 				<svg
 					width="36"
 					height="36"

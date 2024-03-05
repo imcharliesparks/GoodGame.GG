@@ -1,6 +1,6 @@
 import React from 'react'
-import Footer from './Footer'
-import NavHeader from './NavHeader'
+import Footer from './Default/Footer'
+import NavHeader from './Default/NavHeader'
 
 type Props = {
 	children: React.ReactNode
