@@ -1,4 +1,4 @@
-import { APIMethods, APIStatuses, GGList, GGLists, ListWithOwnership, MobyGame, StoredGame } from '@/shared/types'
+import { APIMethods, APIStatuses, GGLists, ListWithOwnership, StoredGame } from '@/shared/types'
 import { mountStoreDevtool } from 'simple-zustand-devtools'
 import { formatGamesFromList, sortListNames } from '@/shared/utils'
 import { create } from 'zustand'
@@ -14,6 +14,7 @@ export interface UserListsState {
 	addGameToList: (game: StoredGame, listName: string) => void
 	removeGameFromList: (game_id: string, listName: string) => void
 	updateGameOnList: (game: StoredGame, listName: string) => void
+	createNewList: (listName: string) => void
 }
 
 export const useUserListsStore = create<UserListsState>((set, get) => ({
@@ -124,6 +125,9 @@ export const useUserListsStore = create<UserListsState>((set, get) => ({
 		} else {
 			set({ lists: mutatedLists })
 		}
+	},
+	createNewList: async (listName: string) => {
+		debugger
 	}
 }))
 
