@@ -4,10 +4,10 @@ import { AppProps } from 'next/app'
 import { ReactElement, ReactNode } from 'react'
 import { ClerkProvider, useAuth } from '@clerk/nextjs'
 import ErrorBoundary from '@/components/ErrorBoundary'
-import Layout from '@/components/layout/default'
+import Layout from '@/components/layout/Default'
 import { ThemeProvider } from '@material-tailwind/react'
 import React from 'react'
-import AppInitDataFetcher from './appInitDataFetcher'
+import AppInitDataFetcher from './AppInitDataFetcher'
 
 export type NextPageWithLayout<P = Record<string, any>, IP = P> = NextPage<P, IP> & {
 	getLayout?: (page: ReactElement) => ReactNode

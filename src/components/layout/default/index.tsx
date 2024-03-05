@@ -1,5 +1,5 @@
 import React from 'react'
-import Footer from '../default/Footer'
+import Footer from './Footer'
 import NavHeader from './NavHeader'
 
 type Props = {

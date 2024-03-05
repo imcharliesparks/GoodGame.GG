@@ -34,15 +34,6 @@ const NavHeader = () => {
 			<Navbar id={styles.navbar}>
 				<div className="mx-auto max-w-screen-xl px-4 py-2 lg:px-8 lg:py-4">
 					<div className="container mx-auto lg:grid lg:grid-cols-3 flex  justify-between items-center text-blue-gray-900">
-						<div className="block lg:hidden">
-							<Hamburger
-								size={22}
-								toggled={isMenuOpen}
-								toggle={() => {
-									setIsMenuOpen((prev: boolean) => !prev)
-								}}
-							/>
-						</div>
 						<div className="flex flex-col justify-self-center lg:justify-self-start">
 							<Link href="/" className="mr-4 cursor-pointer py-1.5 font-medium">
 								<Typography className="mr-4 cursor-pointer py-1.5 font-medium">GoodGame.GG</Typography>
@@ -61,13 +52,22 @@ const NavHeader = () => {
 									</Button>
 								</SignedIn>
 							</div>
-							<div>
+							<div className="flex flex-row justify-center items-center">
 								<SignedIn>
 									<UserButton signInUrl="/sign-in" afterSignOutUrl="/" />
 								</SignedIn>
 								<SignedOut>
 									<SignInButton />
 								</SignedOut>
+								<div className="block lg:hidden">
+									<Hamburger
+										size={22}
+										toggled={isMenuOpen}
+										toggle={() => {
+											setIsMenuOpen((prev: boolean) => !prev)
+										}}
+									/>
+								</div>
 							</div>
 						</div>
 					</div>
