@@ -1,5 +1,3 @@
-import { Typography } from '@material-tailwind/react'
-import Link from 'next/link'
 import React from 'react'
 import NavMenuGames from './NavMenuGames'
 import NavMenuLists from './NavMenuLists'

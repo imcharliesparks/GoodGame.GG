@@ -1,6 +1,6 @@
 import React from 'react'
-import { Navbar, Typography, Button, Collapse } from '@material-tailwind/react'
-import styles from '../../../styles/components/NavHeader.module.css'
+import { Navbar, Typography, Button } from '@material-tailwind/react'
+import styles from '../../styles/components/NavHeader.module.css'
 import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 import Link from 'next/link'
 import { Turn as Hamburger } from 'hamburger-react'

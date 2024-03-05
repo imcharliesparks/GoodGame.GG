@@ -1,16 +1,5 @@
 import { SignedIn, useUser } from '@clerk/nextjs'
-import {
-	Drawer,
-	Typography,
-	IconButton,
-	Button,
-	Chip,
-	List,
-	ListItem,
-	ListItemPrefix,
-	ListItemSuffix,
-	Input
-} from '@material-tailwind/react'
+import { Drawer, Typography, IconButton, Button, List, ListItem, ListItemPrefix, Input } from '@material-tailwind/react'
 import { useRouter } from 'next/router'
 import React from 'react'
 

@@ -1,7 +1,6 @@
 import { MenuItem } from '@material-tailwind/react'
 import React from 'react'
 import NavMenu from './NavMenu'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 // TODO?: Modify so this shows all lists
