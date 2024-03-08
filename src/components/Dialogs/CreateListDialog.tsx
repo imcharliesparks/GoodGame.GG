@@ -13,6 +13,11 @@ const CreateListDialog = () => {
 	const [isLoading, setIsLoading] = React.useState<boolean>(false)
 	const [inputRendered, setInputRendered] = React.useState<boolean>(false)
 
+	const handleCreateNewList = () => {
+		createNewList(listName)
+		removeActiveDialog(DialogNames.CREATE_LIST)
+	}
+
 	// NOTE: This is the hack to keep the input from auto focusing
 	React.useEffect(() => {
 		if (isDialogActive) {
@@ -64,7 +69,7 @@ const CreateListDialog = () => {
 				<Button
 					loading={isLoading}
 					disabled={!!!listName}
-					onClick={() => createNewList(listName!)}
+					onClick={handleCreateNewList}
 					fullWidth
 					color="green"
 					className="flex items-center justify-center gap-3 btn-sm"

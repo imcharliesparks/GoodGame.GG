@@ -15,6 +15,7 @@ export interface UserListsState {
 	removeGameFromList: (game_id: string, listName: string) => void
 	updateGameOnList: (game: StoredGame, listName: string) => void
 	createNewList: (listName: string) => void
+	deleteList: (listName: string) => Promise<void>
 }
 
 // TODO: Add proper toasing here and make sure all other network actions like these in other stores are try/catch'd
@@ -161,6 +162,27 @@ export const useUserListsStore = create<UserListsState>((set, get) => ({
 		} catch (error) {
 			console.error(`We couldn't add create a new ${listName} list`)
 			alert('There was an error creating this list')
+		}
+	},
+	deleteList: async (listName: string): Promise<void> => {
+		try {
+			const request = await fetch(`/api/lists/${listName}/delete`, {
+				method: APIMethods.DELETE,
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+			const response = await request.json()
+
+			if (response.status === APIStatuses.ERROR) {
+				throw new Error('Error deleting this list')
+			} else {
+				set({ lists: response.data.updatedLists })
+				return response
+			}
+		} catch (error) {
+			console.error(`We couldn't delete the ${listName} list`)
+			alert('There was an error deleting this list')
 		}
 	}
 }))

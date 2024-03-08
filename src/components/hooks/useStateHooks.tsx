@@ -43,3 +43,6 @@ export const useCreateNewList = (): ((listName: string) => void) =>
 
 export const useGamesOnCurrentList = (): (() => StoredGame[]) =>
 	useGamesStore(useShallow((state: GamesState) => state.getGamesFromCurrentList))
+
+export const useDeleteList = (): ((listName: string) => Promise<void>) =>
+	useUserListsStore(useShallow((state: UserListsState) => state.deleteList))

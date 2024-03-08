@@ -14,6 +14,7 @@ type ListOfGamesProps = {
 	listName: string
 }
 
+// Garf figure out the bug where you delete a list and then it shits the bed on navigate
 // TODO: Only use the horizontal scroll on mobile probably
 const ListOfGames = ({ listName }: ListOfGamesProps) => {
 	const games = useUserListsStore((state) => state.getGamesFromList(listName)) ?? []

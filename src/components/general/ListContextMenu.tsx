@@ -2,8 +2,12 @@ import { Menu, MenuHandler, IconButton, MenuList, MenuItem } from '@material-tai
 import React from 'react'
 // TODO: Move these to their own set of styles
 import styles from '../../styles/components/NewGameCard.module.css'
+import { useSetActiveDialog } from '../hooks/useUIEventsState'
+import { DialogNames } from '@/shared/types'
 
 const ListContextMenu = () => {
+	const setActiveDialog = useSetActiveDialog()
+
 	return (
 		<Menu placement="bottom-end">
 			<MenuHandler id={styles.menuHandler}>
@@ -32,7 +36,7 @@ const ListContextMenu = () => {
 			</MenuHandler>
 			<MenuList>
 				<MenuItem onClick={() => console.log('boo')}>Change List Name</MenuItem>
-				<MenuItem onClick={() => console.log('boo')}>Delete List</MenuItem>
+				<MenuItem onClick={() => setActiveDialog(DialogNames.DELETE_LIST)}>Delete List</MenuItem>
 			</MenuList>
 		</Menu>
 	)

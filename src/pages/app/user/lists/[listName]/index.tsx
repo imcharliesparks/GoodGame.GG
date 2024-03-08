@@ -1,3 +1,4 @@
+import DeleteListDialog from '@/components/Dialogs/DeleteListDialog'
 import RemoveFromListDialog from '@/components/Dialogs/RemoveFromListDialog'
 import UpdateGameBottomDrawer from '@/components/Drawers/BottomDrawer/UpdateGameBottomDrawer'
 import GameCard from '@/components/Games/GameCard'
@@ -26,7 +27,7 @@ const IndividualListPage = ({ foundGames, lists, listName, error }: IndividualLi
 	const [showRemoveFromListDialog, setShowRemoveFromListDialog] = React.useState<boolean>(false)
 	const [showUpdateGameDialog, setShowUpdateGameDialog] = React.useState<boolean>(false)
 	const [_userLists, setUserLists] = useUserListsState()
-	const [_currentlySelectedList, setCurrentlySelectedList] = useCurrentlySelectedList()
+	const [currentlySelectedList, setCurrentlySelectedList] = useCurrentlySelectedList()
 	const games = useUserListsStore((state) => state.getGamesFromList(listName)) ?? foundGames
 
 	React.useEffect(() => {
@@ -117,6 +118,7 @@ const IndividualListPage = ({ foundGames, lists, listName, error }: IndividualLi
 					<UpdateGameBottomDrawer open={showUpdateGameDialog} close={toggleUpdateGameDialog} />
 				</>
 			)}
+			{currentlySelectedList && <DeleteListDialog />}
 		</section>
 	)
 }

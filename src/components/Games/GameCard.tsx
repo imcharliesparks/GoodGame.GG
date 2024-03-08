@@ -15,6 +15,7 @@ type GameCard = {
 	classes?: string
 }
 
+// TODO: Find a better way to get to game details than the hover here
 export const GameCard = ({
 	toggleRemoveFromListDialog,
 	toggleUpdateGameDialog,
@@ -29,6 +30,7 @@ export const GameCard = ({
 	const newHeight = 300
 	const newWidth = (currentWidth / currentHeight) * newHeight
 	const platformString = generatePlatformsString(gameFromList)
+	const [wasTouched, setWasTouched] = React.useState<boolean>(false)
 
 	const setGameAndOpenDeleteDialog = () => {
 		setCurrentlySelectedGame(gameFromList)
@@ -48,6 +50,7 @@ export const GameCard = ({
 				height: newHeight
 			}}
 			className={`${classes ? classes : ''} relative grid items-end justify-center text-center min-w-[208px] group`}
+			onClick={() => setWasTouched(!wasTouched)}
 		>
 			<GameCardIconMenu
 				listName={listName}
