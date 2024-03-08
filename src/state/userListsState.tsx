@@ -11,10 +11,10 @@ export interface UserListsState {
 	setCurrentlySelectedList: (listName: string) => void
 	getGamesFromList: (listName: string) => StoredGame[]
 	getListsWithOwnership: (game_id: string) => ListWithOwnership[]
-	addGameToList: (game: StoredGame, listName: string) => void
-	removeGameFromList: (game_id: string, listName: string) => void
-	updateGameOnList: (game: StoredGame, listName: string) => void
-	createNewList: (listName: string) => void
+	addGameToList: (game: StoredGame, listName: string) => Promise<void>
+	removeGameFromList: (game_id: string, listName: string) => Promise<void>
+	updateGameOnList: (game: StoredGame, listName: string) => Promise<void>
+	createNewList: (listName: string) => Promise<void>
 	deleteList: (listName: string) => Promise<void>
 }
 
@@ -71,7 +71,7 @@ export const useUserListsStore = create<UserListsState>((set, get) => ({
 
 		return sortListNames(listsWithOwnership)
 	},
-	addGameToList: async (game: StoredGame, listName: string) => {
+	addGameToList: async (game: StoredGame, listName: string): Promise<void> => {
 		try {
 			const mutatedLists = get().lists
 			mutatedLists[listName][game.game_id] = game
@@ -90,13 +90,14 @@ export const useUserListsStore = create<UserListsState>((set, get) => ({
 				throw new Error(response.data.error)
 			} else {
 				set({ lists: mutatedLists })
+				return response
 			}
 		} catch (error) {
 			console.error(`We couldn't add the game to the ${listName} list`)
 			alert('There was an error adding this game')
 		}
 	},
-	removeGameFromList: async (game_id: string, listName: string) => {
+	removeGameFromList: async (game_id: string, listName: string): Promise<void> => {
 		try {
 			const mutatedLists = get().lists
 			delete mutatedLists[listName][game_id]
@@ -113,13 +114,14 @@ export const useUserListsStore = create<UserListsState>((set, get) => ({
 				throw new Error(response.data.error)
 			} else {
 				set({ lists: mutatedLists })
+				return response
 			}
 		} catch (error) {
 			console.error(`We couldn't remove the game from the ${listName} list`)
 			alert('There was an error removing this game')
 		}
 	},
-	updateGameOnList: async (game: StoredGame, listName: string) => {
+	updateGameOnList: async (game: StoredGame, listName: string): Promise<void> => {
 		try {
 			const mutatedLists = get().lists
 			mutatedLists[listName][game.game_id] = game
@@ -138,13 +140,14 @@ export const useUserListsStore = create<UserListsState>((set, get) => ({
 				throw new Error(response.data.error)
 			} else {
 				set({ lists: mutatedLists })
+				return response
 			}
 		} catch (error) {
 			console.error(`We couldn't update the game on the ${listName} list`)
 			alert('There was an error updating this game')
 		}
 	},
-	createNewList: async (listName: string) => {
+	createNewList: async (listName: string): Promise<void> => {
 		try {
 			const request = await fetch(`/api/lists/${listName}/create`, {
 				method: APIMethods.POST,
@@ -158,6 +161,7 @@ export const useUserListsStore = create<UserListsState>((set, get) => ({
 				throw new Error('Error creating new list')
 			} else {
 				set({ lists: response.data.updatedLists })
+				return response
 			}
 		} catch (error) {
 			console.error(`We couldn't add create a new ${listName} list`)

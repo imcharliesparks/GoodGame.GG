@@ -16,7 +16,7 @@ const RemoveFromListDialog = ({ isOpen, setIsDialogOpen }: RemoteFromListDialogP
 		setIsDeleteButtonLoading(true)
 
 		try {
-			removeFromList(game.game_id, listName)
+			await removeFromList(game.game_id, listName)
 			setIsDialogOpen()
 		} catch (error) {
 			console.log('shit didnt work')

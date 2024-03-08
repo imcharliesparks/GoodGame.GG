@@ -98,7 +98,7 @@ const UpdateGameDialog = ({ setIsDialogOpen, isOpen }: UpdateGameDialogProps) =>
 				ownedPlatforms,
 				playStatus: selectedGameplayStatus.value
 			}
-			updateGameOnList(payload, listName)
+			await updateGameOnList(payload, listName)
 			setIsDialogOpen()
 			// handleTeardown()
 		} catch (error) {

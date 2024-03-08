@@ -29,16 +29,16 @@ export const useCurrentlySelectedList = (): [string, (listName: string) => void]
 	return [currentlySelectedList, setCurrentlySelectedList]
 }
 
-export const useAddGameToList = (): ((game: StoredGame, listName: string) => void) =>
+export const useAddGameToList = (): ((game: StoredGame, listName: string) => Promise<void>) =>
 	useUserListsStore(useShallow((state: UserListsState) => state.addGameToList))
 
-export const useRemoveGameFromList = (): ((game_id: string, listName: string) => void) =>
+export const useRemoveGameFromList = (): ((game_id: string, listName: string) => Promise<void>) =>
 	useUserListsStore(useShallow((state: UserListsState) => state.removeGameFromList))
 
-export const useUpdateGameOnList = (): ((game: StoredGame, listName: string) => void) =>
+export const useUpdateGameOnList = (): ((game: StoredGame, listName: string) => Promise<void>) =>
 	useUserListsStore(useShallow((state: UserListsState) => state.updateGameOnList))
 
-export const useCreateNewList = (): ((listName: string) => void) =>
+export const useCreateNewList = (): ((listName: string) => Promise<void>) =>
 	useUserListsStore(useShallow((state: UserListsState) => state.createNewList))
 
 export const useGamesOnCurrentList = (): (() => StoredGame[]) =>

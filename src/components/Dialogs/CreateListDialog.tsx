@@ -13,8 +13,8 @@ const CreateListDialog = () => {
 	const [isLoading, setIsLoading] = React.useState<boolean>(false)
 	const [inputRendered, setInputRendered] = React.useState<boolean>(false)
 
-	const handleCreateNewList = () => {
-		createNewList(listName)
+	const handleCreateNewList = async () => {
+		await createNewList(listName)
 		removeActiveDialog(DialogNames.CREATE_LIST)
 	}
 

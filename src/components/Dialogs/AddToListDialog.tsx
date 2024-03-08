@@ -85,7 +85,7 @@ const AddToListDialog = ({ setIsDialogOpen, isOpen }: AddToListDialogProps) => {
 
 		// TODO: Toast here
 		try {
-			addGameToList(payload, listName)
+			await addGameToList(payload, listName)
 			handleTeardown()
 		} catch (error) {
 			console.log('shit didnt work')
