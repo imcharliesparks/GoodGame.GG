@@ -16,6 +16,7 @@ export interface UserListsState {
 	updateGameOnList: (game: StoredGame, listName: string) => Promise<void>
 	createNewList: (listName: string) => Promise<void>
 	deleteList: (listName: string) => Promise<void>
+	changeListName: (listName: string, newListName: string) => Promise<void>
 }
 
 // TODO: Add proper toasing here and make sure all other network actions like these in other stores are try/catch'd
@@ -187,6 +188,30 @@ export const useUserListsStore = create<UserListsState>((set, get) => ({
 		} catch (error) {
 			console.error(`We couldn't delete the ${listName} list`)
 			alert('There was an error deleting this list')
+		}
+	},
+	changeListName: async (listName: string, newListName: string): Promise<void> => {
+		console.log('newListName', newListName)
+		try {
+			const request = await fetch(`/api/lists/${listName}/change-name`, {
+				method: APIMethods.PATCH,
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ newListName: newListName })
+			})
+			const response = await request.json()
+
+			if (response.status === APIStatuses.ERROR) {
+				throw new Error('Error changing this list name')
+			} else {
+				set({ lists: response.data.updatedLists })
+				return response
+			}
+		} catch (error) {
+			console.log('error', error)
+			console.error(`We couldn't change the name of the ${listName} list`)
+			alert(`There was an error changing the list's name`)
 		}
 	}
 }))

@@ -35,7 +35,7 @@ const ListContextMenu = () => {
 				</IconButton>
 			</MenuHandler>
 			<MenuList>
-				<MenuItem onClick={() => console.log('boo')}>Change List Name</MenuItem>
+				<MenuItem onClick={() => setActiveDialog(DialogNames.CHANGE_LIST_NAME)}>Change List Name</MenuItem>
 				<MenuItem onClick={() => setActiveDialog(DialogNames.DELETE_LIST)}>Delete List</MenuItem>
 			</MenuList>
 		</Menu>

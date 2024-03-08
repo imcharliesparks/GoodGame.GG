@@ -374,5 +374,6 @@ export type SampleScreenshot = {
 
 export enum DialogNames {
 	CREATE_LIST = 'CREATE_LIST',
-	DELETE_LIST = 'DELETE_LIST'
+	DELETE_LIST = 'DELETE_LIST',
+	CHANGE_LIST_NAME = 'CHANGE_LIST_NAME'
 }

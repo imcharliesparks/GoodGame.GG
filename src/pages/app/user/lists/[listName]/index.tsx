@@ -1,3 +1,4 @@
+import ChangeListNameDialog from '@/components/Dialogs/ChangeListNameDialog'
 import DeleteListDialog from '@/components/Dialogs/DeleteListDialog'
 import RemoveFromListDialog from '@/components/Dialogs/RemoveFromListDialog'
 import UpdateGameBottomDrawer from '@/components/Drawers/BottomDrawer/UpdateGameBottomDrawer'
@@ -122,7 +123,12 @@ const IndividualListPage = ({ foundGames, lists, listName, error }: IndividualLi
 					<UpdateGameBottomDrawer open={showUpdateGameDialog} close={toggleUpdateGameDialog} />
 				</>
 			)}
-			{currentlySelectedList && <DeleteListDialog />}
+			{currentlySelectedList && (
+				<>
+					<DeleteListDialog />
+					<ChangeListNameDialog />
+				</>
+			)}
 		</section>
 	)
 }
