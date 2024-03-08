@@ -38,7 +38,9 @@ const ListOfGames = ({ listName }: ListOfGamesProps) => {
 						{games.map((game: StoredGame, i: number) => {
 							if (i <= 10) {
 								return (
-									typeof game !== 'string' && (
+									// NOTE: This is due to the timestamp coming through in the mapping here. Should fix at a higher level somewhere
+									typeof game !== 'string' &&
+									game.game_id && (
 										<GameCard
 											key={`${game.game_id}_${i}`}
 											gameFromList={game}

@@ -50,7 +50,8 @@ const IndividualListPage = ({ foundGames, lists, listName, error }: IndividualLi
 				<div className="grid grid-cols-1 gap-4 max-w-screen-lg">
 					{games.map(
 						(game: StoredGame) =>
-							typeof game !== 'string' && (
+							typeof game !== 'string' &&
+							game.game_id && (
 								<GameCard
 									listName={listName}
 									gameFromList={game}
@@ -66,7 +67,8 @@ const IndividualListPage = ({ foundGames, lists, listName, error }: IndividualLi
 				<div className="grid grid-cols-2 gap-4 max-w-screen-lg">
 					{games.map(
 						(game: StoredGame) =>
-							typeof game !== 'string' && (
+							typeof game !== 'string' &&
+							game.game_id && (
 								<GameCard
 									listName={listName}
 									gameFromList={game}
@@ -82,7 +84,8 @@ const IndividualListPage = ({ foundGames, lists, listName, error }: IndividualLi
 				<div className="grid grid-cols-3 gap-6 max-w-screen-lg">
 					{games.map(
 						(game: StoredGame) =>
-							typeof game !== 'string' && (
+							typeof game !== 'string' &&
+							game.game_id && (
 								<GameCard
 									listName={listName}
 									gameFromList={game}
@@ -99,7 +102,8 @@ const IndividualListPage = ({ foundGames, lists, listName, error }: IndividualLi
 				<div className="grid grid-cols-4 gap-6 max-w-screen-lg">
 					{games.map(
 						(game: StoredGame) =>
-							typeof game !== 'string' && (
+							typeof game !== 'string' &&
+							game.game_id && (
 								<GameCard
 									listName={listName}
 									gameFromList={game}
