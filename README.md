@@ -64,6 +64,10 @@
 - [ ] Make a better way to view what list the user is on when udpating or deleting a game
 - [ ] We need a better way to get to a specific list from mobile instead of having to see them all
 
+### Architecture Changes for ReWrite
+
+- [ ] Make lists its own collection with IDs for each list instead of doing everything by list name
+
 ### Still To Do for M-ist MVP
 
 - [ ] Redo header
