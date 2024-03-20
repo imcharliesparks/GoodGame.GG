@@ -49,7 +49,7 @@ export const GameCard = ({
 				width: newWidth,
 				height: newHeight
 			}}
-			className={`${classes ? classes : ''} relative grid items-end justify-center text-center min-w-[208px] group`}
+			className={`${classes ? classes : ''} relative grid items-end justify-center text-center md:min-w-[208px] group`}
 			onClick={() => setWasTouched(!wasTouched)}
 		>
 			<GameCardIconMenu

@@ -47,7 +47,7 @@ const IndividualListPage = ({ foundGames, lists, listName, error }: IndividualLi
 			<Typography variant="h3" className="mx-auto text-center my-4">
 				{listName}
 			</Typography>
-			<div className="flex justify-center sm:hidden">
+			{/* <div className="flex justify-center sm:hidden">
 				<div className="grid grid-cols-1 gap-4 max-w-screen-lg">
 					{games.map(
 						(game: StoredGame) =>
@@ -63,9 +63,9 @@ const IndividualListPage = ({ foundGames, lists, listName, error }: IndividualLi
 							)
 					)}
 				</div>
-			</div>
-			<div className="hidden sm:flex md:hidden justify-center">
-				<div className="grid grid-cols-2 gap-4 max-w-screen-lg">
+			</div> */}
+			<div className="flex md:hidden justify-center">
+				<div className="grid grid-cols-2 gap-4">
 					{games.map(
 						(game: StoredGame) =>
 							typeof game !== 'string' &&

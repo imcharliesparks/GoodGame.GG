@@ -31,10 +31,13 @@ function MyApp({ Component, pageProps: { ...pageProps } }: AppPropsWithLayout) {
 			>
 				<AppInitDataFetcher>
 					<ThemeProvider>
-						{renderWithLayout(
+						{
 							// @ts-ignore
-							<Component {...pageProps} />
-						)}
+							renderWithLayout(
+								// @ts-ignore
+								<Component {...pageProps} />
+							)
+						}
 					</ThemeProvider>
 				</AppInitDataFetcher>
 			</ClerkProvider>
