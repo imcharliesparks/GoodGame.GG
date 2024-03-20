@@ -30,7 +30,12 @@ function MyApp({ Component, pageProps: { ...pageProps } }: AppPropsWithLayout) {
 				{...pageProps}
 			>
 				<AppInitDataFetcher>
-					<ThemeProvider>{renderWithLayout(<Component {...pageProps} />)}</ThemeProvider>
+					<ThemeProvider>
+						{renderWithLayout(
+							// @ts-ignore
+							<Component {...pageProps} />
+						)}
+					</ThemeProvider>
 				</AppInitDataFetcher>
 			</ClerkProvider>
 		</ErrorBoundary>
