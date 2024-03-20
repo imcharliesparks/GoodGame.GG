@@ -30,11 +30,7 @@ const Layout = ({ children }: Props) => {
 	return (
 		<>
 			<NavHeader />
-			{isLoading ? (
-				<LoadingScreen />
-			) : (
-				<main className="max-w-screen-xl mx-auto pb-36 md:pb-24 overflow-y-scroll">{children}</main>
-			)}
+			{isLoading ? <LoadingScreen /> : <main className="max-w-screen-xl mx-auto px-4 pb-36 md:pb-24">{children}</main>}
 
 			<Footer />
 		</>
