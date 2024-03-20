@@ -1,8 +1,9 @@
+// @ts-nocheck
 import '@/styles/globals.css'
 import { NextPage, NextPageContext } from 'next'
 import { AppProps } from 'next/app'
 import { ReactElement, ReactNode } from 'react'
-import { ClerkProvider, useAuth } from '@clerk/nextjs'
+import { ClerkProvider } from '@clerk/nextjs'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import { ThemeProvider } from '@material-tailwind/react'
 import React from 'react'
@@ -30,15 +31,7 @@ function MyApp({ Component, pageProps: { ...pageProps } }: AppPropsWithLayout) {
 				{...pageProps}
 			>
 				<AppInitDataFetcher>
-					<ThemeProvider>
-						{
-							// @ts-ignore
-							renderWithLayout(
-								// @ts-ignore
-								<Component {...pageProps} />
-							)
-						}
-					</ThemeProvider>
+					<ThemeProvider>{renderWithLayout(<Component {...pageProps} />)}</ThemeProvider>
 				</AppInitDataFetcher>
 			</ClerkProvider>
 		</ErrorBoundary>

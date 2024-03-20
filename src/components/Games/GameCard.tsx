@@ -85,14 +85,14 @@ export const GameCard = ({
 					style={{ wordBreak: 'break-word', overflowWrap: 'break-word', whiteSpace: 'break-spaces' }}
 					variant="paragraph"
 					color="white"
-					className="font-medium leading-[1.5]"
+					className="font-medium leading-[1.5] md:text-lg lg:text-xl" // Adjust text size for different breakpoints
 				>
 					{gameFromList.title}
 				</Typography>
 				<Typography
 					style={{ wordBreak: 'break-word', overflowWrap: 'break-word', whiteSpace: 'break-spaces' }}
 					variant="small"
-					className="text-gray-500"
+					className="text-gray-500 md:text-sm lg:text-base" // Adjust text size for different breakpoints
 				>
 					{platformString.length ? platformString : 'N/A'}
 				</Typography>
